@@ -53,6 +53,9 @@ public class Decoder {
     private final Runnable decoderRunnable = new Runnable() {
         @Override
         public void run() {
+            audioListener = new AudioListener();    //creating new audioListener
+            audioListener.startListening(); //start listening on audioListener
+
             while (isRecording) {
                 //Thread.onSpinWait();
                 try {
@@ -67,6 +70,7 @@ public class Decoder {
                 ui_update_thread.notify();  //notify ui_update_thread about new signal
 
             }
+            audioListener.stopListening();  //stop audioListener when decoder is finished
         }
     };
 
