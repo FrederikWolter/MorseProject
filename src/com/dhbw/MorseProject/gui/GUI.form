@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dhbw.MorseProject.gui.GUI">
-  <grid id="27dc6" binding="JPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="mainpanel" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
@@ -20,7 +20,25 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="72d25" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <card name="Card1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a0d38" class="javax.swing.JTextField" binding="halloTestTextField" default-binding="true">
+                    <constraints>
+                      <card name="Card1"/>
+                    </constraints>
+                    <properties>
+                      <text value="Hallo Test"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
           </grid>
           <grid id="c2d7" binding="toReceive" layout-manager="CardLayout" hgap="0" vgap="0">
             <constraints>
@@ -28,7 +46,16 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="cbdc7" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <card name="Card1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
           </grid>
           <grid id="301b8" binding="toInfo" layout-manager="CardLayout" hgap="0" vgap="0">
             <constraints>
@@ -36,7 +63,16 @@
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <grid id="53823" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <card name="Card1"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
           </grid>
         </children>
       </tabbedpane>

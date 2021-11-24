@@ -7,10 +7,15 @@ public class GUI {
     private JPanel toSend;
     private JPanel toReceive;
     private JPanel toInfo;
-    private javax.swing.JPanel JPanel;
+    private javax.swing.JPanel mainpanel;
+    private JTextField halloTestTextField;
 
     public GUI(){
-
+        JFrame frame = new JFrame("GUI-Test");
+        frame.add(mainpanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
 
     }
 
