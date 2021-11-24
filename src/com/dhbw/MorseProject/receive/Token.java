@@ -1,5 +1,4 @@
 package com.dhbw.MorseProject.receive;
 
-public class Decoder {
-
+public class Token {
 }
