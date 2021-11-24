@@ -7,6 +7,8 @@ import javax.sound.sampled.SourceDataLine;
 
 public class Encoder {
 
+    public static final int timeUnit = 100;
+
     private static Encoder instance;
 
     private Encoder() {
@@ -20,26 +22,17 @@ public class Encoder {
         return instance;
     }
 
-    public void send(String morse, Melody melody, int timeUnit) {
+    public void send(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
         int frequency = 500;
         for (char x: signals) {
             switch (x) {
-                case ' ': //TODO Change to global static variable
-                    wait(2*timeUnit);
-                    break;
-                case '/':
-                    wait(6*timeUnit);
-                    break;
-                case '.':
-                    signal(1, timeUnit, frequency);
-                    break;
-                case '-':
-                    signal(3, timeUnit, frequency);
-                    break;
-                default:
-                    //TODO Throw Exception
-                    break;
+                case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
+                case '/' -> wait(6 * timeUnit);
+                case '.' -> signal(1 * timeUnit, frequency);
+                case '-' -> signal(3 * timeUnit, frequency);
+                default -> { } //TODO Throw Exception
+
             }
         }
     }
@@ -52,14 +45,15 @@ public class Encoder {
         }
     }
 
-    private void signal(int duration, int timeUnit, int frequency) {
+    private void signal(int duration, int frequency) {
         SourceDataLine sourceDataLine;
+        //todo introduce variables for magic numbers
         try {
             sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
             sourceDataLine.open(sourceDataLine.getFormat());
             sourceDataLine.start();
 
-            for (int u = 0; u < (duration*timeUnit*8); u++) {
+            for (int u = 0; u < (duration*8); u++) {
                 sourceDataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
             }
             sourceDataLine.drain();
@@ -69,7 +63,4 @@ public class Encoder {
         }
 
     }
-
-
-
 }
