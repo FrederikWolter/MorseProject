@@ -9,7 +9,6 @@ public class MorseProject {
 
     public static void main(String[] args) {
         Encoder e = Encoder.getInstance();
-        e.send("... --- ...", new Melody("test", new ArrayList<>()), 100);
+        e.send("... --- ...", new Melody("test", new ArrayList<>()));
     }
-
 }
