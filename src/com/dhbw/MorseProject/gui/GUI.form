@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <tabbedpane id="8c7ec" binding="tabbedPane1" default-binding="true">
+      <tabbedpane id="8c7ec">
         <constraints>
           <card name="Card1"/>
         </constraints>
