@@ -8,6 +8,12 @@ public class Decoder {
     AudioListener audioListener;
     private boolean isRecording;
 
+    private static Decoder instance = null;
+
+    private Decoder(){
+
+    }
+
     public boolean startRecording(Thread ui_update_thread){
         isRecording = true;
 
@@ -26,4 +32,12 @@ public class Decoder {
     public String getLastSignal(){
         return "";
     }
+
+    public static Decoder getInstance(){
+        if(instance == null){
+            instance = new Decoder();
+        }
+        return  instance;
+    }
+
 }
