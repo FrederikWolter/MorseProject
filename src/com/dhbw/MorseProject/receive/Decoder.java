@@ -33,8 +33,6 @@ public class Decoder {
                 return false;
             }
         }
-
-
     }
 
     public boolean stopRecording(){
@@ -47,8 +45,6 @@ public class Decoder {
             return false;   //return false if failed
         }
     }
-
-
 
     private final Runnable decoderRunnable = new Runnable() {
         @Override
