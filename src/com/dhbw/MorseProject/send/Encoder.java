@@ -9,6 +9,8 @@ public class Encoder {
 // todo implement threads
     public static final int timeUnit = 100;
 
+    private Thread encoderThread;
+    private volatile boolean isPlaying;
     private static Encoder instance;
 
     private Encoder() {
@@ -23,6 +25,13 @@ public class Encoder {
     }
 
     public void send(String morse, Melody melody) {
+        stopPlaying();
+        isPlaying = true;
+        encoderThread = new Thread(() -> sending(morse, melody));
+        encoderThread.start();
+    }
+
+    private void sending(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
         int frequency = 500;
         for (char x: signals) {
@@ -34,6 +43,20 @@ public class Encoder {
                 default -> { } //TODO Throw Exception
 
             }
+            if(!isPlaying)
+                break;
+        }
+    }
+
+    public boolean stopPlaying() {
+        isPlaying=false;
+        try {
+            encoderThread.join();
+            return true;
+        } catch (Exception e) {
+            if(encoderThread!=null)
+                e.printStackTrace(); //TODO Exception Handling
+            return false;
         }
     }
 
