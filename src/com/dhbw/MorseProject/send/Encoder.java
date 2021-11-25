@@ -6,7 +6,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 public class Encoder {
-
+// todo implement threads
     public static final int timeUnit = 100;
 
     private static Encoder instance;
@@ -55,7 +55,7 @@ public class Encoder {
 
             for (int u = 0; u < (duration*8); u++) {
                 sourceDataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
-            }
+            }   // TODO: signal quality? some times cracking in signal
             sourceDataLine.drain();
             wait(timeUnit);
         } catch (LineUnavailableException e) {
