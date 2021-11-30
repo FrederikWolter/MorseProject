@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * In this class, the samples are evaluated in order to record the Morse code from the audio input.
  * Audio input from the {@link AudioListener} class.
- * @author Daniel Czeschner
+ * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
 public class Decoder {
     //TODO comments
