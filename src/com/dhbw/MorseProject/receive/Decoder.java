@@ -1,38 +1,44 @@
 package com.dhbw.MorseProject.receive;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * In this class, the samples are evaluated in order to record the Morse code from the audio input.
+ * Audio input from the {@link AudioListener} class.
+ * @author Daniel Czeschner
+ */
 public class Decoder {
-    List<Token> tokenList;
-    List<MorseSignal> signalList;
-    AudioListener audioListener;
-    private volatile boolean isRecording;
+    //TODO comments
+    private List<Token> tokenList;
+    private List<MorseSignal> signalList;
+    private AudioListener audioListener;
+    private volatile boolean isRecording = false;
     private Thread decoderThread;
 
     private static Decoder instance = null;
     private Thread ui_update_thread;
 
+    public static void main(String[] args) {
+        Decoder.getInstance().startRecording();
+    }
+
     private Decoder(){
 
     }
 
-    public boolean startRecording(Thread ui_update_thread){
-        if (isRecording){
-            return false;
-        } else{
-            try {
-                isRecording = true;
+    public boolean startRecording(/* TODO Thread ui_update_thread */){
+        //TODO this.ui_update_thread = ui_update_thread;
 
-                this.ui_update_thread = ui_update_thread;
+        decoderThread = new Thread(decoderRunnable); //Creating new Thread because you can only call .start on Thread once
 
-                decoderThread = new Thread(decoderRunnable);    //Creating new Thread because you can only call .start on Thread once
-                decoderThread.start();
+        audioListener = new AudioListener(/*decoderThread*/); //creating new audioListener
+        isRecording = audioListener.startListening(); //start listening on audioListener
 
-                return true;
-            } catch (Exception e){
-                return false;
-            }
-        }
+        if(isRecording)
+            decoderThread.start();
+
+        return isRecording;
     }
 
     public boolean stopRecording(){
@@ -46,28 +52,35 @@ public class Decoder {
         }
     }
 
-    private final Runnable decoderRunnable = new Runnable() {
-        @Override
-        public void run() {
-            audioListener = new AudioListener();    //creating new audioListener
-            audioListener.startListening(); //start listening on audioListener
-
-            while (isRecording) {
-                //Thread.onSpinWait();
-                try {
-                    wait(); //wait until decoder is notified with new sample from audioListener
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    private final Runnable decoderRunnable = () -> {
+        while (isRecording) {
+            //Thread.onSpinWait();
+            try {
+                List<Double> samples = new ArrayList<>();
+                synchronized (audioListener.synchronizedBuffer) {
+                    audioListener.synchronizedBuffer.wait(); //wait until decoder is notified with new sample from audioListener
+                    samples.addAll(audioListener.getNewSample()); //getting new Sample from audioListener
                 }
-                double sample[] = audioListener.getNewSample(); //getting new Sample from audioListener
+
+                System.out.println("Start of Decoder");
+
+                for(int i = 0; i < 100000000; i++){
+                    if(i == 99999999){
+                        System.out.println("finished long task");
+                        System.out.println(samples);
+                    }
+                }
+
                 //TODO: analyze sample
-                //... sample analysis
 
-                ui_update_thread.notify();  //notify ui_update_thread about new signal
+                //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
 
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            audioListener.stopListening();  //stop audioListener when decoder is finished
         }
+        audioListener.stopListening();  //stop audioListener when decoder is finished
     };
 
     public boolean isRecording(){
