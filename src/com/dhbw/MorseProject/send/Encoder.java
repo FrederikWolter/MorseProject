@@ -1,6 +1,7 @@
 package com.dhbw.MorseProject.send;
 
 import javax.sound.sampled.*;
+import java.util.ArrayList;
 
 // todo comments; author; javadoc
 
@@ -35,29 +36,21 @@ public class Encoder {
 
     private void sending(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
-        int frequency = 500;
+        int[] freqList = melody.getFreqList();
+        int freq_length = freqList.length;
+        int freq_index = 0;
 
-        try{
-            SourceDataLine sourceDataLine;
-            sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
-            sourceDataLine.open(sourceDataLine.getFormat());
-            sourceDataLine.start();
-
-            for (char x: signals) {
-                switch (x) {
-                    case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
-                    case '/' -> wait(6 * timeUnit);
-                    case '.' -> signal2(1 * timeUnit, frequency, sourceDataLine);
-                    case '-' -> signal2(3 * timeUnit, frequency, sourceDataLine);
-                    default -> { } //TODO Throw Exception
-                }
-                if(!isPlaying)
-                    break;
+        //int frequency = 500;
+        for (char x: signals) {
+            switch (x) {
+                case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
+                case '/' -> wait(6 * timeUnit);
+                case '.' -> signal2(1 * timeUnit, freqList[(freq_index++) % freq_length]);
+                case '-' -> signal2(3 * timeUnit, freqList[(freq_index++) % freq_length]);
+                default -> { } //TODO Throw Exception
             }
-
-            sourceDataLine.close();
-        }catch (LineUnavailableException e){
-            e.printStackTrace(); //TODO Exception handling
+            if(!isPlaying)
+                break;
         }
     }
 
@@ -83,7 +76,7 @@ public class Encoder {
     }
 
     //see https://rosettacode.org/wiki/Sine_wave
-    private void signal2(int duration, int frequency, SourceDataLine dataLine) {
+    private void signal2(int duration, int frequency) {
 
         try {
             int sampleRate = 44000;
@@ -104,7 +97,6 @@ public class Encoder {
     }
 
     //todo introduce variables for magic numbers
-
     private byte[] sineWave(int frequency, int duration, int sampleRate){
         int samples = (duration * sampleRate) / 1000;
         byte[] result = new byte[samples];
