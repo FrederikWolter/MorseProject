@@ -13,6 +13,7 @@ public class Encoder {
     private volatile boolean isPlaying;
     private static Encoder instance;
 
+
     private Encoder() {
 
     }
@@ -81,27 +82,6 @@ public class Encoder {
         }
     }
 
-    //todo introduce variables for magic numbers
-
-    /*private void signal(int duration, int frequency, SourceDataLine dataLine) {
-        SourceDataLine sourceDataLine;
-
-        //try {
-            *//*sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
-            sourceDataLine.open(sourceDataLine.getFormat());
-            sourceDataLine.start();*//*
-
-            for (int u = 0; u < (duration*8); u++) {
-                dataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
-            }   // TODO: signal quality? some times cracking in signal
-            dataLine.drain();
-            wait(timeUnit);                         // 1TU pause after each signal
-            //sourceDataLine.close();
-        *//*} catch (LineUnavailableException e) {
-            e.printStackTrace(); //TODO Exception handling
-        }*//*
-    }*/
-
     //see https://rosettacode.org/wiki/Sine_wave
     private void signal2(int duration, int frequency, SourceDataLine dataLine) {
 
@@ -119,12 +99,13 @@ public class Encoder {
 
             wait(timeUnit);                         // 1TU pause after each signal
         }catch(LineUnavailableException e){
-            e.printStackTrace(); //Todo change
+            e.printStackTrace(); //TODO Exception handling
         }
     }
 
+    //todo introduce variables for magic numbers
+
     private byte[] sineWave(int frequency, int duration, int sampleRate){
-        // todo duration factor 10? short signal 1 sec instead of  1*100 ms
         int samples = (duration * sampleRate) / 1000;
         byte[] result = new byte[samples];
         double interval = (double) sampleRate / frequency;
