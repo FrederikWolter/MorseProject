@@ -110,7 +110,38 @@
                                 </constraints>
                                 <properties/>
                                 <border type="none"/>
-                                <children/>
+                                <children>
+                                  <splitpane id="9fac">
+                                    <constraints>
+                                      <card name="Card1"/>
+                                    </constraints>
+                                    <properties>
+                                      <dividerSize value="0"/>
+                                      <enabled value="false"/>
+                                      <orientation value="0"/>
+                                      <resizeWeight value="1.0"/>
+                                    </properties>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="f7214" class="javax.swing.JLabel" binding="label_melody">
+                                        <constraints>
+                                          <splitpane position="right"/>
+                                        </constraints>
+                                        <properties>
+                                          <text value="Melodie"/>
+                                        </properties>
+                                      </component>
+                                      <grid id="206dd" layout-manager="CardLayout" hgap="0" vgap="0">
+                                        <constraints>
+                                          <splitpane position="left"/>
+                                        </constraints>
+                                        <properties/>
+                                        <border type="none"/>
+                                        <children/>
+                                      </grid>
+                                    </children>
+                                  </splitpane>
+                                </children>
                               </grid>
                             </children>
                           </splitpane>
@@ -309,10 +340,12 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="d8670" class="javax.swing.JTextArea" binding="infoText">
+                      <grid id="3d69e" layout-manager="CardLayout" hgap="0" vgap="0">
                         <constraints/>
                         <properties/>
-                      </component>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
                     </children>
                   </scrollpane>
                 </children>

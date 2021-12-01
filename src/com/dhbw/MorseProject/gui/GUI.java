@@ -16,7 +16,7 @@ public class GUI {
     private JButton button_send;
     private JComboBox comboBox_melody;
     private JSlider receive_sensitivity_slider;
-    private JTextArea infoText;
+    private JLabel label_melody;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
@@ -24,7 +24,6 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
     }
 
     public static void main(String[] args) {
