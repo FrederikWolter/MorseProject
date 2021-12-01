@@ -1,6 +1,7 @@
 package com.dhbw.MorseProject.receive;
 
 import javax.sound.sampled.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -190,6 +191,13 @@ public class AudioListener {
         }
     }
 
+    public Noise analyzeNoise(byte[] byteArray){
+        Instant timestamp = Instant.now();
+        double rms = rmsValue(byteArray);
+        boolean quiet = rms < getNoiseThreshold();
+
+        return new Noise(quiet, timestamp);
+    }
 
     private double getNoiseThreshold(){
         //TODO: get noise threshold from GUI
