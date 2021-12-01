@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * In this class the input of the microphone is captured and the rms values of this input can be fetched.
- * @author Daniel Czeschner
+ * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
 public class AudioListener {
 
@@ -23,7 +23,7 @@ public class AudioListener {
     private boolean isListening = false;
 
     /**
-     * The size of the array in which the data line's input is read. When size is reached the rms is calculated. See {@link #rmsValue(byte[])}
+     * The size of the array in which the data line's input is read. When size is reached a new {@link Noise} Object is created. See {@link #analyzeNoise(byte[])}}
      */
     private final int bufferSize = 200;
 
@@ -37,7 +37,7 @@ public class AudioListener {
      * This Object is used to synchronize this class and the {@link Decoder} class.
      * (On this object the {@link Decoder} and {@link #listenerThread} thread is synchronized)
      */
-    public final List<Double> synchronizedBuffer = new ArrayList<>();
+    public final List<Noise> synchronizedBuffer = new ArrayList<>();
 
     //private Thread decoderThread;
     /**
@@ -57,7 +57,7 @@ public class AudioListener {
      */
     public boolean startListening(){
 
-        AudioFormat format = new AudioFormat(16000.f, 16, 1, true, true); //Default Line
+        AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
         if(!AudioSystem.isLineSupported(info)){
@@ -116,16 +116,18 @@ public class AudioListener {
         byte[] memoryBuffer = new byte[bufferSize];
         while(isListening){
             if(line.read(memoryBuffer, 0, memoryBuffer.length)>0){
+
                 //region TODO delete DEBUG if no longer necessary
                 System.out.println(i + " "+rmsValue(memoryBuffer));
                 i++;
                 //endregion
+
                 synchronized (synchronizedBuffer) {
-                    double newSample = rmsValue(memoryBuffer);
-                    synchronizedBuffer.add(newSample);
+                    Noise noise = analyzeNoise(memoryBuffer);
+                    synchronizedBuffer.add(noise);
 
                     //TODO delete DEBUG if no longer necessary
-                    System.out.println(String.format("Added %f", newSample));
+                    System.out.println(String.format("Added %s", noise.toString()));
 
                     if(synchronizedBuffer.size()>=minNewSamples){
                         synchronizedBuffer.notify();
@@ -136,27 +138,6 @@ public class AudioListener {
             }
         }
     };
-
-    /*private double rmsValue(byte arr[])
-    {
-        int square = 0;
-        double mean = 0;
-        double root = 0;
-
-        // Calculate square.
-        for(int i = 0; i < arr.length; i++)
-        {
-            square += Math.pow(arr[i], 2);
-        }
-
-        // Calculate Mean.
-        mean = (square / (float) (arr.length));
-
-        // Calculate Root.
-        root = (float)Math.sqrt(mean);
-
-        return root;
-    }*/
 
     /**
      * Methode that Calculates the Root Mean Square of the audio input.
@@ -174,24 +155,16 @@ public class AudioListener {
         }
         rms/=x.length;
         return Math.sqrt(rms);
-
     }
 
     /**
-     * Method to fetch the last recorded RMS values since the last fetch.
-     * @return A List of double values with the last samples since last fetch.
-     * @see List<Double>
+     * Creates a new {@link Noise} object for a corresponding audio input sample.
+     * Uses {@link #rmsValue(byte[])} to calculate the RMS value for the byte array.
+     * A signal is silence if this calculated RMS value is smaller than {@link #getNoiseThreshold()}
+     * @param byteArray The last bytes recorded by the microphone in an array.
+     * @return The {@link Noise} object
      */
-    public List<Double> getNewSample() {
-        //TODO test if this method can be updated to an array (Performance)
-        synchronized (synchronizedBuffer){
-            List<Double> test = new ArrayList<>(synchronizedBuffer);
-            synchronizedBuffer.clear();
-            return test;
-        }
-    }
-
-    public Noise analyzeNoise(byte[] byteArray){
+    private Noise analyzeNoise(byte[] byteArray){
         Instant timestamp = Instant.now();
         double rms = rmsValue(byteArray);
         boolean quiet = rms < getNoiseThreshold();
@@ -199,6 +172,25 @@ public class AudioListener {
         return new Noise(quiet, timestamp);
     }
 
+    /**
+     * Method to fetch the last recorded RMS values since the last fetch.
+     * @return A List of double values with the last samples since last fetch.
+     * @see List<Double>
+     */
+    public List<Noise> getNewSample() {
+        //TODO test if this method can be updated to an array (Performance)
+        synchronized (synchronizedBuffer){
+            List<Noise> test = new ArrayList<>(synchronizedBuffer);
+            synchronizedBuffer.clear();
+            return test;
+        }
+    }
+
+    /**
+     * Get the current Threshold selected by the user from the GUI.
+     * If a tone is louder than this threshold the value is identified as loud.
+     * @return The threshold
+     */
     private double getNoiseThreshold(){
         //TODO: get noise threshold from GUI
         return 35.0;
