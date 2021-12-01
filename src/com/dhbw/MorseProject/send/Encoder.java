@@ -1,24 +1,24 @@
 package com.dhbw.MorseProject.send;
 
+import com.dhbw.MorseProject.translate.Translator;
+
 import javax.sound.sampled.*;
-import java.util.ArrayList;
 
 // todo comments; author; javadoc
-
 
 public class Encoder {
 
     public static final int timeUnit = 100;
+
+    public static final int sampleRate = 44000;
+    public static final byte volume = 70;
 
     private Thread encoderThread;
     private volatile boolean isPlaying;
     private static Encoder instance;
 
 
-    private Encoder() {
-
-    }
-
+    private Encoder() { }
 
     public static Encoder getInstance() {
         if (instance == null) {
@@ -42,11 +42,11 @@ public class Encoder {
 
         //int frequency = 500;
         for (char x: signals) {
-            switch (x) {
-                case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
-                case '/' -> wait(6 * timeUnit);
-                case '.' -> signal2(1 * timeUnit, freqList[(freq_index++) % freq_length]);
-                case '-' -> signal2(3 * timeUnit, freqList[(freq_index++) % freq_length]);
+            switch (String.valueOf(x)) {
+                case Translator.C -> wait(2 * timeUnit);
+                case Translator.W -> wait(6 * timeUnit);
+                case Translator.S -> signal2(1 * timeUnit, freqList[(freq_index++) % freq_length]);
+                case Translator.L -> signal2(3 * timeUnit, freqList[(freq_index++) % freq_length]);
                 default -> { } //TODO Throw Exception
             }
             if(!isPlaying)
@@ -54,15 +54,13 @@ public class Encoder {
         }
     }
 
-    public synchronized boolean stopPlaying() {
+    public synchronized void stopPlaying() {
         isPlaying = false;
         try {       // todo nesessary?
             encoderThread.join();
-            return true;
         } catch (Exception e) {
             if(encoderThread!=null)
                 e.printStackTrace(); //TODO Exception Handling
-            return false;
         }
     }
 
@@ -79,8 +77,7 @@ public class Encoder {
     private void signal2(int duration, int frequency) {
 
         try {
-            int sampleRate = 44000;
-            byte[] buffer = sineWave(frequency, duration, sampleRate);
+            byte[] buffer = sineWave(frequency, duration);
             AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, true);
             SourceDataLine line = AudioSystem.getSourceDataLine(format);
 
@@ -97,14 +94,14 @@ public class Encoder {
     }
 
     //todo introduce variables for magic numbers
-    private byte[] sineWave(int frequency, int duration, int sampleRate){
+    private byte[] sineWave(int frequency, int duration){
         int samples = (duration * sampleRate) / 1000;
         byte[] result = new byte[samples];
         double interval = (double) sampleRate / frequency;
 
         for(int i = 0; i < samples; i++){
             double angle = 2.0 * Math.PI * i / interval;
-            result[i] = (byte)(Math.sin(angle) * 70); // todo volume
+            result[i] = (byte)(Math.sin(angle) * volume);
         }
         return result;
     }
