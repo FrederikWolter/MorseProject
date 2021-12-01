@@ -12,6 +12,8 @@ public class GUI {
     private JTextArea textArea1;
     private JTextArea textArea2;
     private JButton startRecordingButton;
+    private JTextField textfield_input;
+    private JButton button_send;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
