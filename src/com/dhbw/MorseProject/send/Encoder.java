@@ -1,12 +1,12 @@
 package com.dhbw.MorseProject.send;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.*;
+
+// todo comments; author; javadoc
+
 
 public class Encoder {
-    // todo implement threads
+
     public static final int timeUnit = 100;
 
     private Thread encoderThread;
@@ -16,6 +16,7 @@ public class Encoder {
     private Encoder() {
 
     }
+
 
     public static Encoder getInstance() {
         if (instance == null) {
@@ -34,16 +35,28 @@ public class Encoder {
     private void sending(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
         int frequency = 500;
-        for (char x: signals) {
-            switch (x) {
-                case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
-                case '/' -> wait(6 * timeUnit);
-                case '.' -> signal(1 * timeUnit, frequency);
-                case '-' -> signal(3 * timeUnit, frequency);
-                default -> { } //TODO Throw Exception
+
+        try{
+            SourceDataLine sourceDataLine;
+            sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
+            sourceDataLine.open(sourceDataLine.getFormat());
+            sourceDataLine.start();
+
+            for (char x: signals) {
+                switch (x) {
+                    case ' ' -> wait(2 * timeUnit); //TODO Change to global static variable
+                    case '/' -> wait(6 * timeUnit);
+                    case '.' -> signal2(1 * timeUnit, frequency, sourceDataLine);
+                    case '-' -> signal2(3 * timeUnit, frequency, sourceDataLine);
+                    default -> { } //TODO Throw Exception
+                }
+                if(!isPlaying)
+                    break;
             }
-            if(!isPlaying)
-                break;
+
+            sourceDataLine.close();
+        }catch (LineUnavailableException e){
+            e.printStackTrace(); //TODO Exception handling
         }
     }
 
@@ -68,22 +81,58 @@ public class Encoder {
         }
     }
 
-    private void signal(int duration, int frequency) {
+    //todo introduce variables for magic numbers
+
+    /*private void signal(int duration, int frequency, SourceDataLine dataLine) {
         SourceDataLine sourceDataLine;
-        //todo introduce variables for magic numbers
-        try {
-            sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
+
+        //try {
+            *//*sourceDataLine = AudioSystem.getSourceDataLine(new AudioFormat(8000F, 8, 1, true, false));
             sourceDataLine.open(sourceDataLine.getFormat());
-            sourceDataLine.start();
+            sourceDataLine.start();*//*
 
             for (int u = 0; u < (duration*8); u++) {
-                sourceDataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
+                dataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
             }   // TODO: signal quality? some times cracking in signal
-            sourceDataLine.drain();
+            dataLine.drain();
             wait(timeUnit);                         // 1TU pause after each signal
             //sourceDataLine.close();
-        } catch (LineUnavailableException e) {
+        *//*} catch (LineUnavailableException e) {
             e.printStackTrace(); //TODO Exception handling
+        }*//*
+    }*/
+
+    //see https://rosettacode.org/wiki/Sine_wave
+    private void signal2(int duration, int frequency, SourceDataLine dataLine) {
+
+        try {
+            int sampleRate = 44000;
+            byte[] buffer = sineWave(frequency, duration, sampleRate);
+            AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, true);
+            SourceDataLine line = AudioSystem.getSourceDataLine(format);
+
+            line.open(format);
+            line.start();
+            line.write(buffer, 0, buffer.length);
+            line.drain();
+            line.close();
+
+            wait(timeUnit);                         // 1TU pause after each signal
+        }catch(LineUnavailableException e){
+            e.printStackTrace(); //Todo change
         }
+    }
+
+    private byte[] sineWave(int frequency, int duration, int sampleRate){
+        // todo duration factor 10? short signal 1 sec instead of  1*100 ms
+        int samples = (duration * sampleRate) / 1000;
+        byte[] result = new byte[samples];
+        double interval = (double) sampleRate / frequency;
+
+        for(int i = 0; i < samples; i++){
+            double angle = 2.0 * Math.PI * i / interval;
+            result[i] = (byte)(Math.sin(angle) * 70); // todo volume
+        }
+        return result;
     }
 }
