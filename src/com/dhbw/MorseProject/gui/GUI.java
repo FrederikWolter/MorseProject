@@ -9,6 +9,9 @@ public class GUI {
     private JPanel toInfo;
     private javax.swing.JPanel mainpanel;
     private JTextField halloTestTextField;
+    private JTextArea textArea1;
+    private JTextArea textArea2;
+    private JButton startRecordingButton;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
