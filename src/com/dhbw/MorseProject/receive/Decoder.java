@@ -80,12 +80,16 @@ public class Decoder {
                 */
 
                 //TODO: analyze sample
-                int next = timeStamps.size()+1;
+                int next = timeStamps.size();
                 analyzeSamples(samples);
-                analyzeTimeStamps(next);
-                System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
-                //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
-                lastSignal.setLength(0); //Reset the StringBuilder
+                if(timeStamps.size()>1)
+                    analyzeTimeStamps(next);
+                if(lastSignal.length()>0){
+                    System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
+                    //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
+                    lastSignal.setLength(0); //Reset the StringBuilder
+                }
+
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -97,6 +101,10 @@ public class Decoder {
     private void analyzeTimeStamps(int next) {
         for(int i = next; i<timeStamps.size(); i++){
 
+
+            //TODO NOISE umbauen auf index berechnung, da der letzt wert im einfach zu lange zurück liegt und deshalb der nächte laute ton immer ein - ist.
+            //alternativ kann auch versucht werden, wenn die dafor leise waren, dass die einfach ignoriert werden. Jedoch dass das nicht immer so ist.
+
             long duration = timeStamps.get(i).getTimestamp().toEpochMilli()-timeStamps.get(i-1).getTimestamp().toEpochMilli();
 
             //TODO get timeunits from encoder
@@ -107,15 +115,15 @@ public class Decoder {
 
                 if(0 < duration && duration < 5 * timeUnit){ //Its a ' '
                     lastSignal.append(" ");
-                }else {                           //Its a '/'
-                    lastSignal.append(" / ");
+                } else if(0<duration) {                           //Its a '/'
+                    lastSignal.append("/");
                 }
             }else{
                 //1=>'.', 3=>'-'
 
                 if(0 < duration && duration < 3 * timeUnit){ //Its a '.'
                     lastSignal.append(".");
-                }else {                           //Its a '-'
+                }else if(0<duration) {                           //Its a '-'
                     lastSignal.append("-");
                 }
 
@@ -130,7 +138,6 @@ public class Decoder {
 
         for (int i = 0; i < samples.size(); i++) {
             //TODO Simplify (these objects are currently only for an overview)
-            System.out.println(samples.size());
 
             Noise start = samples.get(0);
 

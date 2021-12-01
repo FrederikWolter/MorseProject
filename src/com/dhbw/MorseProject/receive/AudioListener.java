@@ -25,7 +25,12 @@ public class AudioListener {
     /**
      * The size of the array in which the data line's input is read. When size is reached a new {@link Noise} Object is created. See {@link #analyzeNoise(byte[])}}
      */
-    private final int bufferSize = 200;
+    private final int bufferSize = 1000;
+
+
+    private final int windowSize = bufferSize/2;
+    private final int stepSize = windowSize/25;
+
 
     /**
      * The minimum amount of calculated rms values before the {@link Decoder} is notified.
@@ -57,7 +62,7 @@ public class AudioListener {
      */
     public boolean startListening(){
 
-        AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
+        AudioFormat format = new AudioFormat(22000f, 16, 1, true, true); //Default Line
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
         if(!AudioSystem.isLineSupported(info)){
@@ -112,27 +117,22 @@ public class AudioListener {
      * @see Runnable
      */
     private final Runnable listenerRunnable = () -> {
-        int i = 1;
         byte[] memoryBuffer = new byte[bufferSize];
         while(isListening){
             if(line.read(memoryBuffer, 0, memoryBuffer.length)>0){
 
-                //region TODO delete DEBUG if no longer necessary
-                System.out.println(i + " "+rmsValue(memoryBuffer));
-                i++;
-                //endregion
-
                 synchronized (synchronizedBuffer) {
-                    Noise noise = analyzeNoise(memoryBuffer);
-                    synchronizedBuffer.add(noise);
+                    List<Noise> test = analyzeNoise(memoryBuffer);
+                    synchronizedBuffer.addAll(test);
+                    //synchronizedBuffer.add(noise);
 
                     //TODO delete DEBUG if no longer necessary
-                    System.out.println(String.format("Added %s", noise.toString()));
+                    //System.out.println(String.format("Added %s", noise.toString()));
 
                     if(synchronizedBuffer.size()>=minNewSamples){
                         synchronizedBuffer.notify();
                         //TODO delete DEBUG if no longer necessary
-                        System.out.println("Try");
+                        //System.out.println("Try");
                     }
                 }
             }
@@ -164,12 +164,26 @@ public class AudioListener {
      * @param byteArray The last bytes recorded by the microphone in an array.
      * @return The {@link Noise} object
      */
-    private Noise analyzeNoise(byte[] byteArray){
+    private List<Noise> analyzeNoise(byte[] byteArray){
         Instant timestamp = Instant.now();
-        double rms = rmsValue(byteArray);
-        boolean quiet = rms < getNoiseThreshold();
+        List<Noise> noiseList = new ArrayList<>();
 
-        return new Noise(quiet, timestamp);
+        byte[] windowedBuffer = new byte[windowSize];
+
+        //List<Byte> list = IntStream.range(0, byteArray.length).mapToObj(i -> byteArray[i]).collect(Collectors.toList());
+
+        for(int i = 0; i <= bufferSize-windowSize; i+=stepSize){
+            for(int j = 0, s = 0; j < windowSize; j++, s++){
+                windowedBuffer[s] = byteArray[j+i];
+            }
+            double rms = rmsValue(windowedBuffer);
+            //System.out.println(rms);
+            boolean quiet = rms < getNoiseThreshold();
+            Noise noise = new Noise(quiet, timestamp);
+            noiseList.add(noise);
+        }
+
+        return noiseList;
     }
 
     /**
@@ -193,6 +207,6 @@ public class AudioListener {
      */
     private double getNoiseThreshold(){
         //TODO: get noise threshold from GUI
-        return 35.0;
+        return 50;
     }
 }
