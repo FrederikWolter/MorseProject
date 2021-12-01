@@ -14,11 +14,11 @@ public class GUI {
     private JTextArea receive_text_textArea;
     private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
-    private JTextField textfield_input;
-    private JButton button_send;
-    private JComboBox comboBox_melody;
     private JSlider receive_sensitivity_slider;
-    private JLabel label_melody;
+    private JComboBox comboBox_melody;
+    private JTextField textField_input;
+    private JButton button_send;
+    private JTextArea textArea_TEST;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");

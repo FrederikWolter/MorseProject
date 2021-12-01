@@ -16,147 +16,60 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="18c09" binding="toSend" layout-manager="CardLayout" hgap="0" vgap="0">
+          <grid id="18c09" binding="toSend" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <tabbedpane title="Senden"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="72d25" layout-manager="CardLayout" hgap="0" vgap="0">
-                <constraints>
-                  <card name="Card1"/>
-                </constraints>
+              <grid id="72d25" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="Center"/>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <splitpane id="2aaf2">
-                    <constraints>
-                      <card name="Card1"/>
-                    </constraints>
-                    <properties>
-                      <dividerSize value="0"/>
-                      <enabled value="false"/>
-                      <focusable value="true"/>
-                      <orientation value="0"/>
-                      <resizeWeight value="0.9"/>
-                    </properties>
+                  <grid id="752ac" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="South"/>
+                    <properties/>
                     <border type="none"/>
                     <children>
-                      <splitpane id="12418">
-                        <constraints>
-                          <splitpane position="right"/>
-                        </constraints>
+                      <component id="a5db2" class="javax.swing.JButton" binding="button_send">
+                        <constraints border-constraint="East"/>
                         <properties>
-                          <dividerSize value="0"/>
-                          <enabled value="false"/>
-                          <resizeWeight value="0.85"/>
+                          <text value="Senden"/>
                         </properties>
-                        <border type="none"/>
-                        <children>
-                          <component id="ec127" class="javax.swing.JTextField" binding="textfield_input">
-                            <constraints>
-                              <splitpane position="left"/>
-                            </constraints>
-                            <properties>
-                              <text value=""/>
-                              <toolTipText value="Geben Sie hier die zu versendende Nachricht ein"/>
-                            </properties>
-                          </component>
-                          <component id="17e4e" class="javax.swing.JButton" binding="button_send">
-                            <constraints>
-                              <splitpane position="right"/>
-                            </constraints>
-                            <properties>
-                              <text value="Senden"/>
-                              <toolTipText value="Hier drücken zum Abschicken der Nachricht"/>
-                            </properties>
-                          </component>
-                        </children>
-                      </splitpane>
-                      <splitpane id="12186">
-                        <constraints>
-                          <splitpane position="left"/>
-                        </constraints>
-                        <properties>
-                          <continuousLayout value="false"/>
-                          <dividerSize value="0"/>
-                          <enabled value="false"/>
-                          <resizeWeight value="0.85"/>
-                        </properties>
-                        <border type="none"/>
-                        <children>
-                          <splitpane id="21ab4">
-                            <constraints>
-                              <splitpane position="right"/>
-                            </constraints>
-                            <properties>
-                              <dividerSize value="0"/>
-                              <enabled value="false"/>
-                              <orientation value="0"/>
-                              <resizeWeight value="0.9"/>
-                            </properties>
-                            <border type="none"/>
-                            <children>
-                              <component id="3f2da" class="javax.swing.JComboBox" binding="comboBox_melody">
-                                <constraints>
-                                  <splitpane position="right"/>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <grid id="2f517" layout-manager="CardLayout" hgap="0" vgap="0">
-                                <constraints>
-                                  <splitpane position="left"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <splitpane id="9fac">
-                                    <constraints>
-                                      <card name="Card1"/>
-                                    </constraints>
-                                    <properties>
-                                      <dividerSize value="0"/>
-                                      <enabled value="false"/>
-                                      <orientation value="0"/>
-                                      <resizeWeight value="1.0"/>
-                                    </properties>
-                                    <border type="none"/>
-                                    <children>
-                                      <component id="f7214" class="javax.swing.JLabel" binding="label_melody">
-                                        <constraints>
-                                          <splitpane position="right"/>
-                                        </constraints>
-                                        <properties>
-                                          <text value="Melodie"/>
-                                        </properties>
-                                      </component>
-                                      <grid id="206dd" layout-manager="CardLayout" hgap="0" vgap="0">
-                                        <constraints>
-                                          <splitpane position="left"/>
-                                        </constraints>
-                                        <properties/>
-                                        <border type="none"/>
-                                        <children/>
-                                      </grid>
-                                    </children>
-                                  </splitpane>
-                                </children>
-                              </grid>
-                            </children>
-                          </splitpane>
-                          <grid id="279c5" layout-manager="CardLayout" hgap="0" vgap="0">
-                            <constraints>
-                              <splitpane position="left"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children/>
-                          </grid>
-                        </children>
-                      </splitpane>
+                      </component>
+                      <component id="a8e37" class="javax.swing.JTextField" binding="textField_input">
+                        <constraints border-constraint="Center"/>
+                        <properties/>
+                      </component>
                     </children>
-                  </splitpane>
+                  </grid>
+                  <grid id="18e6e" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="East"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="c157d" class="javax.swing.JComboBox" binding="comboBox_melody">
+                        <constraints border-constraint="South"/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                  <scrollpane id="a04fd">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="2032c" class="javax.swing.JTextArea" binding="textArea_TEST">
+                        <constraints/>
+                        <properties>
+                          <lineWrap value="true"/>
+                          <wrapStyleWord value="true"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
                 </children>
               </grid>
             </children>
