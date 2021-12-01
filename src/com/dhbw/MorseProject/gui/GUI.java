@@ -9,11 +9,13 @@ public class GUI {
     private JPanel toInfo;
     private javax.swing.JPanel mainpanel;
     private JTextField halloTestTextField;
-    private JTextArea textArea1;
-    private JTextArea textArea2;
+    private JTextArea receive_text_textArea;
+    private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
     private JTextField textfield_input;
     private JButton button_send;
+    private JSlider receive_sensitivity_slider;
+    private JTextArea infoText;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
