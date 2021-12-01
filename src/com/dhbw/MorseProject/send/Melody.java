@@ -2,15 +2,17 @@ package com.dhbw.MorseProject.send;
 
 import java.util.ArrayList;
 
+// todo comments; author; javadoc
+
 public class Melody {
 
     private static ArrayList<Melody> melodyList;
 
     private String name;
-    private ArrayList<Integer> freqList;
+    private int[] freqList;
 
 
-    public Melody(String name, ArrayList<Integer> freqList) {
+    public Melody(String name, int[] freqList) {
         this.name = name;
         this.freqList = freqList;
 
@@ -29,16 +31,15 @@ public class Melody {
         this.name = name;
     }
 
-    public ArrayList<Integer> getFreqList() {
+    public int[] getFreqList() {
         return freqList;
     }
 
-    public void setFreqList(ArrayList<Integer> freqList) {
+    public void setFreqList(int[] freqList) {
         this.freqList = freqList;
     }
 
     public static ArrayList<Melody> getMelodyList() {
         return melodyList;
     }
-
 }
