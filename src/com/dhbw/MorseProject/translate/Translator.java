@@ -8,10 +8,10 @@ import java.util.HashMap;
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
  */
 public class Translator {
-    static String L = "-"; // Long Morse Signal
-    static String S = "."; // Short Morse Signal
-    static String W = "/"; // Word end
-    static String C = " "; // Char end
+    public static String L = "-"; // Long Morse Signal
+    public static String S = "."; // Short Morse Signal
+    public static String W = "/"; // Word end
+    public static String C = " "; // Char end
 
     private static final HashMap<Character, String> CharToMorse = new HashMap<>();
     private static final HashMap<String, Character> MorseToChar = new HashMap<>();
@@ -64,7 +64,7 @@ public class Translator {
     /**
      *This Method reverts the CharToMorse Hashmap
      */
-    public static void reverse(){
+    private static void reverse(){
         for(HashMap.Entry<Character, String> entry : CharToMorse.entrySet()){
             MorseToChar.put(entry.getValue(), entry.getKey());
         }
