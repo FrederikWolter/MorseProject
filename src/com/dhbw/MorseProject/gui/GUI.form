@@ -136,6 +136,8 @@
                                     <constraints/>
                                     <properties>
                                       <editable value="false"/>
+                                      <lineWrap value="true"/>
+                                      <wrapStyleWord value="true"/>
                                     </properties>
                                   </component>
                                 </children>
@@ -169,8 +171,9 @@
                                     <constraints/>
                                     <properties>
                                       <editable value="false"/>
+                                      <lineWrap value="true"/>
                                       <toolTipText value=""/>
-                                      <wrapStyleWord value="false"/>
+                                      <wrapStyleWord value="true"/>
                                     </properties>
                                   </component>
                                 </children>
