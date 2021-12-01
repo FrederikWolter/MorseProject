@@ -3,9 +3,10 @@ package com.dhbw.MorseProject.receive;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * @author Mark Mühlenberg, mininaml changes by Daniel Czeschner
+ */
 public class Noise {
-
-
 
     private boolean quiet;
     private Instant timestamp;
@@ -40,4 +41,8 @@ public class Noise {
         this.timestamp = timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "Quiet: "+ this.isQuiet() + " | time:" + this.getTimestamp().toString();
+    }
 }
