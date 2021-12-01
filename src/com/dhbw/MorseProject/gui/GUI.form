@@ -28,14 +28,46 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a0d38" class="javax.swing.JTextField" binding="halloTestTextField" default-binding="true">
+                  <splitpane id="2aaf2">
                     <constraints>
                       <card name="Card1"/>
                     </constraints>
                     <properties>
-                      <text value="Hallo Test"/>
+                      <enabled value="false"/>
+                      <orientation value="0"/>
                     </properties>
-                  </component>
+                    <border type="none"/>
+                    <children>
+                      <splitpane id="12418">
+                        <constraints>
+                          <splitpane position="right"/>
+                        </constraints>
+                        <properties>
+                          <enabled value="false"/>
+                          <resizeWeight value="0.9"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="ec127" class="javax.swing.JTextField" binding="textfield_input">
+                            <constraints>
+                              <splitpane position="left"/>
+                            </constraints>
+                            <properties>
+                              <text value=""/>
+                            </properties>
+                          </component>
+                          <component id="17e4e" class="javax.swing.JButton" binding="button_send">
+                            <constraints>
+                              <splitpane position="right"/>
+                            </constraints>
+                            <properties>
+                              <text value="Senden"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </splitpane>
+                    </children>
+                  </splitpane>
                 </children>
               </grid>
             </children>

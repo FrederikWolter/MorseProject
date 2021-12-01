@@ -8,7 +8,8 @@ public class GUI {
     private JPanel toReceive;
     private JPanel toInfo;
     private javax.swing.JPanel mainpanel;
-    private JTextField halloTestTextField;
+    private JTextField textfield_input;
+    private JButton button_send;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
