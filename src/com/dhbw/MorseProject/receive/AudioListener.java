@@ -189,4 +189,10 @@ public class AudioListener {
             return test;
         }
     }
+
+
+    private double getNoiseThreshold(){
+        //TODO: get noise threshold from GUI
+        return 35.0;
+    }
 }
