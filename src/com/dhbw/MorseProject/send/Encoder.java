@@ -6,7 +6,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 public class Encoder {
-// todo implement threads
+    // todo implement threads
     public static final int timeUnit = 100;
 
     private Thread encoderThread;
@@ -18,8 +18,8 @@ public class Encoder {
     }
 
     public static Encoder getInstance() {
-        if (instance==null) {
-            instance  = new Encoder();
+        if (instance == null) {
+            instance = new Encoder();
         }
         return instance;
     }
@@ -41,16 +41,15 @@ public class Encoder {
                 case '.' -> signal(1 * timeUnit, frequency);
                 case '-' -> signal(3 * timeUnit, frequency);
                 default -> { } //TODO Throw Exception
-
             }
             if(!isPlaying)
                 break;
         }
     }
 
-    public boolean stopPlaying() {
-        isPlaying=false;
-        try {
+    public synchronized boolean stopPlaying() {
+        isPlaying = false;
+        try {       // todo nesessary?
             encoderThread.join();
             return true;
         } catch (Exception e) {
@@ -59,6 +58,7 @@ public class Encoder {
             return false;
         }
     }
+
 
     private void wait(int duration) {
         try {
@@ -80,10 +80,10 @@ public class Encoder {
                 sourceDataLine.write(new byte[]{(byte) (Math.sin(u / (8000F / frequency) * 2.0 * Math.PI) * 127.0)}, 0, 1);
             }   // TODO: signal quality? some times cracking in signal
             sourceDataLine.drain();
-            wait(timeUnit);
+            wait(timeUnit);                         // 1TU pause after each signal
+            //sourceDataLine.close();
         } catch (LineUnavailableException e) {
             e.printStackTrace(); //TODO Exception handling
         }
-
     }
 }
