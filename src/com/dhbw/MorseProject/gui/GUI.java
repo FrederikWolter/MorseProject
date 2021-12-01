@@ -1,9 +1,6 @@
 package com.dhbw.MorseProject.gui;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 
 public class GUI {
     private JTabbedPane tabbedPane1;
@@ -17,8 +14,9 @@ public class GUI {
     private JButton startRecordingButton;
     private JTextField textfield_input;
     private JButton button_send;
+    private JComboBox comboBox_melody;
     private JSlider receive_sensitivity_slider;
-    private JTextArea infoText;
+    private JLabel label_melody;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
