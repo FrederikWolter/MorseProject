@@ -41,6 +41,7 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
@@ -76,9 +77,6 @@ public class GUI {
         for (int i = 0; i < data.length; i++) {
             tableModel.addRow(new Object[]{data[i][0], data[i][1]});
         }
-
-        //table_alphabet.ad
-        //table_alphabet = new JTable(data, columnNames);
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
@@ -129,7 +127,7 @@ public class GUI {
             counter++;
         }
         for (int i = 48; i<= 57; i++){
-            data[counter][0] = ""+i;
+            data[counter][0] = ""+(char)i;
             data[counter][1] = Translator.toMorse((char)i);
             counter++;
         }
