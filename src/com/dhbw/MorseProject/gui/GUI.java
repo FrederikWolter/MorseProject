@@ -47,6 +47,7 @@ public class GUI {
 
         try {
             frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
+            // Quelle: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
         } catch (IOException e) {
             e.printStackTrace();
         }
