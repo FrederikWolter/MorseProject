@@ -430,16 +430,23 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="68dfe" class="javax.swing.JTable" binding="table_alphabet">
-                        <constraints border-constraint="Center"/>
-                        <properties/>
-                      </component>
                       <component id="c74c4" class="javax.swing.JLabel">
                         <constraints border-constraint="North"/>
                         <properties>
                           <text value="Alphabet"/>
                         </properties>
                       </component>
+                      <scrollpane id="d86bf">
+                        <constraints border-constraint="Center"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="68dfe" class="javax.swing.JTable" binding="table_alphabet">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                   <grid id="1fcc0" layout-manager="CardLayout" hgap="0" vgap="0">
