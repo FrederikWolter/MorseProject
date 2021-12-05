@@ -40,8 +40,8 @@ public class GUI {
         int effectiveMaxHeight = (screenSize.height-taskBarSize);
 
         double scale = 0.5;
-        int modifier = (int) (1.0/scale);
-        Dimension windowSize = new Dimension(screenSize.width/modifier, effectiveMaxHeight/modifier);
+        double modifier = (int) (1.0/scale);
+        Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double)effectiveMaxHeight)/modifier));
         frame.setMinimumSize(windowSize);
 
         double multiplier = 1 + 1.0/modifier;
