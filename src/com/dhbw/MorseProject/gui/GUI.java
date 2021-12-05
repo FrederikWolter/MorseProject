@@ -2,12 +2,14 @@ package com.dhbw.MorseProject.gui;
 
 import com.dhbw.MorseProject.translate.Translator;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class GUI {
     private final Translator translator = new Translator();
@@ -36,12 +38,18 @@ public class GUI {
     private boolean showingBeginSend = true;
 
     public GUI(){
-        JFrame frame = new JFrame("Morse-Kommunikation - Technikmuseum Kommunikatioinstechnik München");
+        JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+
+        try {
+            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
