@@ -418,28 +418,45 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="53823" layout-manager="CardLayout" hgap="0" vgap="0">
+              <grid id="53823" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints>
                   <card name="Card1"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <scrollpane id="3c860">
-                    <constraints>
-                      <card name="Card1"/>
-                    </constraints>
+                  <grid id="eef19" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="East"/>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <grid id="3d69e" layout-manager="CardLayout" hgap="0" vgap="0">
-                        <constraints/>
+                      <component id="68dfe" class="javax.swing.JTable" binding="table_alphabet">
+                        <constraints border-constraint="Center"/>
                         <properties/>
-                        <border type="none"/>
-                        <children/>
-                      </grid>
+                      </component>
+                      <component id="c74c4" class="javax.swing.JLabel">
+                        <constraints border-constraint="North"/>
+                        <properties>
+                          <text value="Alphabet"/>
+                        </properties>
+                      </component>
                     </children>
-                  </scrollpane>
+                  </grid>
+                  <grid id="1fcc0" layout-manager="CardLayout" hgap="0" vgap="0">
+                    <constraints border-constraint="Center"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="8ebc2" class="javax.swing.JLabel">
+                        <constraints>
+                          <card name="Card1"/>
+                        </constraints>
+                        <properties>
+                          <text value="Generelles"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
                 </children>
               </grid>
             </children>

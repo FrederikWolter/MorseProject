@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI {
-    private Translator translator = new Translator();
+    private final Translator translator = new Translator();
     private JTabbedPane tabbedPane1;
     private JPanel toSend;
     private JPanel toReceive;
@@ -29,6 +29,7 @@ public class GUI {
     private JButton receive_clear_button;
     private JSplitPane receiveSplitPane;
     private JSplitPane sendSplitPane;
+    private JTable table_alphabet;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
 
@@ -65,6 +66,8 @@ public class GUI {
         sendSplitPane.setDividerLocation(sendSplitPane.getWidth()/2);
 
         String[][] data = fillTable();
+        String[] columnNames = {"Schriftzeichen", "Morse-Code"};
+
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
@@ -107,10 +110,35 @@ public class GUI {
 
     public String[][] fillTable(){
         String[][] data = new String[42][2];
-        for (int i = 65; i <= 90; i++){
-            String[i][1] = (char)i;
-            String[i][2] = translator.toMorse((char)i);
-        }
-    }
+        int counter = 0;
 
+        for (int i = 65; i <= 90; i++){
+            data[counter][0] = ""+(char)i;
+            data[counter][1] = Translator.toMorse((char)i);
+            counter++;
+        }
+        for (int i = 48; i<= 57; i++){
+            data[counter][0] = ""+i;
+            data[counter][1] = Translator.toMorse((char)i);
+            counter++;
+        }
+        data[counter][0] = ".";
+        data[counter][1] = Translator.toMorse('.');
+        counter++;
+        data[counter][0] = ",";
+        data[counter][1] = Translator.toMorse(',');
+        counter++;
+        data[counter][0] = "'";
+        data[counter][1] = Translator.toMorse('\'');
+        counter++;
+        data[counter][0] = ":";
+        data[counter][1] = Translator.toMorse(':');
+        counter++;
+        data[counter][0] = "-";
+        data[counter][1] = Translator.toMorse('-');
+        counter++;
+        data[counter][0] = " ";
+        data[counter][1] = Translator.toMorse(' ');
+        return data;
+    }
 }
