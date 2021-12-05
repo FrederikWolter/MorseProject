@@ -3,6 +3,8 @@ package com.dhbw.MorseProject.gui;
 import com.dhbw.MorseProject.translate.Translator;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,6 +69,14 @@ public class GUI {
 
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
+
+        DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
+        tableModel.addColumn(columnNames[0]);
+        tableModel.addColumn(columnNames[1]);
+        for (int i = 0; i < data.length; i++) {
+            tableModel.addRow(new Object[]{data[i][0], data[i][1]});
+        }
+
         //table_alphabet.ad
         //table_alphabet = new JTable(data, columnNames);
 
