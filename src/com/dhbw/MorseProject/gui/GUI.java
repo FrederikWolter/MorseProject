@@ -26,6 +26,8 @@ public class GUI {
     private JButton receive_clear_button;
     private JSplitPane receiveSplitPane;
     private JSplitPane sendSplitPane;
+    private boolean showStartRecording = true;
+    private boolean showBeginSend = true;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
@@ -62,7 +64,15 @@ public class GUI {
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 //TODO link receive module
+
+                if (showStartRecording){
+                    startRecordingButton.setText("Start Recording");
+                } else{
+                    startRecordingButton.setText("Stop Recording");
+                }
+                showStartRecording = !showStartRecording;
             }
         });
     }
