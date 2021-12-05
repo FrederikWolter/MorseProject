@@ -2,12 +2,14 @@ package com.dhbw.MorseProject.gui;
 
 import com.dhbw.MorseProject.translate.Translator;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class GUI {
     private final Translator translator = new Translator();
@@ -42,6 +44,15 @@ public class GUI {
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+
+        try {
+            Image icon = Toolkit.getDefaultToolkit().getImage(new File("").getAbsolutePath()+"/src/com.dhbw.MorseProject/gui/Morse_Symbolbild.png");
+
+            System.out.println(new File("/src/com.dhbw.MorseProject/gui/Morse_Symbolbild.png").getAbsolutePath());
+            frame.setIconImage(icon);
+        } catch (Exception e){
+
+        }
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
