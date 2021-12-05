@@ -44,11 +44,20 @@ public class GUI {
         Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double)effectiveMaxHeight)/modifier));
         frame.setMinimumSize(windowSize);
 
+
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
 
-        receiveSplitPane.setDividerLocation(frame.getWidth()/2);
-        sendSplitPane.setDividerLocation(frame.getWidth()/2);
+        Dimension send_text_textArea_preferredDimension = new Dimension(sendSplitPane.getWidth()/2 ,send_text_textArea.getPreferredSize().height);
+        send_text_textArea.setPreferredSize(send_text_textArea_preferredDimension);
+        send_text_textArea.setMinimumSize(send_text_textArea_preferredDimension);
+
+        Dimension recieve_text_textArea_preferredDimension = new Dimension(receiveSplitPane.getWidth()/2 ,receive_text_textArea.getPreferredSize().height);
+        receive_text_textArea.setPreferredSize(recieve_text_textArea_preferredDimension);
+        receive_text_textArea.setMinimumSize(recieve_text_textArea_preferredDimension);
+
+        receiveSplitPane.setDividerLocation(receiveSplitPane.getWidth()/2);
+        sendSplitPane.setDividerLocation(sendSplitPane.getWidth()/2);
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
