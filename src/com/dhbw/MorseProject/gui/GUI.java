@@ -67,7 +67,8 @@ public class GUI {
 
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
-
+        //table_alphabet.ad
+        //table_alphabet = new JTable(data, columnNames);
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
