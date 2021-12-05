@@ -24,6 +24,8 @@ public class GUI {
     private JButton send_translate_button;
     private JButton send_clear_button;
     private JButton receive_clear_button;
+    private JSplitPane receiveSplitPane;
+    private JSplitPane sendSplitPane;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
@@ -37,10 +39,16 @@ public class GUI {
         int taskBarSize = scnMax.bottom;
         int effectiveMaxHeight = (screenSize.height-taskBarSize);
 
-        Dimension windowSize = new Dimension(screenSize.width/2, effectiveMaxHeight/2);
+        double scale = 0.5;
+        int modifier = (int) (1.0/scale);
+        Dimension windowSize = new Dimension(screenSize.width/modifier, effectiveMaxHeight/modifier);
         frame.setMinimumSize(windowSize);
 
-        frame.setLocation(screenSize.width - (int) (frame.getWidth()*1.5), effectiveMaxHeight - (int) (frame.getHeight()*1.5) );
+        double multiplier = 1 + 1.0/modifier;
+        frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
+
+        receiveSplitPane.setDividerLocation(frame.getWidth()/2);
+        sendSplitPane.setDividerLocation(frame.getWidth()/2);
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override

@@ -65,7 +65,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <splitpane id="80738">
+                      <splitpane id="80738" binding="sendSplitPane">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="200" height="200"/>
@@ -263,14 +263,14 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <splitpane id="d7f7c">
+                      <splitpane id="d7f7c" binding="receiveSplitPane">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="200" height="200"/>
                           </grid>
                         </constraints>
                         <properties>
-                          <dividerLocation value="-1"/>
+                          <dividerLocation value="200"/>
                           <enabled value="false"/>
                           <resizeWeight value="0.5"/>
                         </properties>
