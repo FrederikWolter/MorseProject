@@ -1,6 +1,7 @@
 package com.dhbw.MorseProject.gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,6 +31,16 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
+        int taskBarSize = scnMax.bottom;
+        int effectiveMaxHeight = (screenSize.height-taskBarSize);
+
+        Dimension windowSize = new Dimension(screenSize.width/2, effectiveMaxHeight/2);
+        frame.setMinimumSize(windowSize);
+
+        frame.setLocation(screenSize.width - (int) (frame.getWidth()*1.5), effectiveMaxHeight - (int) (frame.getHeight()*1.5) );
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
