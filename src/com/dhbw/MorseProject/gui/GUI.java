@@ -1,11 +1,14 @@
 package com.dhbw.MorseProject.gui;
 
+import com.dhbw.MorseProject.translate.Translator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUI {
+    private Translator translator = new Translator();
     private JTabbedPane tabbedPane1;
     private JPanel toSend;
     private JPanel toReceive;
@@ -61,6 +64,8 @@ public class GUI {
         receiveSplitPane.setDividerLocation(receiveSplitPane.getWidth()/2);
         sendSplitPane.setDividerLocation(sendSplitPane.getWidth()/2);
 
+        String[][] data = fillTable();
+
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,5 +91,12 @@ public class GUI {
         });
     }
 
+    public String[][] fillTable(){
+        String[][] data = new String[42][2];
+        for (int i = 65; i <= 90; i++){
+            String[i][1] = (char)i;
+            String[i][2] = translator.toMorse((char)i);
+        }
+    }
 
 }
