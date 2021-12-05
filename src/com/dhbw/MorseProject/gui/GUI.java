@@ -36,7 +36,7 @@ public class GUI {
     private boolean showingBeginSend = true;
 
     public GUI(){
-        JFrame frame = new JFrame("GUI-Test");
+        JFrame frame = new JFrame("Morse-Kommunikation - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
