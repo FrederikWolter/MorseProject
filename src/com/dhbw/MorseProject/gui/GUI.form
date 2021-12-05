@@ -14,7 +14,7 @@
       <title-color color="-4473925"/>
     </border>
     <children>
-      <tabbedpane id="8c7ec">
+      <tabbedpane id="8c7ec" binding="tabbedPane1">
         <constraints border-constraint="Center"/>
         <properties>
           <alignmentX value="0.5"/>
@@ -38,7 +38,7 @@
           <title-color color="-16777216"/>
         </border>
         <children>
-          <grid id="18c09" binding="toSend" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="18c09" binding="toSend" layout-manager="CardLayout" hgap="0" vgap="0">
             <constraints>
               <tabbedpane title="Senden"/>
             </constraints>
@@ -50,61 +50,193 @@
             </properties>
             <border type="none"/>
             <children>
-              <grid id="72d25" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="Center"/>
+              <grid id="bd16d" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <card name="Card1"/>
+                </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="752ac" layout-manager="BorderLayout" hgap="0" vgap="0">
-                    <constraints border-constraint="South"/>
+                  <grid id="b7f91" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <card name="Card1"/>
+                    </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="a5db2" class="javax.swing.JButton" binding="button_send">
-                        <constraints border-constraint="East"/>
+                      <splitpane id="80738">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <preferred-size width="200" height="200"/>
+                          </grid>
+                        </constraints>
                         <properties>
-                          <text value="Senden"/>
+                          <dividerLocation value="200"/>
+                          <enabled value="false"/>
+                          <resizeWeight value="0.5"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <grid id="ba808" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <splitpane position="left"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="815ea" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="TEXT"/>
+                                </properties>
+                              </component>
+                              <scrollpane id="b4a7e">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="b0d46" class="javax.swing.JTextArea" binding="send_text_textArea">
+                                    <constraints/>
+                                    <properties>
+                                      <editable value="false"/>
+                                      <lineWrap value="true"/>
+                                      <wrapStyleWord value="true"/>
+                                    </properties>
+                                  </component>
+                                </children>
+                              </scrollpane>
+                            </children>
+                          </grid>
+                          <grid id="4f838" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <splitpane position="right"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="b17e3" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="MORSE"/>
+                                </properties>
+                              </component>
+                              <scrollpane id="457a7">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="fc093" class="javax.swing.JTextArea" binding="send_morse_textArea">
+                                    <constraints/>
+                                    <properties>
+                                      <editable value="false"/>
+                                      <lineWrap value="true"/>
+                                      <toolTipText value=""/>
+                                      <wrapStyleWord value="true"/>
+                                    </properties>
+                                  </component>
+                                </children>
+                              </scrollpane>
+                            </children>
+                          </grid>
+                        </children>
+                      </splitpane>
+                      <component id="879e7" class="javax.swing.JButton" binding="beginSendingButton">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Senden beginnen"/>
                         </properties>
                       </component>
-                      <component id="a8e37" class="javax.swing.JTextField" binding="textField_input">
-                        <constraints border-constraint="Center"/>
+                      <grid id="d6d12" layout-manager="GridLayoutManager" row-count="1" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
                         <properties/>
-                      </component>
+                        <border type="none"/>
+                        <children>
+                          <component id="6f80d" class="javax.swing.JSlider" binding="frequenz_slider">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <minorTickSpacing value="5"/>
+                              <paintLabels value="true"/>
+                              <paintTicks value="true"/>
+                              <value value="35"/>
+                            </properties>
+                          </component>
+                          <component id="244d5" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Frequenz"/>
+                            </properties>
+                          </component>
+                          <component id="ddcdf" class="javax.swing.JToolBar$Separator">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="4c73f" class="javax.swing.JLabel">
+                            <constraints>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Melodien"/>
+                            </properties>
+                          </component>
+                          <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                            <constraints>
+                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="d955" class="javax.swing.JToolBar$Separator">
+                            <constraints>
+                              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="ec804" class="javax.swing.JButton" binding="send_translate_button">
+                            <constraints>
+                              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Übersetzen"/>
+                            </properties>
+                          </component>
+                          <component id="788f0" class="javax.swing.JButton" binding="send_clear_button">
+                            <constraints>
+                              <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Text zurücksetzen"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                      <vspacer id="34660">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </vspacer>
                     </children>
                   </grid>
-                  <grid id="18e6e" layout-manager="BorderLayout" hgap="0" vgap="0">
-                    <constraints border-constraint="East"/>
-                    <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="c157d" class="javax.swing.JComboBox" binding="comboBox_melody">
-                        <constraints border-constraint="South"/>
-                        <properties/>
-                      </component>
-                    </children>
-                  </grid>
-                  <scrollpane id="a04fd">
-                    <constraints border-constraint="Center"/>
-                    <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="2032c" class="javax.swing.JTextArea" binding="textArea_TEST">
-                        <constraints/>
-                        <properties>
-                          <caretColor color="-16777216"/>
-                          <disabledTextColor color="-1"/>
-                          <doubleBuffered value="false"/>
-                          <enabled value="true"/>
-                          <lineWrap value="true"/>
-                          <maximumSize width="5" height="5"/>
-                          <minimumSize width="50" height="17"/>
-                          <opaque value="false"/>
-                          <text value=""/>
-                          <wrapStyleWord value="true"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </scrollpane>
                 </children>
               </grid>
             </children>
@@ -225,7 +357,7 @@
                           <text value="Start Recording"/>
                         </properties>
                       </component>
-                      <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -250,6 +382,20 @@
                             </constraints>
                             <properties>
                               <text value="Mikrofon-Empfindlichkeit"/>
+                            </properties>
+                          </component>
+                          <component id="2038f" class="javax.swing.JToolBar$Separator">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                          </component>
+                          <component id="316a4" class="javax.swing.JButton" binding="receive_clear_button">
+                            <constraints>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Text zurückertzen"/>
                             </properties>
                           </component>
                         </children>

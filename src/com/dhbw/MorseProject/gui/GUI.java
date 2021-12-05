@@ -15,10 +15,14 @@ public class GUI {
     private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
     private JSlider receive_sensitivity_slider;
-    private JComboBox comboBox_melody;
-    private JTextField textField_input;
-    private JButton button_send;
-    private JTextArea textArea_TEST;
+    private JButton beginSendingButton;
+    private JTextArea send_text_textArea;
+    private JTextArea send_morse_textArea;
+    private JSlider frequenz_slider;
+    private JComboBox comboBox1;
+    private JButton send_translate_button;
+    private JButton send_clear_button;
+    private JButton receive_clear_button;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
@@ -43,5 +47,6 @@ public class GUI {
             }
         });
     }
+
 
 }
