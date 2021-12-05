@@ -29,8 +29,8 @@ public class GUI {
     private JButton receive_clear_button;
     private JSplitPane receiveSplitPane;
     private JSplitPane sendSplitPane;
-    private boolean showStartRecording = true;
-    private boolean showBeginSend = true;
+    private boolean showingStartRecording = true;
+    private boolean showingBeginSend = true;
 
     public GUI(){
         JFrame frame = new JFrame("GUI-Test");
@@ -72,12 +72,26 @@ public class GUI {
 
                 //TODO link receive module
 
-                if (showStartRecording){
+                if (!showingStartRecording){
                     startRecordingButton.setText("Start Recording");
                 } else{
                     startRecordingButton.setText("Stop Recording");
                 }
-                showStartRecording = !showStartRecording;
+                showingStartRecording = !showingStartRecording;
+            }
+        });
+
+        beginSendingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO link receive module
+
+                if (!showingBeginSend){
+                    beginSendingButton.setText("Senden beginnen");
+                } else{
+                    beginSendingButton.setText("Senden beenden");
+                }
+                showingBeginSend = !showingBeginSend;
             }
         });
     }
