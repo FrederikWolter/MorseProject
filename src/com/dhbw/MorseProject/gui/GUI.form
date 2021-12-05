@@ -447,7 +447,9 @@
                         <children>
                           <component id="68dfe" class="javax.swing.JTable" binding="table_alphabet">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <enabled value="false"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
