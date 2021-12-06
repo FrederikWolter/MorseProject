@@ -7,34 +7,67 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-// todo comments; author; javadoc
+// todo comments
 
+/***
+ * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal.
+ * @author Lucas Schaffer & Frederik Wolter
+ */
 public class Encoder {
-
+    // region public static final
+    /***
+     * Global time unit in ms used by all morse-code timing related code
+     */
     public static final int timeUnit = 100;
+    /***
+     * Defined sampleRate used to generate the signal in samples/s
+     */
     public static final int sampleRate = 44000;
+    /***
+     * Volume between 0 and 127 in which signal is played
+     */
     public static final byte volume = 70;
+    // endregion
 
-    private static Encoder instance;
+    /***
+     * Singleton for the MAIN-thread version of {@link Encoder}
+     */
+    private static Encoder INSTANCE;
 
+    /***
+     * Thread used for actual timing relevant sending work.
+     */
     private Thread encoderThread;
+    /***
+     * Variable accessed by sending-thread and main-thread (volatile) signaling if the next tone should be played.
+     * Could be used to stop playback through stopPlaying.
+     */
     private volatile boolean isPlaying;
 
-
+    // empty constructor hence the main-thread variant of Encoder does nothing
     private Encoder() { }
 
+    /***
+     * Implementation of singleton to access the existing object or create one.
+     * @return only instance of {@link Encoder} in main-thread mode.
+     */
     public static Encoder getInstance() {
-        if (instance == null) {
-            instance = new Encoder();
+        if (INSTANCE == null) {
+            INSTANCE = new Encoder();
         }
-        return instance;
+        return INSTANCE;
     }
 
+    /***
+     *  main send method used to send morse-signal with a defined melody.
+     * @param morse to be sent.
+     * @param melody in which to send.
+     */
     public void send(String morse, Melody melody) {
-        stopPlaying();
+        stopPlaying();                                              // prevent encoder from playing multiple signals at once
         isPlaying = true;
-        encoderThread = new Thread(() -> sending(morse, melody));
-        encoderThread.start();
+        encoderThread = new Thread(() -> sending(morse, melody));   // create a new sending thread executing the sending method
+        encoderThread.start();                                      // start created thread
     }
 
     private void sending(String morse, Melody melody) {
@@ -49,13 +82,17 @@ public class Encoder {
                 case Translator.W -> wait(6 * timeUnit);
                 case Translator.S -> signal2(1 * timeUnit, freqList[(freq_index++) % freq_length]);
                 case Translator.L -> signal2(3 * timeUnit, freqList[(freq_index++) % freq_length]);
-                default -> { } //TODO Throw Exception
+                default -> {
+                } //TODO Throw Exception
             }
-            if (!isPlaying)
+            if (!isPlaying)     // stop playing next tone if isPlaying is false
                 break;
         }
     }
 
+    /***
+     * public method to stop playing the current morse-signal.
+     */
     public synchronized void stopPlaying() {
         isPlaying = false;
         try {       // todo nesessary?
@@ -66,12 +103,16 @@ public class Encoder {
         }
     }
 
-
+    /***
+     * Helper method for waiting a defined duration on the sending thread.
+     * Used to implement silence between tones.
+     * @param duration to wait in ms
+     */
     private void wait(int duration) {
         try {
             Thread.sleep(duration);
         } catch (InterruptedException e) {
-            e.printStackTrace();//TODO Exception handling
+            e.printStackTrace();    //TODO Exception handling
         }
     }
 
