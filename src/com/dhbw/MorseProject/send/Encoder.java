@@ -26,7 +26,8 @@ public class Encoder {
     /***
      * Volume between 0 and 127 in which signal is played
      */
-    public static final byte volume = 70;
+    public static final byte volume = 60;
+    public static final double DAMP_FACTOR = 0.95;
     // endregion
 
     /***
@@ -138,7 +139,7 @@ public class Encoder {
 
     //todo introduce variables for magic numbers
     private byte[] sineWave(int frequency, int duration) {
-        int samples = (duration * sampleRate) / 1000;
+        int samples = (duration * sampleRate) / 1000;               // convert samples/s to samples/(duration in ms)
         byte[] result = new byte[samples];
         double interval = (double) sampleRate / frequency;
 
@@ -148,4 +149,17 @@ public class Encoder {
         }
         return result;
     }
+
+    /*private byte[] fadeOutSineWave(byte[] buffer){
+        int len = buffer.length;
+
+        for (int i = 0; i < (int) (len * (1 - DAMP_FACTOR)); i++) {
+            buffer[i] = (byte) (buffer[i] * Math.exp((i - (len * (1-DAMP_FACTOR))) * 1/(len * (1 - DAMP_FACTOR) / 3)));
+        }
+
+        for (int i = (int) (len * DAMP_FACTOR); i < len; i++) {
+            buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1/(len * (1 - DAMP_FACTOR) / 4)));
+        }
+        return buffer;
+    }*/
 }

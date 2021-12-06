@@ -5,6 +5,8 @@ import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
 // todo comments
+// todo comment ids from Pflichtenheft ;) where these are implemented
+// todo setup jar export
 
 /***
  * Main entry point to application - providing the main method.
@@ -26,7 +28,7 @@ public class MorseProject {
         System.out.println(Translator.textToMorse("abcd"));
 
         int[] freq2 = {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523};
-        Melody melody2 = new Melody("Test", freq2);
+        Melody melody2 = new Melody("Test", freq);
         e.send("....--....- ....- ....--....-", melody2);
 
 
