@@ -8,9 +8,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+// todo comments
+
+/***
+ * Main entry point to application - providing the main method.
+ * @author Frederik Wolter
+ */
 public class MorseProject {
 
     public static void main(String[] args) {
+        //todo initialize central data here: e.g. melodies
+
+        // todo remove test code
         Encoder e = Encoder.getInstance();
 
 
@@ -20,9 +29,9 @@ public class MorseProject {
         e.send(Translator.textToMorse("abcd"), melody);
         System.out.println(Translator.textToMorse("abcd"));
 
-        //int[] freq2 = {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523};
-        //Melody melody2 = new Melody("Test", freq2);
-        //e.send("....--....- ....- ....--....-", melody2);
+        int[] freq2 = {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523};
+        Melody melody2 = new Melody("Test", freq2);
+        e.send("....--....- ....- ....--....-", melody2);
 
 
         /*e.send(".", new Melody("test", new int[1]));
