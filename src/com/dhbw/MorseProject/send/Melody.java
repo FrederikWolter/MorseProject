@@ -26,7 +26,7 @@ public class Melody {
         this.name = name;
         this.freqList = freqList;
 
-        if (melodyList == null){        // part of singleton implementation
+        if (melodyList == null) {        // part of singleton implementation
             melodyList = new ArrayList<>();
         }
 
@@ -34,6 +34,10 @@ public class Melody {
     }
 
     // region getter & setter
+    public static ArrayList<Melody> getMelodyList() {
+        return melodyList;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,10 +52,6 @@ public class Melody {
 
     public void setFreqList(int[] freqList) {
         this.freqList = freqList;
-    }
-
-    public static ArrayList<Melody> getMelodyList() {
-        return melodyList;
     }
     // endregion
 }

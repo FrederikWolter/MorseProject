@@ -4,10 +4,6 @@ import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-
 // todo comments
 
 /***
