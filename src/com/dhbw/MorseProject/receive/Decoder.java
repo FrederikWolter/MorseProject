@@ -1,5 +1,9 @@
 package com.dhbw.MorseProject.receive;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +27,15 @@ public class Decoder {
 
     StringBuilder lastSignal = new StringBuilder();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Decoder.getInstance().startRecording();
+        // Enter data using BufferReader
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(System.in));
+
+        // Reading data using readLine
+        String name = reader.readLine();
+        Decoder.getInstance().stopRecording();
     }
 
     /**
@@ -68,15 +79,20 @@ public class Decoder {
                 }
 
                 //TODO: analyze sample
-                int next = timeStamps.size();
                 analyzeSamples(samples);
-                if (timeStamps.size() > 1)
-                    analyzeTimeStamps(next);
+                if (timeStamps.size() > 2)
+                    analyzeTimeStamps();
                 if (lastSignal.length() > 0) {
                     System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
                     //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
                     lastSignal.setLength(0); //Reset the StringBuilder
+
+                    Noise last = timeStamps.get(timeStamps.size()-1);
+                    timeStamps.clear();
+                    timeStamps.add(last);
+
                 }
+
 
 
             } catch (InterruptedException e) {
@@ -86,14 +102,10 @@ public class Decoder {
         audioListener.stopListening();  //stop audioListener when decoder is finished
     };
 
-    private void analyzeTimeStamps(int next) {
-        for (int i = next; i < timeStamps.size(); i++) {
+    private void analyzeTimeStamps() {
+        for (int i = 0; i < timeStamps.size()-1; i++) {
 
-
-            //TODO NOISE umbauen auf index berechnung, da der letzt wert im einfach zu lange zurück liegt und deshalb der nächte laute ton immer ein - ist.
-            //alternativ kann auch versucht werden, wenn die dafor leise waren, dass die einfach ignoriert werden. Jedoch dass das nicht immer so ist.
-
-            long duration = timeStamps.get(i).getTimestamp().toEpochMilli() - timeStamps.get(i - 1).getTimestamp().toEpochMilli();
+            long duration = timeStamps.get(i+1).getTimestamp().toEpochMilli() - timeStamps.get(i).getTimestamp().toEpochMilli();
 
             //TODO get timeunits from encoder
             long timeUnit = 100;
@@ -101,17 +113,17 @@ public class Decoder {
             if (timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
-                if (0 < duration && duration < 5 * timeUnit) { //Its a ' '
-                    lastSignal.append(" ");
-                } else if (0 < duration) {                           //Its a '/'
+                if (timeUnit <= duration && duration < 5 * timeUnit) {       //Its a ' '
+                    lastSignal.append("cs");
+                } else if (timeUnit < duration) {                           //Its a '/'
                     lastSignal.append("/");
                 }
             } else {
                 //1=>'.', 3=>'-'
 
-                if (0 < duration && duration < 3 * timeUnit) { //Its a '.'
+                if (timeUnit < duration && duration < 3 * timeUnit) {       //Its a '.'
                     lastSignal.append(".");
-                } else if (0 < duration) {                           //Its a '-'
+                } else if (timeUnit < duration) {                           //Its a '-'
                     lastSignal.append("-");
                 }
 
@@ -127,7 +139,7 @@ public class Decoder {
         for (int i = 0; i < samples.size(); i++) {
             //TODO Simplify (these objects are currently only for an overview)
 
-            Noise start = samples.get(0);
+            Noise start = samples.get(i);
 
             boolean quiet = start.isQuiet();
 
