@@ -7,12 +7,14 @@ import java.util.List;
 
 /**
  * In this class the input of the microphone is captured and the rms values of this input can be fetched.
+ *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
 public class AudioListener {
 
     /**
      * Holds the current TargetDataLine from which this class reads the audio input.
+     *
      * @see TargetDataLine
      */
     private TargetDataLine line = null;
@@ -28,8 +30,8 @@ public class AudioListener {
     private final int bufferSize = 1000;
 
 
-    private final int windowSize = bufferSize/2;
-    private final int stepSize = windowSize/25;
+    private final int windowSize = bufferSize / 2;
+    private final int stepSize = windowSize / 25;
 
 
     /**
@@ -58,14 +60,15 @@ public class AudioListener {
     /**
      * Method to start listening on the microphone input.
      * The {@link #line} is initialized here with the default microphone of a computer on which this program is running.
+     *
      * @return Returns true if the listener started successfully.
      */
-    public boolean startListening(){
+    public boolean startListening() {
 
-        AudioFormat format = new AudioFormat(22000f, 16, 1, true, true); //Default Line
+        AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
-        if(!AudioSystem.isLineSupported(info)){
+        if (!AudioSystem.isLineSupported(info)) {
             System.out.println("DataLine not available.");
             return isListening;
         }
@@ -90,17 +93,18 @@ public class AudioListener {
 
     /**
      * Returns the value of the filed {@link #isListening}.
+     *
      * @return True, if the AudioListener is currently recording.
      * @see #isListening
      */
-    public boolean isListening(){
+    public boolean isListening() {
         return isListening;
     }
 
     /**
      * This Method stops the audio listener. It waits until the last run of the {@link #listenerThread} finished.
      */
-    public void stopListening(){
+    public void stopListening() {
         //Set boolean to false so that the loop finishes cleanly
         isListening = false;
         try {
@@ -114,12 +118,13 @@ public class AudioListener {
 
     /**
      * The runnable for the {@link #listenerThread} thread.
+     *
      * @see Runnable
      */
     private final Runnable listenerRunnable = () -> {
         byte[] memoryBuffer = new byte[bufferSize];
-        while(isListening){
-            if(line.read(memoryBuffer, 0, memoryBuffer.length)>0){
+        while (isListening) {
+            if (line.read(memoryBuffer, 0, memoryBuffer.length) > 0) {
 
                 synchronized (synchronizedBuffer) {
                     List<Noise> test = analyzeNoise(memoryBuffer);
@@ -129,7 +134,7 @@ public class AudioListener {
                     //TODO delete DEBUG if no longer necessary
                     //System.out.println(String.format("Added %s", noise.toString()));
 
-                    if(synchronizedBuffer.size()>=minNewSamples){
+                    if (synchronizedBuffer.size() >= minNewSamples) {
                         synchronizedBuffer.notify();
                         //TODO delete DEBUG if no longer necessary
                         //System.out.println("Try");
@@ -142,18 +147,19 @@ public class AudioListener {
     /**
      * Methode that Calculates the Root Mean Square of the audio input.
      * See <a href="https://en.wikipedia.org/wiki/Root_mean_square">Root Mean Square on Wikipedia</a>
+     *
      * @param x The memoryBuffer byte array of the Input-AudioSystem (TargetDataLine)
      * @return The RMS Value of the input byte array
      */
-    private double rmsValue(byte[] x){
-        if(x.length == 0)
+    private double rmsValue(byte[] x) {
+        if (x.length == 0)
             return 0.0;
 
         double rms = 0.0;
-        for(int i : x){
+        for (int i : x) {
             rms += i * i;
         }
-        rms/=x.length;
+        rms /= x.length;
         return Math.sqrt(rms);
     }
 
@@ -161,10 +167,11 @@ public class AudioListener {
      * Creates a new {@link Noise} object for a corresponding audio input sample.
      * Uses {@link #rmsValue(byte[])} to calculate the RMS value for the byte array.
      * A signal is silence if this calculated RMS value is smaller than {@link #getNoiseThreshold()}
+     *
      * @param byteArray The last bytes recorded by the microphone in an array.
      * @return The {@link Noise} object
      */
-    private List<Noise> analyzeNoise(byte[] byteArray){
+    private List<Noise> analyzeNoise(byte[] byteArray) {
         Instant timestamp = Instant.now();
         List<Noise> noiseList = new ArrayList<>();
 
@@ -172,9 +179,9 @@ public class AudioListener {
 
         //List<Byte> list = IntStream.range(0, byteArray.length).mapToObj(i -> byteArray[i]).collect(Collectors.toList());
 
-        for(int i = 0; i <= bufferSize-windowSize; i+=stepSize){
-            for(int j = 0, s = 0; j < windowSize; j++, s++){
-                windowedBuffer[s] = byteArray[j+i];
+        for (int i = 0; i <= bufferSize - windowSize; i += stepSize) {
+            for (int j = 0, s = 0; j < windowSize; j++, s++) {
+                windowedBuffer[s] = byteArray[j + i];
             }
             double rms = rmsValue(windowedBuffer);
             //System.out.println(rms);
@@ -188,12 +195,13 @@ public class AudioListener {
 
     /**
      * Method to fetch the last recorded RMS values since the last fetch.
+     *
      * @return A List of double values with the last samples since last fetch.
      * @see List<Double>
      */
     public List<Noise> getNewSample() {
         //TODO test if this method can be updated to an array (Performance)
-        synchronized (synchronizedBuffer){
+        synchronized (synchronizedBuffer) {
             List<Noise> test = new ArrayList<>(synchronizedBuffer);
             synchronizedBuffer.clear();
             return test;
@@ -203,9 +211,10 @@ public class AudioListener {
     /**
      * Get the current Threshold selected by the user from the GUI.
      * If a tone is louder than this threshold the value is identified as loud.
+     *
      * @return The threshold
      */
-    private double getNoiseThreshold(){
+    private double getNoiseThreshold() {
         //TODO: get noise threshold from GUI
         return 50;
     }

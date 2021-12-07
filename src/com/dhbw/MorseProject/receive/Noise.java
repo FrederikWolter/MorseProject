@@ -16,7 +16,7 @@ public class Noise {
         this.timestamp = timestamp;
     }
 
-    public Noise(boolean quiet, Date timestamp){
+    public Noise(boolean quiet, Date timestamp) {
         this(quiet, (Instant) null);
         this.timestamp = timestamp.toInstant();
     }
@@ -33,7 +33,7 @@ public class Noise {
         return timestamp;
     }
 
-    public Date getTimestampAsDate(){
+    public Date getTimestampAsDate() {
         return Date.from(timestamp);
     }
 
@@ -43,6 +43,6 @@ public class Noise {
 
     @Override
     public String toString() {
-        return "Quiet: "+ this.isQuiet() + " | time:" + this.getTimestamp().toString();
+        return "Quiet: " + this.isQuiet() + " | time:" + this.getTimestamp().toString();
     }
 }
