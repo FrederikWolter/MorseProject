@@ -19,7 +19,7 @@ public class Melody {
 
     /**
      * Constructor of {@link Melody} Class.
-     * @param name to be displayed in GUI
+     * @param name     to be displayed in GUI
      * @param freqList used to play signal. If len(freqList) = 1 -> constant frequency.
      */
     public Melody(String name, int[] freqList) {

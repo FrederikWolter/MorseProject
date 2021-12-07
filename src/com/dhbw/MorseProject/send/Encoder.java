@@ -61,7 +61,7 @@ public class Encoder {
 
     /**
      * main send method used to send morse-signal with a defined melody.
-     * @param morse to be sent.
+     * @param morse  to be sent.
      * @param melody in which to send.
      */
     public void send(String morse, Melody melody) {
@@ -74,7 +74,7 @@ public class Encoder {
     /**
      * private helper method sending the given morse code with the given melody.
      * Called by sending-thread version of {@link Encoder}
-     * @param morse to be send.
+     * @param morse  to be sent.
      * @param melody in which to send.
      */
     private void sending(String morse, Melody melody) {
@@ -126,7 +126,7 @@ public class Encoder {
     /**
      * Helper method for playing a tone for a given duration and with a given frequency.
      * Inspired by (among others) <a href="https://rosettacode.org/wiki/Sine_wave">rosettacode.org</a>
-     * @param duration of the tone.
+     * @param duration  of the tone.
      * @param frequency of the tone.
      */
     private void signal(int duration, int frequency) {
@@ -152,7 +152,7 @@ public class Encoder {
      * private helper method generating a sine wave with given frequency and duration.
      * public static volume ist used for the amplitude.
      * @param frequency of sine wave
-     * @param duration of sine wave
+     * @param duration  of sine wave
      * @return byte array of sine wave
      */
     private byte[] sineWave(int frequency, int duration) {
@@ -168,15 +168,15 @@ public class Encoder {
     }
 
     // todo use?
-    private byte[] fadeOutSineWave(byte[] buffer){
+    private byte[] fadeOutSineWave(byte[] buffer) {
         int len = buffer.length;
 
         for (int i = 0; i < (int) (len * (1 - DAMP_FACTOR)); i++) {
-            buffer[i] = (byte) (buffer[i] * Math.exp((i - (len * (1-DAMP_FACTOR))) * 1/(len * (1 - DAMP_FACTOR) / 3)));
+            buffer[i] = (byte) (buffer[i] * Math.exp((i - (len * (1 - DAMP_FACTOR))) * 1 / (len * (1 - DAMP_FACTOR) / 3)));
         }
 
         for (int i = (int) (len * DAMP_FACTOR); i < len; i++) {
-            buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1/(len * (1 - DAMP_FACTOR) / 4)));
+            buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1 / (len * (1 - DAMP_FACTOR) / 4)));
         }
         return buffer;
     }

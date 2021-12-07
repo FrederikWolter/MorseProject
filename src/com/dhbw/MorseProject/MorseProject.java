@@ -47,7 +47,7 @@ public class MorseProject {
     /**
      * Initialize the Melodies.
      */
-    private static void initMelodies(){
+    private static void initMelodies() {
         new Melody("Fest", new int[]
                 {550});
         new Melody("Test", new int[]
