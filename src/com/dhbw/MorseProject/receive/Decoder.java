@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class Decoder {
     //TODO comments
-    private List<MorseSignal> signalList;
     private AudioListener audioListener;
     private volatile boolean isRecording = false;
     private Thread decoderThread;
@@ -68,23 +67,12 @@ public class Decoder {
                     samples = audioListener.getNewSample(); //getting new Sample from audioListener
                 }
 
-                /*Stress test
-                System.out.println("Start of Decoder");
-
-                for(int i = 0; i < 100000000; i++){
-                    if(i == 99999999){
-                        System.out.println("finished long task");
-                        System.out.println(samples);
-                    }
-                }
-                */
-
                 //TODO: analyze sample
                 int next = timeStamps.size();
                 analyzeSamples(samples);
-                if(timeStamps.size()>1)
+                if (timeStamps.size() > 1)
                     analyzeTimeStamps(next);
-                if(lastSignal.length()>0){
+                if (lastSignal.length() > 0) {
                     System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
                     //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
                     lastSignal.setLength(0); //Reset the StringBuilder
@@ -99,31 +87,31 @@ public class Decoder {
     };
 
     private void analyzeTimeStamps(int next) {
-        for(int i = next; i<timeStamps.size(); i++){
+        for (int i = next; i < timeStamps.size(); i++) {
 
 
             //TODO NOISE umbauen auf index berechnung, da der letzt wert im einfach zu lange zurück liegt und deshalb der nächte laute ton immer ein - ist.
             //alternativ kann auch versucht werden, wenn die dafor leise waren, dass die einfach ignoriert werden. Jedoch dass das nicht immer so ist.
 
-            long duration = timeStamps.get(i).getTimestamp().toEpochMilli()-timeStamps.get(i-1).getTimestamp().toEpochMilli();
+            long duration = timeStamps.get(i).getTimestamp().toEpochMilli() - timeStamps.get(i - 1).getTimestamp().toEpochMilli();
 
             //TODO get timeunits from encoder
             long timeUnit = 100;
 
-            if(timeStamps.get(i).isQuiet()){
+            if (timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
-                if(0 < duration && duration < 5 * timeUnit){ //Its a ' '
+                if (0 < duration && duration < 5 * timeUnit) { //Its a ' '
                     lastSignal.append(" ");
-                } else if(0<duration) {                           //Its a '/'
+                } else if (0 < duration) {                           //Its a '/'
                     lastSignal.append("/");
                 }
-            }else{
+            } else {
                 //1=>'.', 3=>'-'
 
-                if(0 < duration && duration < 3 * timeUnit){ //Its a '.'
+                if (0 < duration && duration < 3 * timeUnit) { //Its a '.'
                     lastSignal.append(".");
-                }else if(0<duration) {                           //Its a '-'
+                } else if (0 < duration) {                           //Its a '-'
                     lastSignal.append("-");
                 }
 
@@ -133,7 +121,7 @@ public class Decoder {
 
     private void analyzeSamples(List<Noise> samples) {
 
-        if(timeStamps.size() == 0 || timeStamps.get(timeStamps.size()-1).isQuiet() != samples.get(0).isQuiet())
+        if (timeStamps.size() == 0 || timeStamps.get(timeStamps.size() - 1).isQuiet() != samples.get(0).isQuiet())
             timeStamps.add(samples.get(0));
 
         for (int i = 0; i < samples.size(); i++) {
@@ -149,8 +137,7 @@ public class Decoder {
                 if (test != quiet) { //Next is loud and we were quiet; Next is quiet and we were loud
                     Noise end = samples.get(j);
                     timeStamps.add(end);
-                    //MorseSignal signal = new MorseSignal(quiet, end.getTimestamp().toEpochMilli()-start.getTimestamp().toEpochMilli());
-                    i=j;
+                    i = j;
                     break;
                 }
             }
