@@ -110,7 +110,7 @@ public class Decoder {
             //TODO get timeunits from encoder
             long timeUnit = 100;
 
-            if (timeStamps.get(i).isQuiet()) {
+            if (!timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
                 if (timeUnit <= duration && duration < 5 * timeUnit) {       //Its a ' '
