@@ -4,7 +4,6 @@ import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
-// todo comments
 // todo comment ids from Pflichtenheft ;) where these are implemented
 // todo setup jar export
 
@@ -14,22 +13,20 @@ import com.dhbw.MorseProject.translate.Translator;
  */
 public class MorseProject {
 
+    /***
+     * MAIN entry point of application.
+     * @param args currently not used.
+     */
     public static void main(String[] args) {
-        //todo initialize central data here: e.g. melodies
+        //todo initialize central data here
+        initMelodies();
 
         // todo remove test code
         Encoder e = Encoder.getInstance();
 
-
-        //int[] freq = {550, 440, 330};
-        int[] freq = {550};
-        Melody melody = new Melody("Test", freq);
-        e.send(Translator.textToMorse("abcd"), melody);
+        //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
+        e.send(Translator.textToMorse("abcd"), Melody.getMelodyList().get(4));
         System.out.println(Translator.textToMorse("abcd"));
-
-        int[] freq2 = {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523};
-        Melody melody2 = new Melody("Test", freq);
-        e.send("....--....- ....- ....--....-", melody2);
 
 
         /*e.send(".", new Melody("test", new int[1]));
@@ -45,7 +42,23 @@ public class MorseProject {
                 e.send(input, new Melody("test", new ArrayList<>()));
 
         } while(!input.equalsIgnoreCase("end"));*/
+    }
 
-
+    /***
+     * Initialize the Melodies.
+     */
+    private static void initMelodies(){
+        new Melody("Fest", new int[]
+                {550});
+        new Melody("Test", new int[]
+                {550, 440, 330});
+        new Melody("Linear Steigend", new int[]
+                {200, 300, 400, 500, 600, 700, 800, 900, 1000});
+        new Melody("Linear Fallend", new int[]
+                {1000, 900, 800, 700, 600, 500, 400, 300, 200});
+        new Melody("Zickzack", new int[]
+                {200, 1000, 300, 900, 400, 800, 500, 700, 600});
+        new Melody("Alle meine Entchen", new int[]
+                {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523});
     }
 }
