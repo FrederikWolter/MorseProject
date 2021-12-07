@@ -30,14 +30,14 @@ public class AudioListener {
     private final int bufferSize = 1000;
 
 
-    private final int windowSize = bufferSize / 2;
-    private final int stepSize = windowSize / 25;
+    private final int windowSize = bufferSize / 5;
+    private final int stepSize = windowSize / 2;
 
 
     /**
      * The minimum amount of calculated rms values before the {@link Decoder} is notified.
      */
-    private final int minNewSamples = 10;
+    private final int minNewSamples = 1;
 
     /**
      * The calculated RMS values are added into this List and can be fetched with the {@link #getNewSample()} method.
@@ -126,7 +126,7 @@ public class AudioListener {
 
         try {
             synchronized (listenerThread){
-                listenerThread.wait(2000);
+                listenerThread.wait(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -184,22 +184,61 @@ public class AudioListener {
         Instant timestamp = Instant.now();
         List<Noise> noiseList = new ArrayList<>();
 
-        byte[] windowedBuffer = new byte[windowSize];
+        List<Double> rmsBuffer = new ArrayList<>();
 
-        //List<Byte> list = IntStream.range(0, byteArray.length).mapToObj(i -> byteArray[i]).collect(Collectors.toList());
+        byte[] windowedBuffer = new byte[windowSize];
 
         for (int i = 0; i <= bufferSize - windowSize; i += stepSize) {
             for (int j = 0, s = 0; j < windowSize; j++, s++) {
                 windowedBuffer[s] = byteArray[j + i];
             }
             double rms = rmsValue(windowedBuffer);
-            //System.out.println(rms);
-            boolean quiet = rms < getNoiseThreshold();
+
+            rmsBuffer.add(rms);
+
+        }
+        List<Double> smoothed = smoothRMSValues(rmsBuffer, 0.85f);
+        for(double d : smoothed) {
+            //System.out.println(d);
+            boolean quiet = d < getNoiseThreshold();
             Noise noise = new Noise(quiet, timestamp);
             noiseList.add(noise);
         }
 
         return noiseList;
+    }
+
+    private List<Double> smoothRMSValues(List<Double> rmsBuffer, float v) {
+
+        double weighted = get_list_average(rmsBuffer)*v;
+        List<Double> smoothed = new ArrayList<>();
+
+        for(int i = 0; i < rmsBuffer.size(); i++){
+            double prev = i>0 ? smoothed.get(i-1) : rmsBuffer.get(i);
+            double next = i<rmsBuffer.size() ? rmsBuffer.get(i) : rmsBuffer.get(i-1);
+
+            List<Double> test = new ArrayList<>();
+            test.add(weighted);
+            test.add(prev);
+            test.add(rmsBuffer.get(i));
+            test.add(next);
+
+            smoothed.add(get_list_average(test));
+        }
+        /*for(double d : smoothed)
+            System.out.println(d);*/
+        return smoothed;
+    }
+
+    private double get_list_average(List<Double> list)
+    {
+        float sum = 0;
+
+        for ( double value:list ) {
+            sum += value;
+        }
+
+        return ((float) (sum / list.size()));
     }
 
     /**
@@ -225,6 +264,6 @@ public class AudioListener {
      */
     private double getNoiseThreshold() {
         //TODO: get noise threshold from GUI
-        return 50;
+        return 40;
     }
 }
