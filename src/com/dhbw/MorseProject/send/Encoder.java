@@ -9,46 +9,46 @@ import javax.sound.sampled.SourceDataLine;
 
 // todo comments
 
-/***
+/**
  * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal.
  * @author Lucas Schaffer & Frederik Wolter
  */
 public class Encoder {
     // region public static final
-    /***
+    /**
      * Global time unit in ms used by all morse-code timing related code
      */
     public static final int timeUnit = 100;
-    /***
+    /**
      * Defined sampleRate used to generate the signal in samples/s
      */
     public static final int sampleRate = 44000;
-    /***
+    /**
      * Volume between 0 and 127 in which signal is played
      */
     public static final byte volume = 60;
     public static final double DAMP_FACTOR = 0.95;
     // endregion
 
-    /***
+    /**
      * Singleton for the MAIN-thread version of {@link Encoder}
      */
     private static Encoder INSTANCE;
 
-    /***
+    /**
      * Thread used for actual timing relevant sending work.
      */
     private Thread encoderThread;
-    /***
+    /**
      * Variable accessed by sending-thread and main-thread (volatile) signaling if the next tone should be played.
      * Could be used to stop playback through stopPlaying.
      */
     private volatile boolean isPlaying;
 
-    // empty constructor hence the main-thread variant of Encoder does nothing
+    // empty private constructor hence the main-thread variant of Encoder does nothing
     private Encoder() { }
 
-    /***
+    /**
      * Implementation of singleton to access the existing object or create one.
      * @return only instance of {@link Encoder} in main-thread mode.
      */
@@ -59,8 +59,8 @@ public class Encoder {
         return INSTANCE;
     }
 
-    /***
-     *  main send method used to send morse-signal with a defined melody.
+    /**
+     * main send method used to send morse-signal with a defined melody.
      * @param morse to be sent.
      * @param melody in which to send.
      */
@@ -71,6 +71,12 @@ public class Encoder {
         encoderThread.start();                                      // start created thread
     }
 
+    /**
+     * private helper method sending the given morse code with the given melody.
+     * Called by sending-thread version of {@link Encoder}
+     * @param morse to be send.
+     * @param melody in which to send.
+     */
     private void sending(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
         int[] freqList = melody.getFreqList();
@@ -81,8 +87,8 @@ public class Encoder {
             switch (String.valueOf(x)) {
                 case Translator.C -> wait(2 * timeUnit);
                 case Translator.W -> wait(6 * timeUnit);
-                case Translator.S -> signal2(1 * timeUnit, freqList[(freq_index++) % freq_length]);
-                case Translator.L -> signal2(3 * timeUnit, freqList[(freq_index++) % freq_length]);
+                case Translator.S -> signal(1 * timeUnit, freqList[(freq_index++) % freq_length]);
+                case Translator.L -> signal(3 * timeUnit, freqList[(freq_index++) % freq_length]);
                 default -> {
                 } //TODO Throw Exception
             }
@@ -91,7 +97,7 @@ public class Encoder {
         }
     }
 
-    /***
+    /**
      * public method to stop playing the current morse-signal.
      */
     public synchronized void stopPlaying() {
@@ -104,7 +110,7 @@ public class Encoder {
         }
     }
 
-    /***
+    /**
      * Helper method for waiting a defined duration on the sending thread.
      * Used to implement silence between tones.
      * @param duration to wait in ms
@@ -117,8 +123,13 @@ public class Encoder {
         }
     }
 
-    //see https://rosettacode.org/wiki/Sine_wave
-    private void signal2(int duration, int frequency) {
+    /**
+     * Helper method for playing a tone for a given duration and with a given frequency.
+     * Inspired by (among others) <a href="https://rosettacode.org/wiki/Sine_wave">rosettacode.org</a>
+     * @param duration of the tone.
+     * @param frequency of the tone.
+     */
+    private void signal(int duration, int frequency) {
 
         try {
             byte[] buffer = sineWave(frequency, duration);
@@ -137,7 +148,13 @@ public class Encoder {
         }
     }
 
-    //todo introduce variables for magic numbers
+    /**
+     * private helper method generating a sine wave with given frequency and duration.
+     * public static volume ist used for the amplitude.
+     * @param frequency of sine wave
+     * @param duration of sine wave
+     * @return byte array of sine wave
+     */
     private byte[] sineWave(int frequency, int duration) {
         int samples = (duration * sampleRate) / 1000;               // convert samples/s to samples/(duration in ms)
         byte[] result = new byte[samples];
@@ -150,7 +167,8 @@ public class Encoder {
         return result;
     }
 
-    /*private byte[] fadeOutSineWave(byte[] buffer){
+    // todo use?
+    private byte[] fadeOutSineWave(byte[] buffer){
         int len = buffer.length;
 
         for (int i = 0; i < (int) (len * (1 - DAMP_FACTOR)); i++) {
@@ -161,5 +179,5 @@ public class Encoder {
             buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1/(len * (1 - DAMP_FACTOR) / 4)));
         }
         return buffer;
-    }*/
+    }
 }

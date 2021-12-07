@@ -2,12 +2,12 @@ package com.dhbw.MorseProject.send;
 
 import java.util.ArrayList;
 
-/***
+/**
  * This class is used as a POJO for the representation of a melody object.
  * @author Frederik Wolter
  */
 public class Melody {
-    /***
+    /**
      * Kind of static singleton ArrayList of all melodies created in runtime.
      */
     private static ArrayList<Melody> melodyList;
@@ -17,7 +17,7 @@ public class Melody {
     private int[] freqList;         // array of integer frequencies, later played in loop when selected
     // endregion
 
-    /***
+    /**
      * Constructor of {@link Melody} Class.
      * @param name to be displayed in GUI
      * @param freqList used to play signal. If len(freqList) = 1 -> constant frequency.

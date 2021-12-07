@@ -7,13 +7,13 @@ import com.dhbw.MorseProject.translate.Translator;
 // todo comment ids from Pflichtenheft ;) where these are implemented
 // todo setup jar export
 
-/***
+/**
  * Main entry point to application - providing the main method.
  * @author Frederik Wolter
  */
 public class MorseProject {
 
-    /***
+    /**
      * MAIN entry point of application.
      * @param args currently not used.
      */
@@ -44,7 +44,7 @@ public class MorseProject {
         } while(!input.equalsIgnoreCase("end"));*/
     }
 
-    /***
+    /**
      * Initialize the Melodies.
      */
     private static void initMelodies(){

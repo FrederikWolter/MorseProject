@@ -8,19 +8,19 @@ import java.util.HashMap;
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
  */
 public class Translator {
-    /***
+    /**
      * Long Morse Signal
      */
     public static final String L = "-";
-    /***
+    /**
      * Short Morse Signal
      */
     public static final String S = ".";
-    /***
+    /**
      * Word-End Morse Signal
      */
     public static final String W = "/";
-    /***
+    /**
      * Char-End Morse Signal
      */
     public static final String C = " ";
