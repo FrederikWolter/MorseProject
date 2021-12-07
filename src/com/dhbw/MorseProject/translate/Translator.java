@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 /**
- * @author Hassan El-Khalil, (Frederik Wolter)
+ * @author Hassan El-Khalil, supported by Frederik Wolter
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
  */
 public class Translator {
