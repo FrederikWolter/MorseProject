@@ -449,23 +449,35 @@
                             <constraints/>
                             <properties>
                               <enabled value="false"/>
+                              <focusable value="true"/>
+                              <font name="JetBrains Mono" size="18" style="3"/>
+                              <rowSelectionAllowed value="false"/>
+                              <updateSelectionOnSort value="false"/>
                             </properties>
                           </component>
                         </children>
                       </scrollpane>
                     </children>
                   </grid>
-                  <grid id="1fcc0" layout-manager="CardLayout" hgap="0" vgap="0">
+                  <grid id="1fcc0" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints border-constraint="Center"/>
                     <properties/>
                     <border type="none"/>
                     <children>
                       <component id="8ebc2" class="javax.swing.JLabel">
-                        <constraints>
-                          <card name="Card1"/>
-                        </constraints>
+                        <constraints border-constraint="North"/>
                         <properties>
                           <text value="Generelles"/>
+                        </properties>
+                      </component>
+                      <component id="92dd3" class="javax.swing.JTextArea" binding="textArea_info">
+                        <constraints border-constraint="Center"/>
+                        <properties>
+                          <editable value="false"/>
+                          <font name="JetBrains Mono"/>
+                          <lineWrap value="true"/>
+                          <margin top="10" left="10" bottom="10" right="10"/>
+                          <wrapStyleWord value="true"/>
                         </properties>
                       </component>
                     </children>

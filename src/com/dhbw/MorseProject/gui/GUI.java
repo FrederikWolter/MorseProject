@@ -4,6 +4,7 @@ import com.dhbw.MorseProject.translate.Translator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,8 @@ public class GUI {
     private JSplitPane receiveSplitPane;
     private JSplitPane sendSplitPane;
     private JTable table_alphabet;
+    private JTextArea textArea_info;
+    private JTextField textField_info;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
 
@@ -62,7 +65,6 @@ public class GUI {
         Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double)effectiveMaxHeight)/modifier));
         frame.setMinimumSize(windowSize);
 
-
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
 
@@ -80,12 +82,30 @@ public class GUI {
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
 
+        //DefaultTableCellRenderer centerRendering = new DefaultTableCellRenderer();
+        //centerRendering.setHorizontalAlignment(SwingConstants.CENTER);
+        //table_alphabet.setDefaultRenderer(String.class, centerRendering);
+        //table_alphabet.setDefaultRenderer(Integer.class, centerRendering);
+
         DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
         tableModel.addColumn(columnNames[0]);
         tableModel.addColumn(columnNames[1]);
         for (int i = 0; i < data.length; i++) {
             tableModel.addRow(new Object[]{data[i][0], data[i][1]});
         }
+
+        String info = """
+                Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
+                
+                Der Code kann als Tonsignal, als Funksignal, als elektrischer Puls mit einer Morsetaste über eine Telefonleitung, mechanisch oder optisch (etwa mit blinkendem Licht) übertragen werden – oder auch mit jedem sonstigen Medium, mit dem zwei verschiedene Zustände (wie etwa Ton oder kein Ton) eindeutig und in der zeitlichen Länge variierbar dargestellt werden können. Dieses Übertragungsverfahren nennt man Morsetelegrafie.
+                
+                Das manchmal bei Notfällen beschriebene Morsen durch Klopfen an metallischen Verbindungen erfüllt diese Forderung daher nur bedingt, ist aber mit einiger Übung aufgrund des charakteristischen Rhythmus von Morsezeichen verständlich. Es ist abgeleitet von den „Klopfern“ aus der Anfangszeit der Telegrafentechnik, bestehend aus einem Elektromagneten mit Anker in einem akustischen Hohlspiegel. Beim Einschalten erzeugte er ein lautes und beim Abschalten ein etwas leiseres Klopfgeräusch. So konnte man den Klang der Morsezeichen schon vor der Erfindung des Lautsprechers selbst in größeren Betriebsräumen hörbar machen.
+                
+                
+                Auszug aus de.wikipedia.org/wiki/Morsecode
+                """;
+        //Quelle: https://de.wikipedia.org/wiki/Morsecode
+        textArea_info.setText(info);
 
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
