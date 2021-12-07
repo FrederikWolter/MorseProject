@@ -201,10 +201,10 @@ public class AudioListener {
         for(int i = 0; i < smoothed.size(); i++) {
             //System.out.println(d);
             boolean quiet = smoothed.get(i) < getNoiseThreshold();
-            Noise noise = new Noise(quiet, (buffersRead * windowedBuffer.length) + i);
+            Noise noise = new Noise(quiet, buffersRead++/*(buffersRead * windowedBuffer.length) + i*/);
             noiseList.add(noise);
         }
-        buffersRead++;
+        //buffersRead++;
         return noiseList;
     }
 
