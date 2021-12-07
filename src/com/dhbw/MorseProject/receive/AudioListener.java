@@ -33,11 +33,13 @@ public class AudioListener {
     private final int windowSize = bufferSize / 5;
     private final int stepSize = windowSize / 2;
 
+    private int buffersRead = 0;
+
 
     /**
      * The minimum amount of calculated rms values before the {@link Decoder} is notified.
      */
-    private final int minNewSamples = 1;
+    private final int minNewSamples = 15;
 
     /**
      * The calculated RMS values are added into this List and can be fetched with the {@link #getNewSample()} method.
@@ -138,7 +140,6 @@ public class AudioListener {
                 synchronized (synchronizedBuffer) {
                     List<Noise> test = analyzeNoise(memoryBuffer);
                     synchronizedBuffer.addAll(test);
-                    //synchronizedBuffer.add(noise);
 
                     //TODO delete DEBUG if no longer necessary
                     //System.out.println(String.format("Added %s", noise.toString()));
@@ -183,7 +184,6 @@ public class AudioListener {
     private List<Noise> analyzeNoise(byte[] byteArray) {
         Instant timestamp = Instant.now();
         List<Noise> noiseList = new ArrayList<>();
-
         List<Double> rmsBuffer = new ArrayList<>();
 
         byte[] windowedBuffer = new byte[windowSize];
@@ -198,13 +198,13 @@ public class AudioListener {
 
         }
         List<Double> smoothed = smoothRMSValues(rmsBuffer, 0.85f);
-        for(double d : smoothed) {
+        for(int i = 0; i < smoothed.size(); i++) {
             //System.out.println(d);
-            boolean quiet = d < getNoiseThreshold();
-            Noise noise = new Noise(quiet, timestamp);
+            boolean quiet = smoothed.get(i) < getNoiseThreshold();
+            Noise noise = new Noise(quiet, (buffersRead * windowedBuffer.length) + i);
             noiseList.add(noise);
         }
-
+        buffersRead++;
         return noiseList;
     }
 

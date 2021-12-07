@@ -86,15 +86,7 @@ public class Decoder {
                     System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
                     //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
                     lastSignal.setLength(0); //Reset the StringBuilder
-
-                    Noise last = timeStamps.get(timeStamps.size()-1);
-                    timeStamps.clear();
-                    timeStamps.add(last);
-
                 }
-
-
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -105,30 +97,38 @@ public class Decoder {
     private void analyzeTimeStamps() {
         for (int i = 0; i < timeStamps.size()-1; i++) {
 
-            long duration = timeStamps.get(i+1).getTimestamp().toEpochMilli() - timeStamps.get(i).getTimestamp().toEpochMilli();
+            int between = timeStamps.get(i+1).getIndex()-timeStamps.get(i).getIndex();
+
+            //long duration = timeStamps.get(i+1).getTimestamp().toEpochMilli() - timeStamps.get(i).getTimestamp().toEpochMilli();
+
+            System.out.println(between + " " + timeStamps.size() + " " + i + " " + timeStamps.get(i).isQuiet());
 
             //TODO get timeunits from encoder
             long timeUnit = 100;
 
-            if (!timeStamps.get(i).isQuiet()) {
+            if (timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
-                if (timeUnit <= duration && duration < 5 * timeUnit) {       //Its a ' '
+                if (7500 <= between && between < 9000) {       //Its a ' '
                     lastSignal.append("cs");
-                } else if (timeUnit < duration) {                           //Its a '/'
+                } else if (12000 <= between && between < 23000) {                           //Its a '/'
                     lastSignal.append("/");
                 }
             } else {
                 //1=>'.', 3=>'-'
 
-                if (timeUnit < duration && duration < 3 * timeUnit) {       //Its a '.'
+                if (650 <= between && between < 2800) {       //Its a '.'
                     lastSignal.append(".");
-                } else if (timeUnit < duration) {                           //Its a '-'
+                } else if (4500 <= between && between < 5500) { //Its a '-'
                     lastSignal.append("-");
                 }
 
             }
+
         }
+        Noise last = timeStamps.get(timeStamps.size()-1);
+        timeStamps.clear();
+        timeStamps.add(last);
     }
 
     private void analyzeSamples(List<Noise> samples) {
@@ -155,7 +155,6 @@ public class Decoder {
             }
         }
     }
-
 
     public boolean isRecording() {
         return this.isRecording;
