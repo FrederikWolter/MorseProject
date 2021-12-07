@@ -1,7 +1,6 @@
 package com.dhbw.MorseProject.receive;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ public class Decoder {
         try {
             isRecording = false;    //setting boolean to false for graceful finish of decoderThread
             decoderThread.join();   //joining thread to wait until finish
+            //TODO notify Decoder und dort die sperre für die auswertung damit aushebeln (über isListening)
             return true;    //return true if success
         } catch (InterruptedException ie) {
             return false;   //return false if failed
@@ -78,7 +78,6 @@ public class Decoder {
                     samples = audioListener.getNewSample(); //getting new Sample from audioListener
                 }
 
-                //TODO: analyze sample
                 analyzeSamples(samples);
                 if (timeStamps.size() > 2)
                     analyzeTimeStamps();
@@ -101,27 +100,39 @@ public class Decoder {
 
             //long duration = timeStamps.get(i+1).getTimestamp().toEpochMilli() - timeStamps.get(i).getTimestamp().toEpochMilli();
 
-            System.out.println(between + " " + timeStamps.size() + " " + i + " " + timeStamps.get(i).isQuiet());
+            //System.out.println(between + " " + timeStamps.size() + " " + i + " " + timeStamps.get(i).isQuiet());
 
-            //TODO get timeunits from encoder
-            long timeUnit = 100;
+            //TODO vlt die werte nicht statisch sonder berechnen lassen, indem ein cache benutzt wird und jedes mal ausgwertet wird wie lange was sein soll.
 
             if (timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
-                if (7500 <= between && between < 9000) {       //Its a ' '
+                if (350 <= between && between < 500) {       //Its a ' '
+                    lastSignal.append("cs");
+                } else if (850 <= between && between < 1200) {                           //Its a '/'
+                    lastSignal.append("/");
+                }
+
+/*
+                if (7500 <= between && between < 9500) {       //Its a ' '
                     lastSignal.append("cs");
                 } else if (12000 <= between && between < 23000) {                           //Its a '/'
                     lastSignal.append("/");
-                }
+                }*/
             } else {
                 //1=>'.', 3=>'-'
 
-                if (650 <= between && between < 2800) {       //Its a '.'
+                if (27 <= between && between < 100) {       //Its a '.'
+                    lastSignal.append(".");
+                } else if (190 <= between && between < 300) { //Its a '-'
+                    lastSignal.append("-");
+                }
+
+                /*if (650 <= between && between < 2800) {       //Its a '.'
                     lastSignal.append(".");
                 } else if (4500 <= between && between < 5500) { //Its a '-'
                     lastSignal.append("-");
-                }
+                }*/
 
             }
 
