@@ -77,6 +77,7 @@ public class Encoder {
      * @param morse  to be sent.
      * @param melody in which to send.
      */
+    @SuppressWarnings("PointlessArithmeticExpression")
     private void sending(String morse, Melody melody) {
         char[] signals = morse.toCharArray();
         int[] freqList = melody.getFreqList();
@@ -102,7 +103,7 @@ public class Encoder {
      */
     public synchronized void stopPlaying() {
         isPlaying = false;
-        try {       // todo nesessary?
+        try {       // todo necessary?
             encoderThread.join();
         } catch (Exception e) {
             if (encoderThread != null)
