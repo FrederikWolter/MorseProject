@@ -78,7 +78,7 @@ public class Translator {
     }
 
     /**
-     * This Method reverts the CharToMorse Hashmap and saves it in MorseToChar.
+     * This Method reverse the CharToMorse Hashmap and saves it in MorseToChar.
      */
     private static void reverse() {
         for (HashMap.Entry<Character, String> entry : CharToMorse.entrySet()) {
