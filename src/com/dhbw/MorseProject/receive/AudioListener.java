@@ -123,6 +123,15 @@ public class AudioListener {
      */
     private final Runnable listenerRunnable = () -> {
         byte[] memoryBuffer = new byte[bufferSize];
+
+        try {
+            synchronized (listenerThread){
+                listenerThread.wait(2000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         while (isListening) {
             if (line.read(memoryBuffer, 0, memoryBuffer.length) > 0) {
 
