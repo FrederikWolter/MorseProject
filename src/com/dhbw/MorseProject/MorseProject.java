@@ -25,8 +25,8 @@ public class MorseProject {
         Encoder e = Encoder.getInstance();
 
         //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-        e.send(Translator.textToMorse("abcd"), Melody.getMelodyList().get(4));
-        System.out.println(Translator.textToMorse("abcd"));
+        e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
+        System.out.println(Translator.textToMorse("abcdabcd"));
 
 
         /*e.send(".", new Melody("test", new int[1]));

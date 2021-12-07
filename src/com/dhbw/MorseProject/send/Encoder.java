@@ -18,16 +18,16 @@ public class Encoder {
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
-    public static final int timeUnit = 100;
+    public static final int TIME_UNIT = 100;
     /**
      * Defined sampleRate used to generate the signal in samples/s
      */
-    public static final int sampleRate = 44000;
+    public static final int SAMPLE_RATE = 44000;
     /**
      * Volume between 0 and 127 in which signal is played
      */
-    public static final byte volume = 60;
-    public static final double DAMP_FACTOR = 0.95;
+    public static final byte VOLUME = 60;
+    public static final double DAMP_FACTOR = 0.98;
     // endregion
 
     /**
@@ -86,10 +86,10 @@ public class Encoder {
 
         for (char x : signals) {
             switch (String.valueOf(x)) {
-                case Translator.C -> wait(2 * timeUnit);
-                case Translator.W -> wait(6 * timeUnit);
-                case Translator.S -> signal(1 * timeUnit, freqList[(freq_index++) % freq_length]);
-                case Translator.L -> signal(3 * timeUnit, freqList[(freq_index++) % freq_length]);
+                case Translator.C -> wait(2 * TIME_UNIT);
+                case Translator.W -> wait(6 * TIME_UNIT);
+                case Translator.S -> signal(1 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
+                case Translator.L -> signal(3 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
                 default -> {
                 } //TODO Throw Exception
             }
@@ -134,7 +134,7 @@ public class Encoder {
 
         try {
             byte[] buffer = sineWave(frequency, duration);
-            AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, true);
+            AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
             SourceDataLine line = AudioSystem.getSourceDataLine(format);
 
             line.open(format);
@@ -143,7 +143,7 @@ public class Encoder {
             line.drain();
             line.close();
 
-            wait(timeUnit);                         // 1TU pause after each signal
+            wait(TIME_UNIT);                         // 1TU pause after each signal
         } catch (LineUnavailableException e) {
             e.printStackTrace(); //TODO Exception handling
         }
@@ -157,15 +157,15 @@ public class Encoder {
      * @return byte array of sine wave
      */
     private byte[] sineWave(int frequency, int duration) {
-        int samples = (duration * sampleRate) / 1000;               // convert samples/s to samples/(duration in ms)
+        int samples = (duration * SAMPLE_RATE) / 1000;               // convert samples/s to samples/(duration in ms)
         byte[] result = new byte[samples];
-        double interval = (double) sampleRate / frequency;
+        double interval = (double) SAMPLE_RATE / frequency;
 
         for (int i = 0; i < samples; i++) {
             double angle = 2.0 * Math.PI * i / interval;
-            result[i] = (byte) (Math.sin(angle) * volume);
+            result[i] = (byte) (Math.sin(angle) * VOLUME);
         }
-        return result;
+        return fadeOutSineWave(result);
     }
 
     // todo use?
