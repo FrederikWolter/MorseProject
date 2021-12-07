@@ -10,6 +10,7 @@ public class Noise {
 
     private boolean quiet;
     private Instant timestamp;
+    private int index;
 
     public Noise(boolean quiet, Instant timestamp) {
         this.quiet = quiet;
@@ -19,6 +20,19 @@ public class Noise {
     public Noise(boolean quiet, Date timestamp) {
         this(quiet, (Instant) null);
         this.timestamp = timestamp.toInstant();
+    }
+
+    public Noise(boolean quiet, int index) {
+        this.quiet = quiet;
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public boolean isQuiet() {
@@ -43,6 +57,11 @@ public class Noise {
 
     @Override
     public String toString() {
-        return "Quiet: " + this.isQuiet() + " | time:" + this.getTimestamp().toString();
+        long ms;
+        if(this.getTimestamp() != null)
+            ms = getTimestamp().toEpochMilli();
+        else
+            ms = this.getIndex();
+        return "Quiet: " + this.isQuiet() + " | time:" + ms;
     }
 }
