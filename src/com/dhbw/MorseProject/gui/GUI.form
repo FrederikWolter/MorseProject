@@ -185,7 +185,7 @@
                                   <paintLabels value="true"/>
                                   <paintTicks value="true"/>
                                   <snapToTicks value="true"/>
-                                  <value value="10000"/>
+                                  <value value="1000"/>
                                 </properties>
                               </component>
                               <component id="244d5" class="javax.swing.JLabel">
