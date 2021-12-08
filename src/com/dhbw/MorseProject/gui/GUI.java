@@ -265,7 +265,7 @@ public class GUI {
                 showingBeginSend = !showingBeginSend;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                //TODO: display error
+                showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -276,7 +276,7 @@ public class GUI {
             stopPlayingChangeVariables();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            //TODO: display error
+            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -319,7 +319,7 @@ public class GUI {
     private void translateMorseTextAreaToText() {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
         if (textTranslation == null){
-            //TODO error message
+            showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             System.out.println("morseToText_translationError");
         } else{
             send_text_textArea.setText(textTranslation);
@@ -328,7 +328,7 @@ public class GUI {
     private void translateTextAreaTextToMorse() {
         String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
         if (morseTranslation == null){
-            //TODO error message
+            showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             System.out.println("textToMorse_translationError");
         } else{
             send_morse_textArea.setText(morseTranslation);
