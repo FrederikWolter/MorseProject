@@ -1,5 +1,6 @@
 package com.dhbw.MorseProject.gui;
 
+import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
@@ -59,6 +60,8 @@ public class GUI {
         TEXT
     }
 
+    private Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
+
     public GUI(){
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
@@ -74,7 +77,7 @@ public class GUI {
             e.printStackTrace();
         }
 
-        JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
+        //JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
@@ -93,7 +96,6 @@ public class GUI {
         adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
         adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
-
 
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
@@ -141,14 +143,11 @@ public class GUI {
         beginSendingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO link receive module
-
                 if (!showingBeginSend){
-                    beginSendingButton.setText("Senden beginnen");
+                    stopPlaying();
                 } else{
-                    beginSendingButton.setText("Senden beenden");
+                    startPlaying();
                 }
-                showingBeginSend = !showingBeginSend;
             }
         });
 
@@ -158,7 +157,7 @@ public class GUI {
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (comboBox1.getSelectedItem().toString() == "Fest"){
+                if (comboBox1.getSelectedItem().toString().equals("Fest")){
                     frequenz_slider.setEnabled(true);
                 }else{
                     frequenz_slider.setEnabled(false);
@@ -179,9 +178,6 @@ public class GUI {
                 clear_textAreas(receive_text_textArea, receive_morse_textArea);
             }
         });
-
-
-        Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
         send_morse_textArea.addFocusListener(new FocusListener() {
             @Override
@@ -214,26 +210,55 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 translateSendTextAreas(textAreaFocusMap);
             }
-
-
         });
+    }
+
+    private void startPlaying() {
+        translateSendTextAreas(textAreaFocusMap);
+        String morse = send_morse_textArea.getText();
+        Melody sendMelody = null;
+        if (comboBox1.getSelectedItem() != "Fest"){
+            for (Melody melody : Melody.getMelodyList()){
+                if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
+                    sendMelody = melody;
+                }
+            }
+        }else{
+            sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
+        }
+        if (sendMelody != null){
+            Encoder.getInstance().send(morse, sendMelody);
+            beginSendingButton.setText("Senden beenden");
+            showingBeginSend = !showingBeginSend;
+        }
+    }
+
+    private void stopPlaying() {
+        Encoder.getInstance().stopPlaying();
+        beginSendingButton.setText("Senden beginnen");
+        showingBeginSend = !showingBeginSend;
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
         if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only loose focus if it has gained focus before
-            if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+            if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                    || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)){
                 textAreaFocusMap.put(non_caller, textArea_focusState.FOCUS_LOST);
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){
+                textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
+            } else{
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             }
         }
     }
 
     private void translateSendTextAreas(Map textAreaFocusMap) {
-        if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+        if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
             translateTextAreaTextToMorse();
-        } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+        } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                || textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
             translateMorseTextAreaToText();
         } else{
             if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){

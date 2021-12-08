@@ -184,8 +184,8 @@
                                   <minorTickSpacing value="1000"/>
                                   <paintLabels value="true"/>
                                   <paintTicks value="true"/>
-                                  <snapToTicks value="true"/>
-                                  <value value="8000"/>
+                                  <snapToTicks value="false"/>
+                                  <value value="550"/>
                                 </properties>
                               </component>
                               <component id="244d5" class="javax.swing.JLabel">
