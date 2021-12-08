@@ -157,6 +157,13 @@ public class GUI {
             }
         });
 
+        Encoder.getInstance().addEncoderFinishedListener(new IEncoderFinishedListener() {
+            @Override
+            public void run() {
+                stopPlaying();
+            }
+        });
+
         for (int i = 0; i < Melody.getMelodyList().size(); i++){
             comboBox1.addItem(Melody.getMelodyList().get(i).getName());
         }
@@ -236,14 +243,6 @@ public class GUI {
             Encoder.getInstance().send(morse, sendMelody);
             beginSendingButton.setText("Senden beenden");
             showingBeginSend = !showingBeginSend;
-
-            IEncoderFinishedListener encoderFinishedListener = new IEncoderFinishedListener() {
-                @Override
-                public void run() {
-                    stopPlaying();
-                }
-            };
-
 
         }
     }
