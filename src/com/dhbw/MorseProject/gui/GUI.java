@@ -174,6 +174,13 @@ public class GUI {
             }
         });
 
+        Encoder.getInstance().addEncoderFinishedListener(new IEncoderFinishedListener() {
+            @Override
+            public void run() {
+                stopPlaying();
+            }
+        });
+
         /**
          * Settings for the ComboBox to select given melodies or frequencies.
          */
@@ -262,6 +269,7 @@ public class GUI {
                     stopPlaying();
                 }
             };
+
         }
     }
 
