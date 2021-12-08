@@ -10,7 +10,7 @@ import javax.sound.sampled.SourceDataLine;
 // todo comments
 
 /**
- * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal.
+ * Class responsible for encoding morse-signals to audio and therefore generating and sending the audio signal.
  * @author Lucas Schaffer & Frederik Wolter
  */
 public class Encoder {
