@@ -24,9 +24,15 @@ public class MorseProject {
         // todo remove test code
         Encoder e = Encoder.getInstance();
 
-        //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-        e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
-        System.out.println(Translator.textToMorse("abcdabcd"));
+
+
+        try {
+            //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
+            e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
+            System.out.println(Translator.textToMorse("abcdabcd"));
+        }catch (Exception p){
+            p.printStackTrace();
+        }
 
 
         /*e.send(".", new Melody("test", new int[1]));
