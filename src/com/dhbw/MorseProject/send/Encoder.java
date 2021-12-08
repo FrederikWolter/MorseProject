@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import java.util.Arrays;
 
 /**
  * Class responsible for encoding morse-signals to audio and therefore generating and sending the audio signal. [ID: F-LOG-20.3.1]
@@ -46,11 +47,14 @@ public class Encoder {
      * Thread used for actual timing relevant sending work.
      */
     private Thread encoderThread;
-    /***
-     * //todo comment
+    /**
+     * errorEvent object used to pass error to GUI.
      */
-    private EncoderErrorEvent errorEvent = new EncoderErrorEvent();
-    private EncoderFinishedEvent finishedEvent = new EncoderFinishedEvent();
+    private final EncoderErrorEvent errorEvent = new EncoderErrorEvent();
+    /**
+     * finishedEvent object used to inform GUI when finished playing.
+     */
+    private final EncoderFinishedEvent finishedEvent = new EncoderFinishedEvent();
     /**
      * Variable accessed by sending-thread and main-thread (volatile) signaling if the next tone should be played.
      * Could be used to stop playback through stopPlaying.
@@ -79,13 +83,14 @@ public class Encoder {
      * @param melody in which to send.
      */
     public void send(String morse, Melody melody) throws InterruptedException {
-        stopPlaying();                                              // prevent encoder from playing multiple signals at once
+        stopPlaying();                                      // prevent encoder from playing multiple signals at once
+
         isPlaying = true;
         encoderThread = new Thread(() -> {
             try {
                 sending(morse, melody);
             } catch (InterruptedException | LineUnavailableException e) {
-                errorEvent.alert(e.getStackTrace().toString());
+                errorEvent.alert(Arrays.toString(e.getStackTrace()));
             }
         });  // create a new sending thread executing the sending method
     }
@@ -121,10 +126,11 @@ public class Encoder {
     /**
      * public method to stop playing the current morse-signal. [ID: F-GUI-20.1.3]
      */
-    public synchronized void stopPlaying() throws InterruptedException {
+    public synchronized void stopPlaying() throws InterruptedException, NullPointerException {
         isPlaying = false;
         // todo necessary?
-        encoderThread.join();
+        if(encoderThread != null)
+            encoderThread.join();
     }
 
     /**
