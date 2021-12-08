@@ -44,6 +44,18 @@ public class GUI {
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
 
+    private enum textArea_focusState {
+        FOCUS_GAINED,
+        FOCUS_LOST,
+        FOCUS_LOST_NEWEST,
+        NONE
+    }
+
+    private enum textArea {
+        MORSE,
+        TEXT
+    }
+
     public GUI(){
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
@@ -152,55 +164,31 @@ public class GUI {
         });
 
 
-        enum state {
-            FOCUS_GAINED,
-            FOCUS_LOST,
-            FOCUS_LOST_NEWEST,
-            NONE
-        }
-
-        enum textArea {
-            MORSE,
-            TEXT
-        }
-
-        Map<textArea, state> textAreaFocusMap= new HashMap<textArea, state>();
+        Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
         send_morse_textArea.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                textAreaFocusMap.put(textArea.MORSE, state.FOCUS_GAINED);
+                textAreaFocusMap.put(textArea.MORSE, textArea_focusState.FOCUS_GAINED);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (!textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.NONE)){
-                    if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
-                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST);
-                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST_NEWEST);
-                    } else if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.NONE)){
-                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST_NEWEST);
-                    }
-                }
+                textAreaFocusLost(textAreaFocusMap, textArea.MORSE, textArea.TEXT);
             }
+
+
         });
 
         send_text_textArea.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                textAreaFocusMap.put(textArea.TEXT, state.FOCUS_GAINED);
+                textAreaFocusMap.put(textArea.TEXT, textArea_focusState.FOCUS_GAINED);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (!textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.NONE)){
-                    if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
-                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST);
-                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST_NEWEST);
-                    } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.NONE)){
-                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST_NEWEST);
-                    }
-                }
+                textAreaFocusLost(textAreaFocusMap, textArea.TEXT, textArea.MORSE);
             }
         });
 
@@ -211,9 +199,9 @@ public class GUI {
             }
 
             private void translateSendTextAreas() {
-                if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
                     translateTextAreaTextToMorse();
-                } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
                     translateMorseTextAreaToText();
                 } else{
                     if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
@@ -226,6 +214,17 @@ public class GUI {
                 }
             }
         });
+    }
+
+    private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
+        if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only loose focus if it has gained focus before
+            if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+                textAreaFocusMap.put(non_caller, textArea_focusState.FOCUS_LOST);
+                textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
+            } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){
+                textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
+            }
+        }
     }
 
     private void translateMorseTextAreaToText() {
