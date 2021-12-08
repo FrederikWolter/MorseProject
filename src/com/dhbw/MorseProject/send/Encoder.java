@@ -93,6 +93,7 @@ public class Encoder {
                 errorEvent.alert(Arrays.toString(e.getStackTrace()));
             }
         });  // create a new sending thread executing the sending method
+        encoderThread.start();
     }
 
     /**
