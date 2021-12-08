@@ -77,8 +77,16 @@ public class Translator {
         reverse();  // initialize MorseToChar by reversing CharToMorse
     }
 
+    public static HashMap<Character, String> getCharToMorse(){
+        return CharToMorse;
+    }
+
+    public static HashMap<String, Character> getMorseToChar(){
+        return MorseToChar;
+    }
+
     /**
-     * This Method reverse the CharToMorse Hashmap and saves it in MorseToChar.
+     * This Method reverses the CharToMorse Hashmap and saves it in MorseToChar.
      */
     private static void reverse() {
         for (HashMap.Entry<Character, String> entry : CharToMorse.entrySet()) {
@@ -89,7 +97,6 @@ public class Translator {
     /**
      * For a single Char-Input this method returns the associated Morse-String as defined in the {@link #CharToMorse Hashmap}.
      * For an unrecognized char it will return null.
-     *
      * @param l Char-input
      * @return Morse-String or null
      */
@@ -101,7 +108,6 @@ public class Translator {
     /**
      * For a single Morse-Code this method returns the associated Char as defined in the {@link #MorseToChar Hashmap}.
      * For an unrecognized char it will return the null char.
-     *
      * @param morseCode Morse-Code Input in defined Morse-alphabet
      * @return translated Char or 0 char
      */
@@ -111,7 +117,7 @@ public class Translator {
 
     /**
      * For an input Morse-Code it returns the translated String
-     *
+     * [ID: F-LOG-20.2, F-LOG-20.2.1]
      * @param morse Enter a String containing multiple single Morse-Codes recognized in {@link #MorseToChar}
      * @return translated String
      */
@@ -129,7 +135,7 @@ public class Translator {
 
     /**
      * For an input String it returns the translated Morse-Code.
-     *
+     * [ID: F-LOG-20.1, F-LOG-20.1.1]
      * @param Text Enter a String with containing the Recognized Chars in {@link #CharToMorse}
      * @return translated Morse-code
      */
@@ -145,4 +151,5 @@ public class Translator {
         }
         return x.toString();
     }
+
 }

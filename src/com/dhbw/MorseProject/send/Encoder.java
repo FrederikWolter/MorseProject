@@ -8,7 +8,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
- * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal. [ID: F-LOG-20.3.1]
+ * Class responsible for encoding morse-signals to audio and therefore generating and sending the audio signal. [ID: F-LOG-20.3.1]
  *
  * @author Lucas Schaffer & Frederik Wolter
  */

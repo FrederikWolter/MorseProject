@@ -7,3 +7,4 @@ Morse code between two or more devices via sound.
 # Contributors
 
 - Mark M.
+- Hassan El-Khalil
