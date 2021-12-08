@@ -13,6 +13,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -286,36 +288,17 @@ public class GUI {
     }
 
     public String[][] fillTable(){
+        ArrayList allCharacters = new ArrayList<>(Translator.getCharToMorse().keySet());
+
         String[][] data = new String[42][2];
         int counter = 0;
 
-        for (int i = 65; i <= 90; i++){
-            data[counter][0] = ""+(char)i;
-            data[counter][1] = Translator.toMorse((char)i);
+        for(int i=0; i<allCharacters.size(); i++) {
+            data[counter][0] = ""+allCharacters.get(i);
+            data[counter][1] = Translator.toMorse((char)allCharacters.get(i));
             counter++;
         }
-        for (int i = 48; i<= 57; i++){
-            data[counter][0] = ""+(char)i;
-            data[counter][1] = Translator.toMorse((char)i);
-            counter++;
-        }
-        data[counter][0] = ".";
-        data[counter][1] = Translator.toMorse('.');
-        counter++;
-        data[counter][0] = ",";
-        data[counter][1] = Translator.toMorse(',');
-        counter++;
-        data[counter][0] = "'";
-        data[counter][1] = Translator.toMorse('\'');
-        counter++;
-        data[counter][0] = ":";
-        data[counter][1] = Translator.toMorse(':');
-        counter++;
-        data[counter][0] = "-";
-        data[counter][1] = Translator.toMorse('-');
-        counter++;
-        data[counter][0] = " ";
-        data[counter][1] = Translator.toMorse(' ');
+
         return data;
     }
 }
