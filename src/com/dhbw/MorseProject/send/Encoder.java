@@ -1,5 +1,9 @@
 package com.dhbw.MorseProject.send;
 
+import com.dhbw.MorseProject.send.events.EncoderErrorEvent;
+import com.dhbw.MorseProject.send.events.EncoderFinishedEvent;
+import com.dhbw.MorseProject.send.events.IEncoderErrorListener;
+import com.dhbw.MorseProject.send.events.IEncoderFinishedListener;
 import com.dhbw.MorseProject.translate.Translator;
 
 import javax.sound.sampled.AudioFormat;
@@ -42,6 +46,11 @@ public class Encoder {
      * Thread used for actual timing relevant sending work.
      */
     private Thread encoderThread;
+    /***
+     * //todo comment
+     */
+    private EncoderErrorEvent errorEvent = new EncoderErrorEvent();
+    private EncoderFinishedEvent finishedEvent = new EncoderFinishedEvent();
     /**
      * Variable accessed by sending-thread and main-thread (volatile) signaling if the next tone should be played.
      * Could be used to stop playback through stopPlaying.
@@ -69,13 +78,16 @@ public class Encoder {
      * @param morse  to be sent.
      * @param melody in which to send.
      */
-    public void send(String morse, Melody melody) throws InterruptedException, LineUnavailableException {
+    public void send(String morse, Melody melody) throws InterruptedException {
         stopPlaying();                                              // prevent encoder from playing multiple signals at once
         isPlaying = true;
-        //encoderThread = new Thread(() -> sending(morse, melody));  // create a new sending thread executing the sending method
-
-        // todo start own thread?
-        sending(morse, melody);
+        encoderThread = new Thread(() -> {
+            try {
+                sending(morse, melody);
+            } catch (InterruptedException | LineUnavailableException e) {
+                errorEvent.alert(e.getStackTrace().toString());
+            }
+        });  // create a new sending thread executing the sending method
     }
 
     /**
@@ -103,6 +115,7 @@ public class Encoder {
                 }
             }
         }
+        finishedEvent.alert();
     }
 
     /**
@@ -111,7 +124,7 @@ public class Encoder {
     public synchronized void stopPlaying() throws InterruptedException {
         isPlaying = false;
         // todo necessary?
-        //encoderThread.join();
+        encoderThread.join();
     }
 
     /**
@@ -184,5 +197,13 @@ public class Encoder {
             buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1 / (len * (1 - DAMP_FACTOR) / 4)));
         }
         return buffer;
+    }
+
+    public void addErrorEventListener(IEncoderErrorListener listener){
+        errorEvent.addListener(listener);
+    }
+
+    public void addFinishedEventListener(IEncoderFinishedListener listener){
+        finishedEvent.addListener(listener);
     }
 }

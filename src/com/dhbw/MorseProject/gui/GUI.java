@@ -1,7 +1,7 @@
 package com.dhbw.MorseProject.gui;
 
 import com.dhbw.MorseProject.send.Encoder;
-import com.dhbw.MorseProject.send.IEncoderFinishedListener;
+import com.dhbw.MorseProject.send.events.IEncoderFinishedListener;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
@@ -16,7 +16,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -158,7 +157,7 @@ public class GUI {
             }
         });
 
-        Encoder.getInstance().addEncoderFinishedListener(new IEncoderFinishedListener() {
+        Encoder.getInstance().addFinishedEventListener(new IEncoderFinishedListener() {
             @Override
             public void run() {
                 stopPlaying();
