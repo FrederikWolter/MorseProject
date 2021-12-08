@@ -268,15 +268,6 @@ public class GUI {
         splitPane.setResizeWeight(0.5);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new GUI();
-            }
-        });
-    }
-
     public String[][] fillTable(){
         String[][] data = new String[42][2];
         int counter = 0;

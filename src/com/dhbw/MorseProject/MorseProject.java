@@ -1,8 +1,11 @@
 package com.dhbw.MorseProject;
 
+import com.dhbw.MorseProject.gui.GUI;
 import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
+
+import javax.swing.*;
 
 // todo comment ids from Pflichtenheft ;) where these are implemented
 // todo setup jar export
@@ -21,27 +24,13 @@ public class MorseProject {
         //todo initialize central data here
         initMelodies();
 
-        // todo remove test code
-        Encoder e = Encoder.getInstance();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new GUI();
+            }
+        });
 
-        //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-        e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
-        System.out.println(Translator.textToMorse("abcdabcd"));
-
-
-        /*e.send(".", new Melody("test", new int[1]));
-        String input="end";
-        Scanner s = new Scanner(System.in);
-        System.out.println("\n\n++ Only input '.', '-', ' ' and '/' ++");
-        do {
-            System.out.print("\nInput: ");
-            input=s.next();
-            if(input.equalsIgnoreCase("stop"))
-                e.stopPlaying();
-            else if(!input.equalsIgnoreCase("end"))
-                e.send(input, new Melody("test", new ArrayList<>()));
-
-        } while(!input.equalsIgnoreCase("end"));*/
     }
 
     /**
