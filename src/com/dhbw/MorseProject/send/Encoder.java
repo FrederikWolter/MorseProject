@@ -129,7 +129,6 @@ public class Encoder {
      */
     public synchronized void stopPlaying() throws InterruptedException, NullPointerException {
         isPlaying = false;
-        // todo necessary?
         if(encoderThread != null)
             encoderThread.join();
     }
