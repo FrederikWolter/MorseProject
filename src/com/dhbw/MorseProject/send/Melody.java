@@ -26,10 +26,10 @@ public class Melody {
         this.name = name;
         this.freqList = freqList;
 
-        if (melodyList == null) {        // part of singleton implementation
+        if (melodyList == null)         // part of singleton implementation
             melodyList = new ArrayList<>();
-        }
 
+        melodyList.removeIf(melody -> melody.equals(this)); // remove old melody if same name
         Melody.melodyList.add(this);    // automatically add created object to list
     }
 
@@ -54,4 +54,12 @@ public class Melody {
         this.freqList = freqList;
     }
     // endregion
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Melody) {
+            return this.name.equals(((Melody) obj).name);
+        }
+        return false;
+    }
 }

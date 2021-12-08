@@ -27,7 +27,7 @@ public class MorseProject {
         try {
             //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
             //e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
-            e.send("............-/............-/", Melody.getMelodyList().get(6));
+            //e.send("............-/............-/", Melody.getMelodyList().get(6));
             System.out.println(Translator.textToMorse("abcdabcd"));
         }catch (Exception p){
             p.printStackTrace();
@@ -55,7 +55,7 @@ public class MorseProject {
     private static void initMelodies() {
         new Melody("Fest", new int[]
                 {550});
-        new Melody("Test", new int[]
+        new Melody("Triton", new int[]
                 {550, 440, 330});
         new Melody("Linear Steigend", new int[]
                 {200, 300, 400, 500, 600, 700, 800, 900, 1000});
