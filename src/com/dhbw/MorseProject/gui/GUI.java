@@ -1,6 +1,7 @@
 package com.dhbw.MorseProject.gui;
 
 import com.dhbw.MorseProject.send.Encoder;
+import com.dhbw.MorseProject.send.IEncoderFinishedListener;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
@@ -235,6 +236,15 @@ public class GUI {
             Encoder.getInstance().send(morse, sendMelody);
             beginSendingButton.setText("Senden beenden");
             showingBeginSend = !showingBeginSend;
+
+            IEncoderFinishedListener encoderFinishedListener = new IEncoderFinishedListener() {
+                @Override
+                public void run() {
+                    stopPlaying();
+                }
+            };
+
+
         }
     }
 
@@ -318,7 +328,7 @@ public class GUI {
     }
 
     public String[][] fillTable(){
-        ArrayList allCharacters = new ArrayList<>(Translator.getCharToMorse().keySet());
+        ArrayList allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
 
         String[][] data = new String[42][2];
         int counter = 0;
