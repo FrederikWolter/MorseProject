@@ -212,26 +212,29 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 translateSendTextAreas(textAreaFocusMap);
             }
-
-
         });
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
         if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only loose focus if it has gained focus before
-            if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+            if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                    || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)){
                 textAreaFocusMap.put(non_caller, textArea_focusState.FOCUS_LOST);
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){
+                textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
+            } else{
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             }
         }
     }
 
     private void translateSendTextAreas(Map textAreaFocusMap) {
-        if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+        if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
             translateTextAreaTextToMorse();
-        } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+        } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
+                || textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
             translateMorseTextAreaToText();
         } else{
             if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
