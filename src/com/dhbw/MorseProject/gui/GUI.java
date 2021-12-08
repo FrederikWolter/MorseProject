@@ -36,6 +36,7 @@ public class GUI {
     private JSplitPane sendSplitPane;
     private JTable table_alphabet;
     private JTextArea textArea_info;
+    private JPanel JPanel_border;
     private JTextField textField_info;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
@@ -46,7 +47,7 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        frame.setResizable(false);
+        //frame.setResizable(false);
 
         try {
             frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
@@ -54,6 +55,8 @@ public class GUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
