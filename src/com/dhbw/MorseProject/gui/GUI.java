@@ -20,10 +20,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Class responsible for user interactions.
- * @author x, y, z supported by Lucas Schaffer
+ * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
 public class GUI {
     private final Translator translator = new Translator();
