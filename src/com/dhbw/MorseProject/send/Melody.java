@@ -3,7 +3,7 @@ package com.dhbw.MorseProject.send;
 import java.util.ArrayList;
 
 /**
- * This class is used as a POJO for the representation of a melody object.
+ * This class is used as a POJO for the representation of a melody object. [ID: F-TEC-10.4]
  * @author Frederik Wolter
  */
 public class Melody {

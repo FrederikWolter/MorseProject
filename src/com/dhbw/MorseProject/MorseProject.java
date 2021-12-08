@@ -24,11 +24,10 @@ public class MorseProject {
         // todo remove test code
         Encoder e = Encoder.getInstance();
 
-
-
         try {
             //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-            e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
+            //e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
+            e.send("............-/............-/", Melody.getMelodyList().get(6));
             System.out.println(Translator.textToMorse("abcdabcd"));
         }catch (Exception p){
             p.printStackTrace();
@@ -51,7 +50,7 @@ public class MorseProject {
     }
 
     /**
-     * Initialize the Melodies.
+     * Initialize the Melodies. [ID: F-TEC-10.4.1]
      */
     private static void initMelodies() {
         new Melody("Fest", new int[]

@@ -6,11 +6,13 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-
-// todo comments
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
- * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal.
+ * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal. [ID: F-LOG-20.3.1]
  * @author Lucas Schaffer & Frederik Wolter
  */
 public class Encoder {
@@ -68,11 +70,13 @@ public class Encoder {
      * @param morse  to be sent.
      * @param melody in which to send.
      */
-    public void send(String morse, Melody melody) {
+    public void send(String morse, Melody melody) throws InterruptedException, LineUnavailableException{
         stopPlaying();                                              // prevent encoder from playing multiple signals at once
         isPlaying = true;
-        encoderThread = new Thread(() -> sending(morse, melody));   // create a new sending thread executing the sending method
-        encoderThread.start();                                      // start created thread
+        //encoderThread = new Thread(() -> sending(morse, melody));  // create a new sending thread executing the sending method
+
+        // todo start own thread?
+        sending(morse, melody);
     }
 
     /**
@@ -82,37 +86,32 @@ public class Encoder {
      * @param melody in which to send.
      */
     @SuppressWarnings("PointlessArithmeticExpression")
-    private void sending(String morse, Melody melody) {
+    private void sending(String morse, Melody melody) throws InterruptedException, LineUnavailableException {
         char[] signals = morse.toCharArray();
         int[] freqList = melody.getFreqList();
         int freq_length = freqList.length;
         int freq_index = 0;
 
         for (char x : signals) {
-            switch (String.valueOf(x)) {
-                case Translator.C -> wait(2 * TIME_UNIT);
-                case Translator.W -> wait(6 * TIME_UNIT);
-                case Translator.S -> signal(1 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
-                case Translator.L -> signal(3 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
-                default -> {
-                } //TODO Throw Exception
+            if(isPlaying) {     // stop playing next tone if isPlaying is false
+                switch (String.valueOf(x)) {
+                    case Translator.C -> wait(2 * TIME_UNIT);
+                    case Translator.W -> wait(6 * TIME_UNIT);
+                    case Translator.S -> signal(1 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
+                    case Translator.L -> signal(3 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
+                    default ->  throw new IllegalArgumentException("Not a recognized morse code: " + x);
+                }
             }
-            if (!isPlaying)     // stop playing next tone if isPlaying is false
-                break;
         }
     }
 
     /**
-     * public method to stop playing the current morse-signal.
+     * public method to stop playing the current morse-signal. [ID: F-GUI-20.1.3]
      */
-    public synchronized void stopPlaying() {
+    public synchronized void stopPlaying() throws InterruptedException{
         isPlaying = false;
-        try {       // todo necessary?
-            encoderThread.join();
-        } catch (Exception e) {
-            if (encoderThread != null)
-                e.printStackTrace(); //TODO Exception Handling
-        }
+        // todo necessary?
+        //encoderThread.join();
     }
 
     /**
@@ -120,36 +119,28 @@ public class Encoder {
      * Used to implement silence between tones.
      * @param duration to wait in ms
      */
-    private void wait(int duration) {
-        try {
-            Thread.sleep(duration);
-        } catch (InterruptedException e) {
-            e.printStackTrace();    //TODO Exception handling
-        }
+    private void wait(int duration) throws InterruptedException {
+        Thread.sleep(duration);
     }
 
     /**
      * Helper method for playing a tone for a given duration and with a given frequency.
-     * Inspired by (among others) <a href="https://rosettacode.org/wiki/Sine_wave">rosettacode.org</a>
+     * Inspired by (among others) <a href="https://rosettacode.org/wiki/Sine_wave">rosettacode.org</a> [ID: F-TEC-00, F-TEC-10.1]
      * @param duration  of the tone.
      * @param frequency of the tone.
      */
-    private void signal(int duration, int frequency) {
-        try {
-            byte[] buffer = sineWave(frequency, duration);
-            AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
-            SourceDataLine line = AudioSystem.getSourceDataLine(format);
+    private void signal(int duration, int frequency) throws LineUnavailableException, InterruptedException{
+        byte[] buffer = sineWave(frequency, duration);
+        AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
+        SourceDataLine line = AudioSystem.getSourceDataLine(format);                                                // [ID: F-TEC-10.2.1]
 
-            line.open(format);
-            line.start();
-            line.write(buffer, 0, buffer.length);
-            line.drain();
-            line.close();
+        line.open(format);
+        line.start();
+        line.write(buffer, 0, buffer.length);
+        line.drain();
+        line.close();
 
-            wait(TIME_UNIT);                         // 1 time unit pause after each signal
-        } catch (LineUnavailableException e) {
-            e.printStackTrace(); //TODO Exception handling
-        }
+        wait(TIME_UNIT);                         // 1 time unit pause after each signal
     }
 
     /**
