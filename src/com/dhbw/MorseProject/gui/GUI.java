@@ -176,7 +176,7 @@ public class GUI {
         Encoder.getInstance().addFinishedEventListener(new IEncoderFinishedListener() {
             @Override
             public void run() {
-                stopPlaying();
+                stopPlayingChangeVariables();
             }
         });
 
@@ -273,13 +273,17 @@ public class GUI {
     private void stopPlaying() {
         try {
             Encoder.getInstance().stopPlaying();
-            beginSendingButton.setText("Senden beginnen");
-            showingBeginSend = !showingBeginSend;
+            stopPlayingChangeVariables();
         } catch (InterruptedException e) {
             e.printStackTrace();
             //TODO: display error
         }
 
+    }
+
+    private void stopPlayingChangeVariables() {
+        beginSendingButton.setText("Senden beginnen");
+        showingBeginSend = !showingBeginSend;
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
