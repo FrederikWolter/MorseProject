@@ -68,7 +68,13 @@ public class GUI {
 
     private Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
+    /**
+     * Constructor for class GUI
+     */
     public GUI(){
+        /**
+         * Settings for frame and application appearance
+         */
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -103,16 +109,18 @@ public class GUI {
 
         adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
 
+        /**
+         * Filling text and table in Information-Tab with content and setting appearance
+         * @see #fillTable()
+         */
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
-
         DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
         tableModel.addColumn(columnNames[0]);
         tableModel.addColumn(columnNames[1]);
         for (String[] datum : data) {
             tableModel.addRow(new Object[]{datum[0], datum[1]});
         }
-
         DefaultTableCellRenderer centerRendering = new DefaultTableCellRenderer();
         centerRendering.setHorizontalAlignment(JLabel.CENTER);
         table_alphabet.getColumnModel().getColumn(0).setCellRenderer(centerRendering);
@@ -131,6 +139,9 @@ public class GUI {
         //Quelle: https://de.wikipedia.org/wiki/Morsecode
         textArea_info.setText(info);
 
+        /**
+         * Action-Listener to start the recording of audio
+         */
         startRecordingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,6 +157,11 @@ public class GUI {
             }
         });
 
+        /**
+         * Action-Listener to start and stop sending the given morse-code via audio.
+         * @see #startPlaying()
+         * @see #stopPlaying()
+         */
         beginSendingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,6 +180,9 @@ public class GUI {
             }
         });
 
+        /**
+         * Settings for the ComboBox to select given melodies or frequencies.
+         */
         for (int i = 0; i < Melody.getMelodyList().size(); i++){
             comboBox1.addItem(Melody.getMelodyList().get(i).getName());
         }
@@ -178,13 +197,15 @@ public class GUI {
             }
         });
 
+        /**
+         * Action-Listeners to clear textAreas after clicking the button
+         */
         send_clear_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clear_textAreas(send_text_textArea, send_morse_textArea);
             }
         });
-
         receive_clear_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -192,26 +213,24 @@ public class GUI {
             }
         });
 
+        /**
+         * todo MARK HIER INPUT
+         */
         send_morse_textArea.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 textAreaFocusMap.put(textArea.MORSE, textArea_focusState.FOCUS_GAINED);
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 textAreaFocusLost(textAreaFocusMap, textArea.MORSE, textArea.TEXT);
             }
-
-
         });
-
         send_text_textArea.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 textAreaFocusMap.put(textArea.TEXT, textArea_focusState.FOCUS_GAINED);
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 textAreaFocusLost(textAreaFocusMap, textArea.TEXT, textArea.MORSE);
@@ -243,6 +262,12 @@ public class GUI {
             Encoder.getInstance().send(morse, sendMelody);
             beginSendingButton.setText("Senden beenden");
             showingBeginSend = !showingBeginSend;
+            IEncoderFinishedListener encoderFinishedListener = new IEncoderFinishedListener() {
+                @Override
+                public void run() {
+                    stopPlaying();
+                }
+            };
 
         }
     }
@@ -266,7 +291,6 @@ public class GUI {
             }
         }
     }
-
     private void translateSendTextAreas(Map textAreaFocusMap) {
         if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
                 || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
@@ -284,7 +308,6 @@ public class GUI {
             }
         }
     }
-
     private void translateMorseTextAreaToText() {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
         if (textTranslation == null){
@@ -294,7 +317,6 @@ public class GUI {
             send_text_textArea.setText(textTranslation);
         }
     }
-
     private void translateTextAreaTextToMorse() {
         String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
         if (morseTranslation == null){
@@ -310,34 +332,27 @@ public class GUI {
              textAreas) {
             textArea.setText("");
         }
-
     }
 
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
-
         morse_textArea.setPreferredSize(textAreas_preferredDimension);
         morse_textArea.setMinimumSize(textAreas_preferredDimension);
-
         text_textArea.setPreferredSize(textAreas_preferredDimension);
         text_textArea.setMinimumSize(textAreas_preferredDimension);
-
         splitPane.setDividerLocation(splitPane.getWidth()/2);
         splitPane.setResizeWeight(0.5);
     }
 
     public String[][] fillTable(){
         ArrayList allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
-
         String[][] data = new String[42][2];
         int counter = 0;
-
         for(int i=0; i<allCharacters.size(); i++) {
             data[counter][0] = ""+allCharacters.get(i);
             data[counter][1] = Translator.toMorse((char)allCharacters.get(i));
             counter++;
         }
-
         return data;
     }
 }
