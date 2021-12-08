@@ -142,27 +142,9 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!showingBeginSend){
-                    Encoder.getInstance().stopPlaying();
-                    beginSendingButton.setText("Senden beginnen");
-                    showingBeginSend = !showingBeginSend;
+                    stopPlaying();
                 } else{
-                    translateSendTextAreas(textAreaFocusMap);
-                    String morse = send_morse_textArea.getText();
-                    Melody sendMelody = null;
-                    if (comboBox1.getSelectedItem() != "Fest"){
-                        for (Melody melody : Melody.getMelodyList()){
-                            if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
-                                sendMelody = melody;
-                            }
-                        }
-                    }else{
-                        sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
-                    }
-                    if (sendMelody != null){
-                        Encoder.getInstance().send(morse, sendMelody);
-                        beginSendingButton.setText("Senden beenden");
-                        showingBeginSend = !showingBeginSend;
-                    }
+                    startPlaying();
                 }
             }
         });
@@ -227,6 +209,32 @@ public class GUI {
                 translateSendTextAreas(textAreaFocusMap);
             }
         });
+    }
+
+    private void startPlaying() {
+        translateSendTextAreas(textAreaFocusMap);
+        String morse = send_morse_textArea.getText();
+        Melody sendMelody = null;
+        if (comboBox1.getSelectedItem() != "Fest"){
+            for (Melody melody : Melody.getMelodyList()){
+                if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
+                    sendMelody = melody;
+                }
+            }
+        }else{
+            sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
+        }
+        if (sendMelody != null){
+            Encoder.getInstance().send(morse, sendMelody);
+            beginSendingButton.setText("Senden beenden");
+            showingBeginSend = !showingBeginSend;
+        }
+    }
+
+    private void stopPlaying() {
+        Encoder.getInstance().stopPlaying();
+        beginSendingButton.setText("Senden beginnen");
+        showingBeginSend = !showingBeginSend;
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
