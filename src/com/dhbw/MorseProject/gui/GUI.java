@@ -71,16 +71,10 @@ public class GUI {
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
 
-        Dimension send_text_textArea_preferredDimension = new Dimension(sendSplitPane.getWidth()/2 ,send_text_textArea.getPreferredSize().height);
-        send_text_textArea.setPreferredSize(send_text_textArea_preferredDimension);
-        send_text_textArea.setMinimumSize(send_text_textArea_preferredDimension);
+        adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
-        Dimension recieve_text_textArea_preferredDimension = new Dimension(receiveSplitPane.getWidth()/2 ,receive_text_textArea.getPreferredSize().height);
-        receive_text_textArea.setPreferredSize(recieve_text_textArea_preferredDimension);
-        receive_text_textArea.setMinimumSize(recieve_text_textArea_preferredDimension);
+        adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
 
-        receiveSplitPane.setDividerLocation(receiveSplitPane.getWidth()/2);
-        sendSplitPane.setDividerLocation(sendSplitPane.getWidth()/2);
 
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
@@ -93,8 +87,8 @@ public class GUI {
         DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
         tableModel.addColumn(columnNames[0]);
         tableModel.addColumn(columnNames[1]);
-        for (int i = 0; i < data.length; i++) {
-            tableModel.addRow(new Object[]{data[i][0], data[i][1]});
+        for (String[] datum : data) {
+            tableModel.addRow(new Object[]{datum[0], datum[1]});
         }
 
         String info = """
@@ -138,6 +132,16 @@ public class GUI {
                 showingBeginSend = !showingBeginSend;
             }
         });
+    }
+
+    private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
+        Dimension recieve_textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
+        text_textArea.setPreferredSize(recieve_textAreas_preferredDimension);
+        text_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
+        morse_textArea.setPreferredSize(recieve_textAreas_preferredDimension);
+        morse_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
+
+        splitPane.setDividerLocation(splitPane.getWidth()/2);
     }
 
     public static void main(String[] args) {
