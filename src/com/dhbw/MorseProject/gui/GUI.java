@@ -73,9 +73,6 @@ public class GUI {
         adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
 
 
-        receiveSplitPane.setDividerLocation(receiveSplitPane.getWidth()/2);
-        sendSplitPane.setDividerLocation(sendSplitPane.getWidth()/2);
-
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
 
@@ -140,6 +137,8 @@ public class GUI {
         text_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
         morse_textArea.setPreferredSize(recieve_textAreas_preferredDimension);
         morse_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
+
+        splitPane.setDividerLocation(splitPane.getWidth()/2);
     }
 
     public static void main(String[] args) {
