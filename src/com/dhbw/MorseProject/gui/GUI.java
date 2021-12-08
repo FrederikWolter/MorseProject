@@ -320,6 +320,7 @@ public class GUI {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
         if (textTranslation == null){
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
+            send_text_textArea.setText("");
             System.out.println("morseToText_translationError");
         } else{
             send_text_textArea.setText(textTranslation);
@@ -329,6 +330,7 @@ public class GUI {
         String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
         if (morseTranslation == null){
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
+            send_morse_textArea.setText("");
             System.out.println("textToMorse_translationError");
         } else{
             send_morse_textArea.setText(morseTranslation);
