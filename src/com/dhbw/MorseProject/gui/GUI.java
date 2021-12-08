@@ -135,11 +135,13 @@ public class GUI {
     }
 
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
-        Dimension recieve_textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
-        text_textArea.setPreferredSize(recieve_textAreas_preferredDimension);
-        text_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
-        morse_textArea.setPreferredSize(recieve_textAreas_preferredDimension);
-        morse_textArea.setMinimumSize(recieve_textAreas_preferredDimension);
+        Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
+
+        text_textArea.setPreferredSize(textAreas_preferredDimension);
+        text_textArea.setMinimumSize(textAreas_preferredDimension);
+
+        morse_textArea.setPreferredSize(textAreas_preferredDimension);
+        morse_textArea.setMinimumSize(textAreas_preferredDimension);
 
         splitPane.setDividerLocation(splitPane.getWidth()/2);
     }
