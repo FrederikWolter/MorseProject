@@ -1,67 +1,41 @@
 package com.dhbw.MorseProject.receive;
 
-import java.time.Instant;
-import java.util.Date;
-
 /**
+ * This class is used as a POJO for the representation of one Sample.
+ *
  * @author Mark Mühlenberg, mininaml changes by Daniel Czeschner
+ * @see AudioListener
  */
 public class Noise {
 
+    // region POJO attributes
     private boolean quiet;
-    private Instant timestamp;
     private int index;
+    //endregion
 
-    public Noise(boolean quiet, Instant timestamp) {
-        this.quiet = quiet;
-        this.timestamp = timestamp;
-    }
-
-    public Noise(boolean quiet, Date timestamp) {
-        this(quiet, (Instant) null);
-        this.timestamp = timestamp.toInstant();
-    }
-
+    /**
+     * Constructor of {@link Noise} Class.
+     *
+     * @param quiet Ture if this sample is silence. (Smaller than the threshold (see {@link AudioListener}))
+     * @param index The index of this Sample.
+     */
     public Noise(boolean quiet, int index) {
         this.quiet = quiet;
         this.index = index;
     }
 
+    // region getter
     public int getIndex() {
         return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public boolean isQuiet() {
         return quiet;
     }
-
-    public void setQuiet(boolean quiet) {
-        this.quiet = quiet;
-    }
-
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public Date getTimestampAsDate() {
-        return Date.from(timestamp);
-    }
-
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-    }
+    //endregion
 
     @Override
     public String toString() {
-        long ms;
-        if(this.getTimestamp() != null)
-            ms = getTimestamp().toEpochMilli();
-        else
-            ms = this.getIndex();
-        return "Quiet: " + this.isQuiet() + " | time:" + ms;
+        return "Quiet: " + this.isQuiet() + " | Index:" + index;
     }
 }

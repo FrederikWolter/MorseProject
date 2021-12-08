@@ -1,12 +1,15 @@
 package com.dhbw.MorseProject.receive;
 
 import javax.sound.sampled.*;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * In this class the input of the microphone is captured and the rms values of this input can be fetched.
+ * In this class the input of the microphone is captured into a buffer.
+ * This buffer is then split into windowed-buffers with overlap (see {@link #analyzeBuffer(byte[])}).
+ * For each windowed-buffer the RMS-Value is calculated and a new {@link Noise}-Object is generated. (also see {@link #calculateRMSValue(byte[])}).
+ * Evaluated are these Objets in the {@link Decoder} class.
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
@@ -25,54 +28,60 @@ public class AudioListener {
     private boolean isListening = false;
 
     /**
-     * The size of the array in which the data line's input is read. When size is reached a new {@link Noise} Object is created. See {@link #analyzeNoise(byte[])}}
+     * The size of the buffer-array in which the data line input is read.
      */
     private final int bufferSize = 1000;
 
-
+    /**
+     * The size of one windowed-buffer.
+     */
     private final int windowSize = bufferSize / 5;
-    private final int stepSize = windowSize / 2;
-
-    private int buffersRead = 0;
-
 
     /**
-     * The minimum amount of calculated rms values before the {@link Decoder} is notified.
+     * The size of the overlapped values between the windowed-buffer's.
+     */
+    private final int stepSize = windowSize / 2;
+
+    /**
+     * The index for the next {@link Noise} object.
+     */
+    private int buffersRead = 0;
+
+    /**
+     * The minimum amount of new {@link Noise}-Objects in the {@link #synchronizedBuffer} before the {@link Decoder} is notified that there are new samples ({@link Noise}-Objets) to check.
      */
     private final int minNewSamples = 15;
 
     /**
-     * The calculated RMS values are added into this List and can be fetched with the {@link #getNewSample()} method.
-     * This Object is used to synchronize this class and the {@link Decoder} class.
-     * (On this object the {@link Decoder} and {@link #listenerThread} thread is synchronized)
+     * Smooth factor for rms-values. Value defines the multiplier of how much we want to smooth a list of rms values depending on the average of this list.
      */
-    public final List<Noise> synchronizedBuffer = new ArrayList<>();
+    private final float rmsSmoothAmount = 0.85f;
 
-    //private Thread decoderThread;
     /**
-     * The thread for the audio input, in which the input of {@link #line} is read into the memory buffer and the rms being calculated.
-     * Also, the notification of the {@link Decoder} is handheld here. (Also see {@link #minNewSamples})
+     * In this List the created {@link Noise}-Objects are added. (See {@link #analyzeBuffer(byte[])})
+     * This List is also used to synchronize the {@link Decoder}- and {@link #listenerThread}-Thread.
+     */
+    private final List<Noise> synchronizedBuffer = new ArrayList<>();
+
+    /**
+     * Thread for the audio input from {@link #line} in which we handle everything (see {@link #listenerRunnable}).
      */
     private Thread listenerThread;
 
-    /*public AudioListener(Thread decoderThread){
-        this.decoderThread = decoderThread;
-    }*/
 
     /**
-     * Method to start listening on the microphone input.
-     * The {@link #line} is initialized here with the default microphone of a computer on which this program is running.
+     * Method to start capturing the microphone input.
+     * The {@link #line} is initialized here with the default microphone of the computer on which this program is running.
      *
-     * @return Returns true if the listener started successfully.
+     * @return True if the listener started successfully.
      */
     public boolean startListening() {
-
         AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
         if (!AudioSystem.isLineSupported(info)) {
-            System.out.println("DataLine not available.");
-            return isListening;
+            System.err.println("DataLine not available.");
+            return false;
         }
 
         try {
@@ -81,12 +90,12 @@ public class AudioListener {
             line.start();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
-            return isListening;
+            return false;
         }
 
         isListening = true;
 
-        listenerThread = new Thread(listenerRunnable);
+        listenerThread = new Thread(listenerRunnable); //Creating new Thread because you can only call .start on Thread once
 
         listenerThread.start();
 
@@ -94,60 +103,59 @@ public class AudioListener {
     }
 
     /**
-     * Returns the value of the filed {@link #isListening}.
+     * Returns the value of the variable {@link #isListening}.
      *
      * @return True, if the AudioListener is currently recording.
-     * @see #isListening
      */
     public boolean isListening() {
         return isListening;
     }
 
     /**
-     * This Method stops the audio listener. It waits until the last run of the {@link #listenerThread} finished.
+     * This method stops the capturing of the microphone input.
+     * It waits until the last run of the {@link #listenerThread}-Thread finished.
+     *
+     * @return True, if the Thread stopped without error.
      */
-    public void stopListening() {
-        //Set boolean to false so that the loop finishes cleanly
-        isListening = false;
+    public boolean stopListening() {
+        isListening = false;        //Set boolean to false so that the loop finishes cleanly
         try {
-            //join to wait for the listenerThread to finish.
-            listenerThread.join();
+            listenerThread.join();  //Join to wait for the listenerThread to finish.
             line.stop();
+            return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     /**
-     * The runnable for the {@link #listenerThread} thread.
+     * The Runnable for the {@link #listenerThread}-Thread.
+     * In this Thread/Runnable we do everything to generate new {@link Noise}-Objets and fill the {@link #synchronizedBuffer}
+     * The notification of the {@link Decoder} is also handheld here.
      *
-     * @see Runnable
+     * @see #synchronizedBuffer
+     * @see #analyzeBuffer(byte[])
+     * @see Decoder
      */
     private final Runnable listenerRunnable = () -> {
         byte[] memoryBuffer = new byte[bufferSize];
 
-        try {
-            synchronized (listenerThread){
-                listenerThread.wait(1000);
+        synchronized (listenerThread) {
+            try {
+                listenerThread.wait(1000);   //We wait 1 second before we start listening to skip user mouse clicks, etc..
+            } catch (InterruptedException e) {
+                e.printStackTrace();    //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
 
         while (isListening) {
             if (line.read(memoryBuffer, 0, memoryBuffer.length) > 0) {
-
                 synchronized (synchronizedBuffer) {
-                    List<Noise> test = analyzeNoise(memoryBuffer);
-                    synchronizedBuffer.addAll(test);
-
-                    //TODO delete DEBUG if no longer necessary
-                    //System.out.println(String.format("Added %s", noise.toString()));
+                    synchronizedBuffer.addAll(analyzeBuffer(memoryBuffer));
 
                     if (synchronizedBuffer.size() >= minNewSamples) {
                         synchronizedBuffer.notify();
-                        //TODO delete DEBUG if no longer necessary
-                        //System.out.println("Try");
                     }
                 }
             }
@@ -155,104 +163,116 @@ public class AudioListener {
     };
 
     /**
-     * Methode that Calculates the Root Mean Square of the audio input.
-     * See <a href="https://en.wikipedia.org/wiki/Root_mean_square">Root Mean Square on Wikipedia</a>
+     * This method is using windowed-buffers to go through the buffer-byte-array with x (see {@link #stepSize}) overlapping values.
+     * Based on the values in the windowed-buffer we calculate the RMS-Value and smooth them out.
+     * Then for each smoothed RMS-Value a new {@link Noise}-Object is created.
      *
-     * @param x The memoryBuffer byte array of the Input-AudioSystem (TargetDataLine)
-     * @return The RMS Value of the input byte array
+     * @param byteArray buffer with the recorded input from the microphone.
+     * @return An ArrayList with the new {@link Noise}-Objects (Samples).
+     * @see #calculateRMSValue(byte[])
+     * @see #smoothRMSValues(List, float)
      */
-    private double rmsValue(byte[] x) {
-        if (x.length == 0)
-            return 0.0;
-
-        double rms = 0.0;
-        for (int i : x) {
-            rms += i * i;
-        }
-        rms /= x.length;
-        return Math.sqrt(rms);
-    }
-
-    /**
-     * Creates a new {@link Noise} object for a corresponding audio input sample.
-     * Uses {@link #rmsValue(byte[])} to calculate the RMS value for the byte array.
-     * A signal is silence if this calculated RMS value is smaller than {@link #getNoiseThreshold()}
-     *
-     * @param byteArray The last bytes recorded by the microphone in an array.
-     * @return The {@link Noise} object
-     */
-    private List<Noise> analyzeNoise(byte[] byteArray) {
-        Instant timestamp = Instant.now();
+    private List<Noise> analyzeBuffer(byte[] byteArray) {
         List<Noise> noiseList = new ArrayList<>();
         List<Double> rmsBuffer = new ArrayList<>();
 
         byte[] windowedBuffer = new byte[windowSize];
 
+        //Windowed-Buffer creation and rms calculation
         for (int i = 0; i <= bufferSize - windowSize; i += stepSize) {
             for (int j = 0, s = 0; j < windowSize; j++, s++) {
                 windowedBuffer[s] = byteArray[j + i];
             }
-            double rms = rmsValue(windowedBuffer);
+            double rms = calculateRMSValue(windowedBuffer);
 
             rmsBuffer.add(rms);
 
         }
-        List<Double> smoothed = smoothRMSValues(rmsBuffer, 0.85f);
-        for(int i = 0; i < smoothed.size(); i++) {
-            //System.out.println(d);
-            boolean quiet = smoothed.get(i) < getNoiseThreshold();
-            Noise noise = new Noise(quiet, buffersRead++/*(buffersRead * windowedBuffer.length) + i*/);
+
+        List<Double> smoothed = smoothRMSValues(rmsBuffer, rmsSmoothAmount); //Smooth the RMS-Values
+
+        for (Double smoothedRMS : smoothed) {
+            boolean quiet = smoothedRMS < getNoiseThreshold();
+            Noise noise = new Noise(quiet, buffersRead++);
             noiseList.add(noise);
         }
-        //buffersRead++;
+
         return noiseList;
     }
 
-    private List<Double> smoothRMSValues(List<Double> rmsBuffer, float v) {
+    /**
+     * Methode that calculates the "Root Mean Square" of the input byte array.
+     * See <a href="https://en.wikipedia.org/wiki/Root_mean_square">Root Mean Square on Wikipedia</a>
+     *
+     * @param byteArray The array from which the RMS should be calculated.
+     * @return The RMS Value of the input byte array
+     * @see #analyzeBuffer(byte[])
+     */
+    private double calculateRMSValue(byte[] byteArray) {
+        if (byteArray.length == 0)
+            return 0.0;
 
-        double weighted = get_list_average(rmsBuffer)*v;
-        List<Double> smoothed = new ArrayList<>();
+        double rms = 0.0;
 
-        for(int i = 0; i < rmsBuffer.size(); i++){
-            double prev = i>0 ? smoothed.get(i-1) : rmsBuffer.get(i);
-            double next = i<rmsBuffer.size() ? rmsBuffer.get(i) : rmsBuffer.get(i-1);
-
-            List<Double> test = new ArrayList<>();
-            test.add(weighted);
-            test.add(prev);
-            test.add(rmsBuffer.get(i));
-            test.add(next);
-
-            smoothed.add(get_list_average(test));
-        }
-        /*for(double d : smoothed)
-            System.out.println(d);*/
-        return smoothed;
-    }
-
-    private double get_list_average(List<Double> list)
-    {
-        float sum = 0;
-
-        for ( double value:list ) {
-            sum += value;
+        for (int i : byteArray) {
+            rms += i * i;
         }
 
-        return ((float) (sum / list.size()));
+        rms /= byteArray.length;
+
+        return Math.sqrt(rms);
     }
 
     /**
-     * Method to fetch the last recorded RMS values since the last fetch.
+     * This Method is smoothing out the RMS-Values.
+     * Based on <a href="https://stackoverflow.com/questions/32788836/smoothing-out-values-of-an-array">Stackoverflow question</a>
      *
-     * @return A List of double values with the last samples since last fetch.
-     * @see List<Double>
+     * @param rmsBuffer List with the RMS-values to smooth.
+     * @param variance  Defines how much the values should be smoothed.
+     * @return The smoothed RMS-Values in an ArrayList.
      */
-    public List<Noise> getNewSample() {
+    private List<Double> smoothRMSValues(List<Double> rmsBuffer, float variance) {
+        double weighted = getListAverage(rmsBuffer) * variance;
+        List<Double> smoothed = new ArrayList<>();
+
+        for (int i = 0; i < rmsBuffer.size(); i++) {
+            double prev = i > 0 ? smoothed.get(i - 1) : rmsBuffer.get(i);
+            double next = rmsBuffer.get(i);
+
+            smoothed.add(getListAverage(Arrays.asList(weighted, prev, next, next)));
+        }
+
+        return smoothed;
+    }
+
+    /**
+     * Method to calculate the average (avg) value of a list.
+     *
+     * @param list List from which the avg should be calculated.
+     * @return The average value
+     */
+    private double getListAverage(List<Double> list) {
+        float sum = 0;
+
+        for (double value : list) {
+            sum += value;
+        }
+
+        return (sum / list.size());
+    }
+
+    /**
+     * Method to fetch the latest {@link Noise}-Objects from the {@link #synchronizedBuffer}-Buffer and clears this buffer after it.
+     *
+     * @return The latest {@link Noise}-Objets
+     * @see #analyzeBuffer(byte[])
+     */
+    public List<Noise> getNewSamples() {
         //TODO test if this method can be updated to an array (Performance)
         synchronized (synchronizedBuffer) {
-            List<Noise> test = new ArrayList<>(synchronizedBuffer);
+            List<Noise> back = new ArrayList<>(synchronizedBuffer);
             synchronizedBuffer.clear();
-            return test;
+            return back;
         }
     }
 
@@ -265,5 +285,14 @@ public class AudioListener {
     private double getNoiseThreshold() {
         //TODO: get noise threshold from GUI
         return 40;
+    }
+
+    /**
+     * Classic getter
+     *
+     * @return {@link #synchronizedBuffer}
+     */
+    public List<Noise> getSynchronizedBuffer() {
+        return synchronizedBuffer;
     }
 }
