@@ -207,6 +207,10 @@ public class GUI {
         send_translate_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                translateSendTextAreas();
+            }
+
+            private void translateSendTextAreas() {
                 if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
                     translateTextAreaTextToMorse();
                 } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
