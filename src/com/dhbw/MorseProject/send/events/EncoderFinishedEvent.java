@@ -1,4 +1,4 @@
-package com.dhbw.MorseProject.send;
+package com.dhbw.MorseProject.send.events;
 
 import java.util.ArrayList;
 import java.util.List;
