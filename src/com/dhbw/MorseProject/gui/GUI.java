@@ -72,7 +72,7 @@ public class GUI {
             e.printStackTrace();
         }
 
-        JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
+        //JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
@@ -91,7 +91,6 @@ public class GUI {
         adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
         adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
-
 
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
