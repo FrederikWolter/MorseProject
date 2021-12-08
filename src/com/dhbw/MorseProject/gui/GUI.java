@@ -1,5 +1,6 @@
 package com.dhbw.MorseProject.gui;
 
+import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
@@ -56,6 +57,8 @@ public class GUI {
         MORSE,
         TEXT
     }
+
+    private Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
     public GUI(){
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
@@ -138,14 +141,29 @@ public class GUI {
         beginSendingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO link receive module
-
                 if (!showingBeginSend){
+                    Encoder.getInstance().stopPlaying();
                     beginSendingButton.setText("Senden beginnen");
+                    showingBeginSend = !showingBeginSend;
                 } else{
-                    beginSendingButton.setText("Senden beenden");
+                    translateSendTextAreas(textAreaFocusMap);
+                    String morse = send_morse_textArea.getText();
+                    Melody sendMelody = null;
+                    if (comboBox1.getSelectedItem() != "Fest"){
+                        for (Melody melody : Melody.getMelodyList()){
+                            if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
+                                sendMelody = melody;
+                            }
+                        }
+                    }else{
+                        sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
+                    }
+                    if (sendMelody != null){
+                        Encoder.getInstance().send(morse, sendMelody);
+                        beginSendingButton.setText("Senden beenden");
+                        showingBeginSend = !showingBeginSend;
+                    }
                 }
-                showingBeginSend = !showingBeginSend;
             }
         });
 
@@ -155,7 +173,7 @@ public class GUI {
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (comboBox1.getSelectedItem().toString() == "Fest"){
+                if (comboBox1.getSelectedItem().toString().equals("Fest")){
                     frequenz_slider.setEnabled(true);
                 }else{
                     frequenz_slider.setEnabled(false);
@@ -176,9 +194,6 @@ public class GUI {
                 clear_textAreas(receive_text_textArea, receive_morse_textArea);
             }
         });
-
-
-        Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
         send_morse_textArea.addFocusListener(new FocusListener() {
             @Override
