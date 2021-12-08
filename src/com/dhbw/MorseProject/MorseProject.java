@@ -24,18 +24,6 @@ public class MorseProject {
         //todo initialize central data here
         initMelodies();
 
-        // todo remove test code
-        Encoder e = Encoder.getInstance();
-
-        try {
-            //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-            //e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
-            //e.send("............-/............-/", Melody.getMelodyList().get(6));
-            System.out.println(Translator.textToMorse("abcdabcd"));
-        }catch (Exception p){
-            p.printStackTrace();
-        }
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
