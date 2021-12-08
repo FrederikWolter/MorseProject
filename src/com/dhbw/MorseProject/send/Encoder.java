@@ -15,6 +15,7 @@ import javax.sound.sampled.SourceDataLine;
  */
 public class Encoder {
     // region public static final
+    // active division to make these public static due to possible use by other classes as part of encoder 'interface'
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
@@ -27,11 +28,14 @@ public class Encoder {
      * Volume between 0 and 127 in which signal is played
      */
     public static final byte VOLUME = 60;
+    /**
+     * Damp factor for sine wave. Value between 0 and 1 representing percentage of samples modified.
+     */
     public static final double DAMP_FACTOR = 0.98;
     // endregion
 
     /**
-     * Singleton for the MAIN-thread version of {@link Encoder}
+     * Singleton like for the MAIN-thread version of {@link Encoder}
      */
     private static Encoder INSTANCE;
 
@@ -131,7 +135,6 @@ public class Encoder {
      * @param frequency of the tone.
      */
     private void signal(int duration, int frequency) {
-
         try {
             byte[] buffer = sineWave(frequency, duration);
             AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
@@ -143,7 +146,7 @@ public class Encoder {
             line.drain();
             line.close();
 
-            wait(TIME_UNIT);                         // 1TU pause after each signal
+            wait(TIME_UNIT);                         // 1 time unit pause after each signal
         } catch (LineUnavailableException e) {
             e.printStackTrace(); //TODO Exception handling
         }
@@ -168,14 +171,20 @@ public class Encoder {
         return fadeOutSineWave(result);
     }
 
-    // todo use?
+    /**
+     * Damp created sine wave in array.
+     * Solution to 'pop' sound especially at the end of tone.
+     * @param buffer sine wave to be dampened
+     * @return dampened sine wave
+     */
     private byte[] fadeOutSineWave(byte[] buffer) {
         int len = buffer.length;
 
+        // damping of sine wave start
         for (int i = 0; i < (int) (len * (1 - DAMP_FACTOR)); i++) {
             buffer[i] = (byte) (buffer[i] * Math.exp((i - (len * (1 - DAMP_FACTOR))) * 1 / (len * (1 - DAMP_FACTOR) / 3)));
         }
-
+        // damping of sine wave end
         for (int i = (int) (len * DAMP_FACTOR); i < len; i++) {
             buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1 / (len * (1 - DAMP_FACTOR) / 4)));
         }
