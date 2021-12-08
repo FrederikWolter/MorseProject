@@ -6,13 +6,10 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Class responsible for encoding morse-signals to audio and therefor generating and sending the audio signal. [ID: F-LOG-20.3.1]
+ *
  * @author Lucas Schaffer & Frederik Wolter
  */
 public class Encoder {
@@ -56,6 +53,7 @@ public class Encoder {
 
     /**
      * Implementation of singleton to access the existing object or create one.
+     *
      * @return only instance of {@link Encoder} in main-thread mode.
      */
     public static Encoder getInstance() {
@@ -67,10 +65,11 @@ public class Encoder {
 
     /**
      * main send method used to send morse-signal with a defined melody.
+     *
      * @param morse  to be sent.
      * @param melody in which to send.
      */
-    public void send(String morse, Melody melody) throws InterruptedException, LineUnavailableException{
+    public void send(String morse, Melody melody) throws InterruptedException, LineUnavailableException {
         stopPlaying();                                              // prevent encoder from playing multiple signals at once
         isPlaying = true;
         //encoderThread = new Thread(() -> sending(morse, melody));  // create a new sending thread executing the sending method
@@ -82,6 +81,7 @@ public class Encoder {
     /**
      * private helper method sending the given morse code with the given melody.
      * Called by sending-thread version of {@link Encoder}
+     *
      * @param morse  to be sent.
      * @param melody in which to send.
      */
@@ -93,13 +93,13 @@ public class Encoder {
         int freq_index = 0;
 
         for (char x : signals) {
-            if(isPlaying) {     // stop playing next tone if isPlaying is false
+            if (isPlaying) {     // stop playing next tone if isPlaying is false
                 switch (String.valueOf(x)) {
                     case Translator.C -> wait(2 * TIME_UNIT);
                     case Translator.W -> wait(6 * TIME_UNIT);
                     case Translator.S -> signal(1 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
                     case Translator.L -> signal(3 * TIME_UNIT, freqList[(freq_index++) % freq_length]);
-                    default ->  throw new IllegalArgumentException("Not a recognized morse code: " + x);
+                    default -> throw new IllegalArgumentException("Not a recognized morse code: " + x);
                 }
             }
         }
@@ -108,7 +108,7 @@ public class Encoder {
     /**
      * public method to stop playing the current morse-signal. [ID: F-GUI-20.1.3]
      */
-    public synchronized void stopPlaying() throws InterruptedException{
+    public synchronized void stopPlaying() throws InterruptedException {
         isPlaying = false;
         // todo necessary?
         //encoderThread.join();
@@ -117,6 +117,7 @@ public class Encoder {
     /**
      * Helper method for waiting a defined duration on the sending thread.
      * Used to implement silence between tones.
+     *
      * @param duration to wait in ms
      */
     private void wait(int duration) throws InterruptedException {
@@ -126,10 +127,11 @@ public class Encoder {
     /**
      * Helper method for playing a tone for a given duration and with a given frequency.
      * Inspired by (among others) <a href="https://rosettacode.org/wiki/Sine_wave">rosettacode.org</a> [ID: F-TEC-00, F-TEC-10.1]
+     *
      * @param duration  of the tone.
      * @param frequency of the tone.
      */
-    private void signal(int duration, int frequency) throws LineUnavailableException, InterruptedException{
+    private void signal(int duration, int frequency) throws LineUnavailableException, InterruptedException {
         byte[] buffer = sineWave(frequency, duration);
         AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
         SourceDataLine line = AudioSystem.getSourceDataLine(format);                                                // [ID: F-TEC-10.2.1]
@@ -146,6 +148,7 @@ public class Encoder {
     /**
      * private helper method generating a sine wave with given frequency and duration.
      * public static volume ist used for the amplitude.
+     *
      * @param frequency of sine wave
      * @param duration  of sine wave
      * @return byte array of sine wave
@@ -165,6 +168,7 @@ public class Encoder {
     /**
      * Damp created sine wave in array.
      * Solution to 'pop' sound especially at the end of tone.
+     *
      * @param buffer sine wave to be dampened
      * @return dampened sine wave
      */
