@@ -259,23 +259,27 @@ public class GUI {
             sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
         }
         if (sendMelody != null){
-            Encoder.getInstance().send(morse, sendMelody);
-            beginSendingButton.setText("Senden beenden");
-            showingBeginSend = !showingBeginSend;
-            IEncoderFinishedListener encoderFinishedListener = new IEncoderFinishedListener() {
-                @Override
-                public void run() {
-                    stopPlaying();
-                }
-            };
-
+            try {
+                Encoder.getInstance().send(morse, sendMelody);
+                beginSendingButton.setText("Senden beenden");
+                showingBeginSend = !showingBeginSend;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                //TODO: display error
+            }
         }
     }
 
     private void stopPlaying() {
-        Encoder.getInstance().stopPlaying();
-        beginSendingButton.setText("Senden beginnen");
-        showingBeginSend = !showingBeginSend;
+        try {
+            Encoder.getInstance().stopPlaying();
+            beginSendingButton.setText("Senden beginnen");
+            showingBeginSend = !showingBeginSend;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO: display error
+        }
+
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
