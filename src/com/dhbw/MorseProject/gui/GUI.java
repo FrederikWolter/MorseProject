@@ -4,13 +4,16 @@ import com.dhbw.MorseProject.translate.Translator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUI {
     private final Translator translator = new Translator();
@@ -67,6 +70,7 @@ public class GUI {
         double modifier = (int) (1.0/scale);
         Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double)effectiveMaxHeight)/modifier));
         frame.setMinimumSize(windowSize);
+        mainpanel.setMinimumSize(windowSize);
 
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
@@ -146,6 +150,98 @@ public class GUI {
                 clear_textAreas(receive_text_textArea, receive_morse_textArea);
             }
         });
+
+
+        enum state {
+            FOCUS_GAINED,
+            FOCUS_LOST,
+            FOCUS_LOST_NEWEST,
+            NONE
+        }
+
+        enum textArea {
+            MORSE,
+            TEXT
+        }
+
+        Map<textArea, state> textAreaFocusMap= new HashMap<textArea, state>();
+
+        send_morse_textArea.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                textAreaFocusMap.put(textArea.MORSE, state.FOCUS_GAINED);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (!textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.NONE)){
+                    if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST);
+                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST_NEWEST);
+                    } else if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.NONE)){
+                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST_NEWEST);
+                    }
+                }
+            }
+        });
+
+        send_text_textArea.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                textAreaFocusMap.put(textArea.TEXT, state.FOCUS_GAINED);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (!textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.NONE)){
+                    if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                        textAreaFocusMap.put(textArea.MORSE, state.FOCUS_LOST);
+                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST_NEWEST);
+                    } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.NONE)){
+                        textAreaFocusMap.put(textArea.TEXT, state.FOCUS_LOST_NEWEST);
+                    }
+                }
+            }
+        });
+
+        send_translate_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (textAreaFocusMap.getOrDefault(textArea.TEXT, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                    translateTextAreaTextToMorse();
+                } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, state.NONE).equals(state.FOCUS_LOST_NEWEST)){
+                    translateMorseTextAreaToText();
+                } else{
+                    if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
+                        translateTextAreaTextToMorse();
+                    } else if (!send_morse_textArea.getText().equals("") && send_text_textArea.getText().equals("")){
+                        translateMorseTextAreaToText();
+                    } else {
+                        System.out.println("No way to decide what to translate to which");
+                    }
+                }
+            }
+        });
+    }
+
+    private void translateMorseTextAreaToText() {
+        String textTranslation = Translator.morseToText(send_morse_textArea.getText());
+        if (textTranslation == null){
+            //TODO error message
+            System.out.println("morseToText_translationError");
+        } else{
+            send_text_textArea.setText(textTranslation);
+        }
+    }
+
+    private void translateTextAreaTextToMorse() {
+        String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
+        if (morseTranslation == null){
+            //TODO error message
+            System.out.println("textToMorse_translationError");
+        } else{
+            send_morse_textArea.setText(morseTranslation);
+        }
     }
 
     private void clear_textAreas(JTextArea... textAreas) {
