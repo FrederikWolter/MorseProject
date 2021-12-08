@@ -6,6 +6,7 @@ import com.dhbw.MorseProject.translate.Translator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class responsible for user interactions.
+ * @author x, y, z supported by Lucas Schaffer
+ */
 public class GUI {
     private final Translator translator = new Translator();
     private JTabbedPane tabbedPane1;
@@ -100,17 +105,17 @@ public class GUI {
         String[][] data = fillTable();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
 
-        //DefaultTableCellRenderer centerRendering = new DefaultTableCellRenderer();
-        //centerRendering.setHorizontalAlignment(SwingConstants.CENTER);
-        //table_alphabet.setDefaultRenderer(String.class, centerRendering);
-        //table_alphabet.setDefaultRenderer(Integer.class, centerRendering);
-
         DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
         tableModel.addColumn(columnNames[0]);
         tableModel.addColumn(columnNames[1]);
         for (String[] datum : data) {
             tableModel.addRow(new Object[]{datum[0], datum[1]});
         }
+
+        DefaultTableCellRenderer centerRendering = new DefaultTableCellRenderer();
+        centerRendering.setHorizontalAlignment(JLabel.CENTER);
+        table_alphabet.getColumnModel().getColumn(0).setCellRenderer(centerRendering);
+        table_alphabet.getColumnModel().getColumn(1).setCellRenderer(centerRendering);
 
         String info = """
                 Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
