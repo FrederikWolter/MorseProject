@@ -210,24 +210,10 @@ public class GUI {
         send_translate_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                translateSendTextAreas();
+                translateSendTextAreas(textAreaFocusMap);
             }
 
-            private void translateSendTextAreas() {
-                if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
-                    translateTextAreaTextToMorse();
-                } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
-                    translateMorseTextAreaToText();
-                } else{
-                    if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
-                        translateTextAreaTextToMorse();
-                    } else if (!send_morse_textArea.getText().equals("") && send_text_textArea.getText().equals("")){
-                        translateMorseTextAreaToText();
-                    } else {
-                        System.out.println("No way to decide what to translate to which");
-                    }
-                }
-            }
+
         });
     }
 
@@ -238,6 +224,22 @@ public class GUI {
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
+            }
+        }
+    }
+
+    private void translateSendTextAreas(Map textAreaFocusMap) {
+        if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+            translateTextAreaTextToMorse();
+        } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)){
+            translateMorseTextAreaToText();
+        } else{
+            if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
+                translateTextAreaTextToMorse();
+            } else if (!send_morse_textArea.getText().equals("") && send_text_textArea.getText().equals("")){
+                translateMorseTextAreaToText();
+            } else {
+                System.out.println("No way to decide what to translate to which");
             }
         }
     }
