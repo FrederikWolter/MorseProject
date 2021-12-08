@@ -132,18 +132,41 @@ public class GUI {
                 showingBeginSend = !showingBeginSend;
             }
         });
+
+        send_clear_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear_textAreas(send_text_textArea, send_morse_textArea);
+            }
+        });
+
+        receive_clear_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear_textAreas(receive_text_textArea, receive_morse_textArea);
+            }
+        });
+    }
+
+    private void clear_textAreas(JTextArea... textAreas) {
+        for (JTextArea textArea:
+             textAreas) {
+            textArea.setText("");
+        }
+
     }
 
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
 
-        text_textArea.setPreferredSize(textAreas_preferredDimension);
-        text_textArea.setMinimumSize(textAreas_preferredDimension);
-
         morse_textArea.setPreferredSize(textAreas_preferredDimension);
         morse_textArea.setMinimumSize(textAreas_preferredDimension);
 
+        text_textArea.setPreferredSize(textAreas_preferredDimension);
+        text_textArea.setMinimumSize(textAreas_preferredDimension);
+
         splitPane.setDividerLocation(splitPane.getWidth()/2);
+        splitPane.setResizeWeight(0.5);
     }
 
     public static void main(String[] args) {
