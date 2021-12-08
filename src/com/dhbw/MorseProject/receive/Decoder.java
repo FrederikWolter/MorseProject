@@ -1,5 +1,8 @@
 package com.dhbw.MorseProject.receive;
 
+import com.dhbw.MorseProject.send.Encoder;
+import com.dhbw.MorseProject.translate.Translator;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +29,10 @@ public class Decoder {
 
     StringBuilder lastSignal = new StringBuilder();
 
+    private static StringBuilder tempOutput = new StringBuilder();
+
+    private boolean lastWasSilence = true;
+
     public static void main(String[] args) throws IOException {
         Decoder.getInstance().startRecording();
         // Enter data using BufferReader
@@ -33,8 +40,11 @@ public class Decoder {
                 new InputStreamReader(System.in));
 
         // Reading data using readLine
-        String name = reader.readLine();
-        Decoder.getInstance().stopRecording();
+        String input = reader.readLine();
+        if(input.equalsIgnoreCase("stop"))
+            Decoder.getInstance().stopRecording();
+        else if(input.equalsIgnoreCase("out"))
+            System.out.println(Translator.morseToText(tempOutput.toString()));
     }
 
     /**
@@ -79,9 +89,10 @@ public class Decoder {
                 }
 
                 analyzeSamples(samples);
-                if (timeStamps.size() > 2)
+                if (timeStamps.size() > 2 || !isRecording)
                     analyzeTimeStamps();
                 if (lastSignal.length() > 0) {
+                    tempOutput.append(getLastSignal().replace("cs", " "));
                     System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
                     //TODO ui_update_thread.notify();  //notify ui_update_thread about new signal
                     lastSignal.setLength(0); //Reset the StringBuilder
@@ -100,17 +111,21 @@ public class Decoder {
 
             //long duration = timeStamps.get(i+1).getTimestamp().toEpochMilli() - timeStamps.get(i).getTimestamp().toEpochMilli();
 
-            //System.out.println(between + " " + timeStamps.size() + " " + i + " " + timeStamps.get(i).isQuiet());
+            System.out.println(between + " " + timeStamps.size() + " " + i + " " + timeStamps.get(i).isQuiet());
 
             //TODO vlt die werte nicht statisch sonder berechnen lassen, indem ein cache benutzt wird und jedes mal ausgwertet wird wie lange was sein soll.
 
             if (timeStamps.get(i).isQuiet()) {
                 //2=>' ', 6=> '/'
 
-                if (350 <= between && between < 500) {       //Its a ' '
-                    lastSignal.append("cs");
-                } else if (850 <= between && between < 1200) {                           //Its a '/'
-                    lastSignal.append("/");
+                if(!lastWasSilence){
+                    if (280 * Encoder.TIME_UNIT/100 <= between && between < 500 * Encoder.TIME_UNIT/100) {         //Its a ' '
+                        lastSignal.append("cs");
+                        lastWasSilence = true;
+                    } else if (780 * Encoder.TIME_UNIT/100 <= between && between < 1200 * Encoder.TIME_UNIT/100) { //Its a '/'
+                        lastSignal.append("/");
+                        lastWasSilence = true;
+                    }
                 }
 
 /*
@@ -122,10 +137,12 @@ public class Decoder {
             } else {
                 //1=>'.', 3=>'-'
 
-                if (27 <= between && between < 100) {       //Its a '.'
+                if (25 * Encoder.TIME_UNIT/100 <= between && between < 100 * Encoder.TIME_UNIT/100) {       //Its a '.'
                     lastSignal.append(".");
-                } else if (190 <= between && between < 300) { //Its a '-'
+                    lastWasSilence = false;
+                } else if (180 * Encoder.TIME_UNIT/100 <= between && between < 300 * Encoder.TIME_UNIT/100) { //Its a '-'
                     lastSignal.append("-");
+                    lastWasSilence = false;
                 }
 
                 /*if (650 <= between && between < 2800) {       //Its a '.'
