@@ -1,5 +1,6 @@
 package com.dhbw.MorseProject.gui;
 
+import com.dhbw.MorseProject.send.Melody;
 import com.dhbw.MorseProject.translate.Translator;
 
 import javax.imageio.ImageIO;
@@ -146,6 +147,20 @@ public class GUI {
                     beginSendingButton.setText("Senden beenden");
                 }
                 showingBeginSend = !showingBeginSend;
+            }
+        });
+
+        for (int i = 0; i < Melody.getMelodyList().size(); i++){
+            comboBox1.addItem(Melody.getMelodyList().get(i).getName());
+        }
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (comboBox1.getSelectedItem().toString() == "Fest"){
+                    frequenz_slider.setEnabled(true);
+                }else{
+                    frequenz_slider.setEnabled(false);
+                }
             }
         });
 
