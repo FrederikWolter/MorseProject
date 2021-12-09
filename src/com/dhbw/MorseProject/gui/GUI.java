@@ -399,4 +399,8 @@ public class GUI {
         }
         return data;
     }
+
+    public int getNoiseThreshold(){
+        return receive_sensitivity_slider.getValue();
+    }
 }
