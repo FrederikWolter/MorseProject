@@ -130,7 +130,7 @@ public class Encoder {
      */
     public synchronized void stopPlaying() throws InterruptedException, NullPointerException {
         isPlaying = false;
-        if(encoderThread != null)
+        if (encoderThread != null)
             encoderThread.join();
     }
 
@@ -206,11 +206,11 @@ public class Encoder {
         return buffer;
     }
 
-    public void addErrorEventListener(IEncoderErrorListener listener){
+    public void addErrorEventListener(IEncoderErrorListener listener) {
         errorEvent.addListener(listener);
     }
 
-    public void addFinishedEventListener(IEncoderFinishedListener listener){
+    public void addFinishedEventListener(IEncoderFinishedListener listener) {
         finishedEvent.addListener(listener);
     }
 }
