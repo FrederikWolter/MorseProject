@@ -25,7 +25,6 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
 public class GUI {
-    private final Translator translator = new Translator();
     private JTabbedPane tabbedPane1;
     private JPanel toSend;
     private JPanel toReceive;
@@ -229,11 +228,7 @@ public class GUI {
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (comboBox1.getSelectedItem().toString().equals("Fest")){
-                    frequenz_slider.setEnabled(true);
-                }else{
-                    frequenz_slider.setEnabled(false);
-                }
+                frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest"));
             }
         });
 
