@@ -14,6 +14,7 @@ import java.util.List;
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  * @see AudioListener
  */
+@SuppressWarnings("unused")
 public class Decoder {
 
     /**
