@@ -24,6 +24,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Class responsible for user interactions.
+ * [ID: F-GUI-*, NF-GUI-* ]
  * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
 public class GUI {
@@ -155,8 +156,9 @@ public class GUI {
                     if(success){
                         startRecordingButton.setText("Start Recording");
                         showingStartRecording = !showingStartRecording;
+                    } else {
+                        showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
                     }
-
 
                 } else{
 
@@ -166,12 +168,14 @@ public class GUI {
                             do {
                                 try {
                                     wait();
+
+                                    receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                                    String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
+                                    receive_text_textArea.setText(currentMorseTranslation);
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
-                                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
-                                String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
-                                receive_text_textArea.setText(currentMorseTranslation);
+
                             } while (!showingStartRecording);
                         }
                     });
@@ -182,11 +186,9 @@ public class GUI {
                         startRecordingButton.setText("Stop Recording");
                         showingStartRecording = !showingStartRecording;
                     } else {
-                        //TODO: show error if recording could not be started
+                        showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
-
             }
         });
 
@@ -397,5 +399,9 @@ public class GUI {
             counter++;
         }
         return data;
+    }
+
+    public int getNoiseThreshold(){
+        return receive_sensitivity_slider.getValue();
     }
 }
