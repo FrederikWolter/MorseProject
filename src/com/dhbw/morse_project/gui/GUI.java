@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -277,7 +278,7 @@ public class GUI {
             startRecordingButton.setText("Start Recording");
             showingStartRecording = !showingStartRecording;
         } else {
-            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+ e, "Error", JOptionPane.ERROR_MESSAGE);
+            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: fatal exception while 'stop recording'", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -307,7 +308,7 @@ public class GUI {
             startRecordingButton.setText("Stop Recording");
             showingStartRecording = !showingStartRecording;
         } else {
-            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+ e, "Error", JOptionPane.ERROR_MESSAGE);
+            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nIst ein Mikrofon korrekt angeschlossen?\nERROR: fatal exception while starting recoding.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -331,7 +332,7 @@ public class GUI {
                 showingBeginSend = !showingBeginSend;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
+                showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while starting play signal:\n"+ Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -342,7 +343,7 @@ public class GUI {
             stopPlayingChangeVariables();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
+            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while stop playing:\n"+ Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
