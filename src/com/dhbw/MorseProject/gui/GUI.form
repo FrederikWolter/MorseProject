@@ -30,7 +30,7 @@
               <background color="-4473925"/>
               <focusCycleRoot value="false"/>
               <focusable value="true"/>
-              <font name="Architects Daughter"/>
+              <font name="JetBrains Mono" size="16"/>
               <foreground color="-16777216"/>
               <inheritsPopupMenu value="false"/>
               <opaque value="false"/>
@@ -81,6 +81,7 @@
                             <properties>
                               <dividerLocation value="200"/>
                               <enabled value="false"/>
+                              <font name="JetBrains Mono" size="16"/>
                               <resizeWeight value="0.5"/>
                             </properties>
                             <border type="none"/>
@@ -112,6 +113,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="true"/>
+                                          <font name="JetBrains Mono" size="16"/>
                                           <lineWrap value="true"/>
                                           <wrapStyleWord value="true"/>
                                         </properties>
@@ -147,6 +149,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="true"/>
+                                          <font name="JetBrains Mono" size="18"/>
                                           <lineWrap value="true"/>
                                           <toolTipText value=""/>
                                           <wrapStyleWord value="true"/>
@@ -163,6 +166,7 @@
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
+                              <font name="JetBrains Mono" size="16"/>
                               <text value="Senden beginnen"/>
                             </properties>
                           </component>
@@ -179,6 +183,7 @@
                                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <majorTickSpacing value="5000"/>
                                   <maximum value="20000"/>
                                   <minorTickSpacing value="1000"/>
@@ -193,6 +198,7 @@
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Frequenz in Hz"/>
                                 </properties>
                               </component>
@@ -200,13 +206,16 @@
                                 <constraints>
                                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
-                                <properties/>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                </properties>
                               </component>
                               <component id="4c73f" class="javax.swing.JLabel">
                                 <constraints>
                                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Melodien"/>
                                 </properties>
                               </component>
@@ -214,7 +223,9 @@
                                 <constraints>
                                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
-                                <properties/>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                </properties>
                               </component>
                               <component id="d955" class="javax.swing.JToolBar$Separator">
                                 <constraints>
@@ -227,6 +238,7 @@
                                   <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Übersetzen"/>
                                 </properties>
                               </component>
@@ -235,6 +247,7 @@
                                   <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Text zurücksetzen"/>
                                 </properties>
                               </component>
@@ -301,6 +314,7 @@
                                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                     <properties>
+                                      <font name="JetBrains Mono" size="16"/>
                                       <text value="TEXT"/>
                                     </properties>
                                   </component>
@@ -315,6 +329,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="false"/>
+                                          <font name="JetBrains Mono" size="16"/>
                                           <lineWrap value="true"/>
                                           <minimumSize width="200" height="20"/>
                                           <preferredSize width="200" height="20"/>
@@ -338,6 +353,7 @@
                                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                     </constraints>
                                     <properties>
+                                      <font name="JetBrains Mono" size="16"/>
                                       <text value="MORSE"/>
                                     </properties>
                                   </component>
@@ -352,6 +368,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="false"/>
+                                          <font name="JetBrains Mono" size="16"/>
                                           <lineWrap value="true"/>
                                           <minimumSize width="200" height="20"/>
                                           <preferredSize width="200" height="20"/>
@@ -370,6 +387,7 @@
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                             </constraints>
                             <properties>
+                              <font name="JetBrains Mono" size="16"/>
                               <text value="Start Recording"/>
                             </properties>
                           </component>
@@ -386,6 +404,7 @@
                                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <majorTickSpacing value="10"/>
                                   <minorTickSpacing value="5"/>
                                   <paintLabels value="true"/>
@@ -398,6 +417,7 @@
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Mikrofon-Empfindlichkeit"/>
                                 </properties>
                               </component>
@@ -412,6 +432,7 @@
                                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
+                                  <font name="JetBrains Mono" size="16"/>
                                   <text value="Text zurücksetzen"/>
                                 </properties>
                               </component>
@@ -450,6 +471,7 @@
                           <component id="c74c4" class="javax.swing.JLabel">
                             <constraints border-constraint="North"/>
                             <properties>
+                              <font name="JetBrains Mono" size="16"/>
                               <text value="Alphabet"/>
                             </properties>
                           </component>
@@ -480,19 +502,27 @@
                           <component id="8ebc2" class="javax.swing.JLabel">
                             <constraints border-constraint="North"/>
                             <properties>
+                              <font name="JetBrains Mono" size="16"/>
                               <text value="Generelles"/>
                             </properties>
                           </component>
-                          <component id="92dd3" class="javax.swing.JTextArea" binding="textArea_info">
+                          <scrollpane id="2edf9">
                             <constraints border-constraint="Center"/>
-                            <properties>
-                              <editable value="false"/>
-                              <font name="JetBrains Mono"/>
-                              <lineWrap value="true"/>
-                              <margin top="10" left="10" bottom="10" right="10"/>
-                              <wrapStyleWord value="true"/>
-                            </properties>
-                          </component>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="92dd3" class="javax.swing.JTextArea" binding="textArea_info">
+                                <constraints/>
+                                <properties>
+                                  <editable value="false"/>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <lineWrap value="true"/>
+                                  <margin top="10" left="10" bottom="10" right="10"/>
+                                  <wrapStyleWord value="true"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </scrollpane>
                         </children>
                       </grid>
                     </children>
