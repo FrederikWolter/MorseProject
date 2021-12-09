@@ -9,8 +9,8 @@ package com.dhbw.MorseProject.receive;
 public class Noise {
 
     // region POJO attributes
-    private boolean quiet;
-    private int index;
+    private final boolean quiet;
+    private final int index;
     //endregion
 
     /**

@@ -10,12 +10,14 @@ import javax.swing.*;
 
 /**
  * Main entry point to application - providing the main method.
+ *
  * @author Frederik Wolter
  */
 public class MorseProject {
 
     /**
      * MAIN entry point of application.
+     *
      * @param args currently not used.
      */
     public static void main(String[] args) {

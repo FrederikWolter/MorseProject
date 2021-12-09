@@ -16,6 +16,7 @@ import java.util.List;
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class AudioListener {
 
     /**

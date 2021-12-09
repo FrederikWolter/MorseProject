@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * This class is used as a POJO for the representation of a melody object. [ID: F-TEC-10.4]
+ *
  * @author Frederik Wolter
  */
 @SuppressWarnings("unused")
@@ -20,6 +21,7 @@ public class Melody {
 
     /**
      * Constructor of {@link Melody} Class.
+     *
      * @param name     to be displayed in GUI
      * @param freqList used to play signal. If len(freqList) = 1 -> constant frequency.
      */
