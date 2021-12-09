@@ -2,7 +2,6 @@ package com.dhbw.MorseProject.translate;
 
 import java.util.HashMap;
 
-
 /**
  * @author Hassan El-Khalil, supported by Frederik Wolter
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
@@ -77,6 +76,7 @@ public class Translator {
         reverse();  // initialize MorseToChar by reversing CharToMorse
     }
 
+    // region getter & setter
     public static HashMap<Character, String> getCharToMorse(){
         return CharToMorse;
     }
@@ -84,6 +84,7 @@ public class Translator {
     public static HashMap<String, Character> getMorseToChar(){
         return MorseToChar;
     }
+    // endregion
 
     /**
      * This Method reverses the CharToMorse Hashmap and saves it in MorseToChar.
