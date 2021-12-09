@@ -69,12 +69,16 @@ public class GUI {
     private Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
 
     /**
-     * Constructor for class GUI
+     * Constructor for class {@link GUI}
+     *
+     * @see JFrame
+     * @see #setupJFrame()
+     * @see #prepareInfoPanel()
+     * @see #prepareMelodySelectionComboBox()
+     * @see #configureListeners()
      */
     public GUI(){
-        /**
-         * Settings for frame and application appearance
-         */
+
         JFrame frame = setupJFrame();
 
         prepareInfoPanel();
@@ -86,7 +90,14 @@ public class GUI {
     }
 
     /**
-     * Configuring and adding all Action and Event listeners
+     * Configuring and adding all Action and Event listeners:
+     * @see #startRecordingButton
+     * @see #beginSendingButton
+     * @see IEncoderFinishedListener
+     * @see #send_clear_button
+     * @see #receive_clear_button
+     * @see #startPlaying()
+     * @see #stopPlaying()
      */
     private void configureListeners() {
         /**
@@ -147,7 +158,15 @@ public class GUI {
     }
 
     /**
-     * Recording the last focused text area in the send tab to translate from
+     * Translating the contents of the last selected {@link TextArea} to the other {@link TextArea} in the send tab
+     * when {@link #send_translate_button} is pressed
+     *
+     * @see #send_translate_button
+     * @see #translateSendTextAreas(Map)
+     * @see #send_text_textArea
+     * @see #send_morse_textArea
+     * @see #textAreaFocusMap
+     * @see #textAreaFocusLost(Map, textArea, textArea)
      */
     private void prepareTranslationButton() {
         prepareListenForTextAreaFocusChange();
@@ -165,6 +184,12 @@ public class GUI {
      * {@link TextArea} {@link #send_text_textArea} and {@link #send_morse_textArea}
      * to record which of the text areas last had focus.
      *
+     * @see #send_text_textArea
+     * @see #send_morse_textArea
+     * @see #textAreaFocusMap
+     * @see #textAreaFocusLost(Map, textArea, textArea)
+     * @see #prepareTranslationButton()
+     * @see #translateSendTextAreas(Map)
      */
     private void prepareListenForTextAreaFocusChange() {
         send_morse_textArea.addFocusListener(new FocusListener() {
@@ -190,7 +215,10 @@ public class GUI {
     }
 
     /**
-     * Settings for the ComboBox to select given melodies or frequencies.
+     * Settings for the {@link #comboBox1} to select given melodies or frequencies.
+     * @see #startPlaying()
+     * @see Melody
+     * @see Encoder
      */
     private void prepareMelodySelectionComboBox() {
 
@@ -205,12 +233,14 @@ public class GUI {
         });
     }
 
+    /**
+     * Filling text and table in Information-Tab with content and setting appearance
+     * @see #getTableData()
+     * @see #table_alphabet
+     * @see #textArea_info
+     */
     private void prepareInfoPanel() {
-        /**
-         * Filling text and table in Information-Tab with content and setting appearance
-         * @see #fillTable()
-         */
-        String[][] data = fillTable();
+        String[][] data = getTableData();
         String[] columnNames = {"Schriftzeichen", "Morse-Code"};
         DefaultTableModel tableModel = (DefaultTableModel) table_alphabet.getModel();
         tableModel.addColumn(columnNames[0]);
@@ -228,6 +258,11 @@ public class GUI {
         textArea_info.setText(info);
     }
 
+    /**
+     * Settings for frame and application appearance
+     * @see JFrame
+     *
+     */
     private JFrame setupJFrame() {
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
@@ -273,6 +308,13 @@ public class GUI {
         return frame;
     }
 
+    /**
+     * Setting the dimensions and position of the given {@link JFrame}
+     *
+     * @param frame
+     * @param screenSize
+     * @param effectiveMaxHeight
+     */
     private void setWindowDimensions(JFrame frame, Dimension screenSize, int effectiveMaxHeight) {
         double scale = 0.5;
         double modifier = (int) (1.0/scale);
@@ -288,6 +330,10 @@ public class GUI {
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
     }
 
+    /**
+     *
+     * @return {@link String} with info text
+     */
     private String getInfoText() {
         return """
                 Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
@@ -303,6 +349,10 @@ public class GUI {
         //Quelle: https://de.wikipedia.org/wiki/Morsecode
     }
 
+    /**
+     * Trying to stop the recording of the {@link Decoder} or displaying an error message if failed
+     * @param e
+     */
     private void stopRecording(ActionEvent e) {
         boolean success = Decoder.getInstance().stopRecording();
 
@@ -314,23 +364,14 @@ public class GUI {
         }
     }
 
+    /**
+     * Trying to start the recording of the {@link Decoder} or dispaying an error message if failed
+     * @param e
+     */
     private void startRecording(ActionEvent e) {
         clear_textAreas(receive_text_textArea, receive_morse_textArea); //Clearing text areas beforehand
 
-        Runnable ui_update_runnable = () -> {
-            do {
-                try {
-                    synchronized (ui_update_thread){
-                        ui_update_thread.wait();
-                    }
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
-                String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
-                receive_text_textArea.setText(currentMorseTranslation);
-            } while (!showingStartRecording);
-        };
+        Runnable ui_update_runnable = getUiUpdateRunnable();
 
         ui_update_thread = new Thread(ui_update_runnable);
 
@@ -344,19 +385,41 @@ public class GUI {
         }
     }
 
+    /**
+     *
+     * @return a {@link Runnable} to automatically update the {@link #receive_morse_textArea} and translate the contents
+     * to the {@link #receive_text_textArea} via the {@link Translator} when the {@link Decoder} generated a new Signal
+     */
+    private Runnable getUiUpdateRunnable() {
+        return () -> {
+            do {
+                try {
+                    synchronized (ui_update_thread){
+                        ui_update_thread.wait();
+                    }
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
+                receive_text_textArea.setText(currentMorseTranslation);
+            } while (!showingStartRecording);
+        };
+    }
+
+    /**
+     * Trying to start playing the morse code from the {@link #send_morse_textArea} and displaying an error message
+     * if failed.
+     *
+     * If a melody is selected, the morse code is played with that melody, otherwise, when "Fest" is selected, the
+     * Morse Code is played with a constant frequency from the {@link #frequenz_slider}
+     *
+     * @see Encoder
+     */
     private void startPlaying() {
         translateSendTextAreas(textAreaFocusMap);
         String morse = send_morse_textArea.getText();
-        Melody sendMelody = null;
-        if (comboBox1.getSelectedItem() != "Fest"){
-            for (Melody melody : Melody.getMelodyList()){
-                if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
-                    sendMelody = melody;
-                }
-            }
-        }else{
-            sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
-        }
+        Melody sendMelody = getMelody();
         if (sendMelody != null){
             try {
                 Encoder.getInstance().send(morse, sendMelody);
@@ -369,6 +432,31 @@ public class GUI {
         }
     }
 
+    /**
+     *
+     * @return the selected {@link Melody}. If a melody is selected, then that {@link Melody} is returned,
+     * otherwise, when "Fest" is selected, a new {@link Melody} with a constant frequency from the
+     * {@link #frequenz_slider} is generated and returned.
+     */
+    private Melody getMelody() {
+        Melody sendMelody = null;
+
+        if (comboBox1.getSelectedItem() != "Fest"){
+            for (Melody melody : Melody.getMelodyList()){
+                if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
+                    sendMelody = melody;
+                }
+            }
+        }else{
+            sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
+        }
+        return sendMelody;
+    }
+
+    /**
+     * Trying to stop the {@link Encoder} from playing the currently playing Morse Code.
+     * If Failed, display an error message
+     */
     private void stopPlaying() {
         try {
             Encoder.getInstance().stopPlaying();
@@ -380,11 +468,24 @@ public class GUI {
 
     }
 
+    /**
+     * Changing the relevant variables for the GUI to indicate that the {@link Encoder} stopped playing
+     */
     private void stopPlayingChangeVariables() {
         beginSendingButton.setText("Senden beginnen");
         showingBeginSend = !showingBeginSend;
     }
 
+    /**
+     * Updating the {@link textArea_focusState} of the {@param caller} and {@param non_caller} in the given
+     * {@param textAreaFocusMap} to indicate, which {@link TextArea} last lost focus.
+     *
+     * @param textAreaFocusMap
+     * @param caller
+     * @param non_caller
+     *
+     * @see #prepareListenForTextAreaFocusChange()
+     */
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
         if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only lose focus if it has gained focus before
             if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
@@ -398,6 +499,19 @@ public class GUI {
             }
         }
     }
+
+    /**
+     * Translating the Contents of the {@link TextArea} via the {@link Translator} of the {@link TextArea} that last
+     * had focus, as indicated by the {@param textAreaFocusMap}.
+     * If that method of detection fails, the detection falls back to translating to the {@link TextArea} which has
+     * an empty body.
+     * If none could be detected, display an error message
+     *
+     * @param textAreaFocusMap
+     * @see #prepareListenForTextAreaFocusChange()
+     * @see #textAreaFocusLost(Map, textArea, textArea)
+     * @see #textAreaFocusMap
+     */
     private void translateSendTextAreas(Map textAreaFocusMap) {
         if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
                 || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
@@ -412,9 +526,17 @@ public class GUI {
                 translateMorseTextAreaToText();
             } else {
                 System.out.println("No way to decide what to translate to which");
+                //TODO display error message "please select one text area"
             }
         }
     }
+
+    /**
+     * Trying to translate the Morse Code, contained in {@link #send_morse_textArea} into the {@link #send_text_textArea} as Text.
+     * If failed, display an error message
+     *
+     * @see Translator
+     */
     private void translateMorseTextAreaToText() {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
         if (textTranslation == null){
@@ -425,6 +547,13 @@ public class GUI {
             send_text_textArea.setText(textTranslation);
         }
     }
+
+    /**
+     * Trying to translate the Text, contained in {@link #send_text_textArea} into the {@link #send_morse_textArea} as Morse Code.
+     * If failed, display an error message
+     *
+     * @see Translator
+     */
     private void translateTextAreaTextToMorse() {
         String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
         if (morseTranslation == null){
@@ -436,6 +565,12 @@ public class GUI {
         }
     }
 
+    /**
+     * Clearing the body of all provided {@link TextArea}s
+     * @param textAreas
+     *
+     * @see TextArea
+     */
     private void clear_textAreas(JTextArea... textAreas) {
         for (JTextArea textArea:
              textAreas) {
@@ -443,6 +578,14 @@ public class GUI {
         }
     }
 
+    /**
+     * Adjusting the sizes of the provided {@link TextArea}s to each take up 50% of the given {@param splitPane}
+     * and setting the resize weight of the given {@param splitPane} to 50% so that the divider stays in the middle.
+     *
+     * @param splitPane
+     * @param text_textArea
+     * @param morse_textArea
+     */
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
         morse_textArea.setPreferredSize(textAreas_preferredDimension);
@@ -453,7 +596,13 @@ public class GUI {
         splitPane.setResizeWeight(0.5);
     }
 
-    public String[][] fillTable(){
+    /**
+     *
+     * @return 2-Dimensional {@link String} Array with Morse Code and Translations to fill the {@link #table_alphabet}
+     *
+     * @see Translator
+     */
+    private String[][] getTableData(){
         ArrayList allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
         String[][] data = new String[42][2];
         int counter = 0;
@@ -465,10 +614,24 @@ public class GUI {
         return data;
     }
 
+    /**
+     *
+     * @return the {@link #ui_update_thread} for the {@link Encoder}
+     * @see #ui_update_thread
+     * @see #getUiUpdateRunnable()
+     * @see #startRecording(ActionEvent)
+     * @see Encoder
+     */
     public Thread getUi_update_thread(){
         return ui_update_thread;
     }
 
+    /**
+     *
+     * @return the noise threshold, currently selected in {@link #receive_sensitivity_slider}
+     * @see Encoder
+     * @see #startRecording(ActionEvent)
+     */
     public int getNoiseThreshold(){
         return 100-receive_sensitivity_slider.getValue();
     }
