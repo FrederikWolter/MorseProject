@@ -390,7 +390,7 @@
                                   <minorTickSpacing value="5"/>
                                   <paintLabels value="true"/>
                                   <paintTicks value="true"/>
-                                  <value value="50"/>
+                                  <value value="40"/>
                                 </properties>
                               </component>
                               <component id="5e6a5" class="javax.swing.JLabel">
