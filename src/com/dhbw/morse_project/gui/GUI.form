@@ -115,7 +115,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="true"/>
-                                          <font name="JetBrains Mono" size="16"/>
+                                          <font name="JetBrains Mono" size="20"/>
                                           <lineWrap value="true"/>
                                           <wrapStyleWord value="true"/>
                                         </properties>
@@ -152,7 +152,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="true"/>
-                                          <font name="JetBrains Mono" size="18"/>
+                                          <font name="JetBrains Mono" size="20"/>
                                           <lineWrap value="true"/>
                                           <toolTipText value=""/>
                                           <wrapStyleWord value="true"/>
@@ -333,7 +333,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="false"/>
-                                          <font name="JetBrains Mono" size="16"/>
+                                          <font name="JetBrains Mono" size="20"/>
                                           <lineWrap value="true"/>
                                           <minimumSize width="200" height="20"/>
                                           <preferredSize width="200" height="20"/>
@@ -372,7 +372,7 @@
                                         <constraints/>
                                         <properties>
                                           <editable value="false"/>
-                                          <font name="JetBrains Mono" size="16"/>
+                                          <font name="JetBrains Mono" size="20"/>
                                           <lineWrap value="true"/>
                                           <minimumSize width="200" height="20"/>
                                           <preferredSize width="200" height="20"/>
