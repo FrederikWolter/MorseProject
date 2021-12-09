@@ -24,9 +24,14 @@ public class MorseProject {
         // todo remove test code
         Encoder e = Encoder.getInstance();
 
-        //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
-        e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
-        System.out.println(Translator.textToMorse("abcdabcd"));
+        try {
+            //e.send("....--....- ....- ....--....-", Melody.getMelodyList().get(0));
+            //e.send(Translator.textToMorse("abcdabdc"), Melody.getMelodyList().get(3));
+            //e.send("............-/............-/", Melody.getMelodyList().get(6));
+            System.out.println(Translator.textToMorse("abcdabcd"));
+        }catch (Exception p){
+            p.printStackTrace();
+        }
 
 
         /*e.send(".", new Melody("test", new int[1]));
@@ -45,12 +50,12 @@ public class MorseProject {
     }
 
     /**
-     * Initialize the Melodies.
+     * Initialize the Melodies. [ID: F-TEC-10.4.1]
      */
     private static void initMelodies() {
         new Melody("Fest", new int[]
                 {550});
-        new Melody("Test", new int[]
+        new Melody("Triton", new int[]
                 {550, 440, 330});
         new Melody("Linear Steigend", new int[]
                 {200, 300, 400, 500, 600, 700, 800, 900, 1000});
@@ -60,5 +65,7 @@ public class MorseProject {
                 {200, 1000, 300, 900, 400, 800, 500, 700, 600});
         new Melody("Alle meine Entchen", new int[]
                 {523, 587, 659, 698, 784, 784, 880, 880, 880, 880, 784, 880, 880, 880, 880, 784, 689, 689, 689, 689, 659, 659, 587, 587, 587, 587, 523});
+        new Melody("Handyklingelton", new int[]
+                {1319, 1175, 740, 831, 1047, 988, 587, 659, 988, 880, 523, 659, 440});
     }
 }
