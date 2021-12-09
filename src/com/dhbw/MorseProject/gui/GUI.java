@@ -108,8 +108,9 @@ public class GUI {
         double scale = 0.5;
         double modifier = (int) (1.0/scale);
         Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double)effectiveMaxHeight)/modifier));
+        Dimension monitorSize = new Dimension((int)(screenSize.width), (int)(screenSize.height));
         frame.setMinimumSize(windowSize);
-        mainpanel.setMinimumSize(windowSize);
+        frame.setMaximumSize(monitorSize);
         mainpanel.setMaximumSize(new Dimension(500, 500));
         mainpanel.setSize(500, 500);
 
@@ -117,6 +118,8 @@ public class GUI {
 
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
+
+        //mainpanel.setBorder(BorderFactory.createLineBorder(Color.blue, frame.getWidth()-mainpanel.getWidth()));
 
         adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
