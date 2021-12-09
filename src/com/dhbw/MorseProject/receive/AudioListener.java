@@ -130,6 +130,7 @@ public class AudioListener {
         try {
             listenerThread.join();  //Join to wait for the listenerThread to finish.
             line.stop();
+            line.close();
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -11,10 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,10 +78,19 @@ public class GUI {
          */
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
         frame.add(mainpanel);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         //frame.setResizable(false);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                showingStartRecording = false;
+                frame.dispose();
+                System.exit(0);
+            }
+        });
 
         try {
             frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
@@ -167,7 +173,9 @@ public class GUI {
                     Runnable ui_update_runnable = () -> {
                         do {
                             try {
-                                ui_update_thread.wait();
+                                synchronized (ui_update_thread){
+                                    ui_update_thread.wait();
+                                }
                             } catch (InterruptedException ex) {
                                 ex.printStackTrace();
                             }
@@ -277,6 +285,7 @@ public class GUI {
                 translateSendTextAreas(textAreaFocusMap);
             }
         });
+
     }
 
     private void startPlaying() {

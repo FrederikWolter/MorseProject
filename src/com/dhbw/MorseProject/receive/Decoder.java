@@ -132,7 +132,9 @@ public class Decoder {
                 analyzeInputSamples(samples);
                 analyzeFilteredSamples();
                 if (lastSignal.length() > 0) {
-                    ui_update_thread.notify(); //notify ui_update_thread about new signals
+                    synchronized (ui_update_thread){
+                        ui_update_thread.notify(); //notify ui_update_thread about new signals
+                    }
                 }
             }
         }
@@ -181,7 +183,7 @@ public class Decoder {
             if (filteredSamplesList.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
-                    if ((290 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
+                    if ((300 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
                         lastSignal.append(" ");
                         lastWasSilence = true;
                     } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
