@@ -56,6 +56,8 @@ public class GUI {
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
 
+    private Thread ui_update_thread;
+
     private enum textArea_focusState {
         FOCUS_GAINED,
         FOCUS_LOST,
@@ -162,23 +164,20 @@ public class GUI {
 
                 } else{
 
-                    Thread ui_update_thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            do {
-                                try {
-                                    wait();
+                    Runnable ui_update_runnable = () -> {
+                        do {
+                            try {
+                                ui_update_thread.wait();
+                            } catch (InterruptedException ex) {
+                                ex.printStackTrace();
+                            }
+                            receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                            String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
+                            receive_text_textArea.setText(currentMorseTranslation);
+                        } while (!showingStartRecording);
+                    };
 
-                                    receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
-                                    String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
-                                    receive_text_textArea.setText(currentMorseTranslation);
-                                } catch (InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
-
-                            } while (!showingStartRecording);
-                        }
-                    });
+                    ui_update_thread = new Thread(ui_update_runnable);
 
                     boolean success = Decoder.getInstance().startRecording(ui_update_thread);
                     if (success){
