@@ -1,5 +1,6 @@
 package com.dhbw.MorseProject.gui;
 
+import com.dhbw.MorseProject.receive.Decoder;
 import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.events.IEncoderFinishedListener;
 import com.dhbw.MorseProject.send.Melody;
@@ -149,11 +150,43 @@ public class GUI {
                 //TODO link receive module
 
                 if (!showingStartRecording){
-                    startRecordingButton.setText("Start Recording");
+                    boolean success = Decoder.getInstance().stopRecording();
+
+                    if(success){
+                        startRecordingButton.setText("Start Recording");
+                        showingStartRecording = !showingStartRecording;
+                    }
+
+
                 } else{
-                    startRecordingButton.setText("Stop Recording");
+
+                    Thread ui_update_thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            do {
+                                try {
+                                    wait();
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                                String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
+                                receive_text_textArea.setText(currentMorseTranslation);
+                            } while (!showingStartRecording);
+                        }
+                    });
+
+                    boolean success = Decoder.getInstance().startRecording(ui_update_thread);
+                    if (success){
+                        ui_update_thread.start();
+                        startRecordingButton.setText("Stop Recording");
+                        showingStartRecording = !showingStartRecording;
+                    } else {
+                        //TODO: show error if recording could not be started
+                    }
+
                 }
-                showingStartRecording = !showingStartRecording;
+
             }
         });
 
