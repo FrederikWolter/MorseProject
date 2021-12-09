@@ -184,10 +184,11 @@
                                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
-                                  <font name="JetBrains Mono" size="16"/>
-                                  <majorTickSpacing value="5000"/>
-                                  <maximum value="20000"/>
-                                  <minorTickSpacing value="1000"/>
+                                  <font name="JetBrains Mono"/>
+                                  <majorTickSpacing value="2000"/>
+                                  <maximum value="10000"/>
+                                  <minimum value="0"/>
+                                  <minorTickSpacing value="200"/>
                                   <paintLabels value="true"/>
                                   <paintTicks value="true"/>
                                   <snapToTicks value="false"/>
