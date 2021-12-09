@@ -1,5 +1,6 @@
 package com.dhbw.MorseProject.receive;
 
+import com.dhbw.MorseProject.gui.GUI;
 import com.dhbw.MorseProject.send.Encoder;
 
 import java.util.ArrayList;
@@ -69,18 +70,20 @@ public class Decoder {
      * [ID: F-GUI-30.1.1]
      *
      * @return True if the listener started successfully and the Decoding-Thread is started.
-     * @see AudioListener#startListening()
+     * @see AudioListener#startListening(GUI) ()
      */
-    public boolean startRecording(Thread ui_update_thread) {
-        this.ui_update_thread = ui_update_thread;
+    public boolean startRecording(GUI gui) {
+        this.ui_update_thread = gui.getUi_update_thread();
 
         decoderThread = new Thread(decoderRunnable); //Creating new Thread because you can only call .start on Thread once
 
         audioListener = new AudioListener(); //creating new audioListener
-        isRecording = audioListener.startListening(); //start listening on audioListener
+        isRecording = audioListener.startListening(gui); //start listening on audioListener
 
-        //Reset StringBuilder
+        //Reset
         lastSignal.setLength(0);
+        filteredSamplesList.clear();
+        lastWasSilence = true;
 
         if (isRecording)
             decoderThread.start();
@@ -183,7 +186,7 @@ public class Decoder {
             if (filteredSamplesList.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
-                    if ((300 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
+                    if ((280 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
                         lastSignal.append(" ");
                         lastWasSilence = true;
                     } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
