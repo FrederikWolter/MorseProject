@@ -9,7 +9,10 @@ import java.util.List;
  * In this class the input of the microphone is captured into a buffer.
  * This buffer is then split into windowed-buffers with overlap (see {@link #analyzeBuffer(byte[])}).
  * For each windowed-buffer the RMS-Value is calculated and a new {@link Noise}-Object is generated. (also see {@link #calculateRMSValue(byte[])}).
+ * That means the software recognizes Morse-Signals based on the RMS-Value (volume).
  * Evaluated are these Objets in the {@link Decoder} class.
+ * <p>
+ * ([ID: F-TEC-10.1.1, (F-LOG-20.3.2, F-LOG-20.3.3)])
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
@@ -53,7 +56,7 @@ public class AudioListener {
     private final int minNewSamples = 15;
 
     /**
-     * Smooth factor for rms-values. Value defines the multiplier of how much we want to smooth a list of rms values depending on the average of this list.
+     * Smooth factor for rms-values. This value defines the multiplier of how much the values of a list of rms values should be smooth depending on the average of this list.
      */
     private final float rmsSmoothAmount = 0.85f;
 
@@ -64,7 +67,7 @@ public class AudioListener {
     private final List<Noise> synchronizedBuffer = new ArrayList<>();
 
     /**
-     * Thread for the audio input from {@link #line} in which we handle everything (see {@link #listenerRunnable}).
+     * Thread for the audio input from {@link #line} in which everything is handled (see {@link #listenerRunnable}).
      */
     private Thread listenerThread;
 
@@ -76,8 +79,9 @@ public class AudioListener {
      * @return True if the listener started successfully.
      */
     public boolean startListening() {
+
         AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);   // [ID: F-TEC-10.2.1]
 
         if (!AudioSystem.isLineSupported(info)) {
             System.err.println("DataLine not available.");
@@ -94,6 +98,9 @@ public class AudioListener {
         }
 
         isListening = true;
+
+        //Reset Buffer
+        synchronizedBuffer.clear();
 
         listenerThread = new Thread(listenerRunnable); //Creating new Thread because you can only call .start on Thread once
 
@@ -131,7 +138,7 @@ public class AudioListener {
 
     /**
      * The Runnable for the {@link #listenerThread}-Thread.
-     * In this Thread/Runnable we do everything to generate new {@link Noise}-Objets and fill the {@link #synchronizedBuffer}
+     * In this Thread/Runnable everything to generate new {@link Noise}-Objets and fill the {@link #synchronizedBuffer} is done here.
      * The notification of the {@link Decoder} is also handheld here.
      *
      * @see #synchronizedBuffer
@@ -143,7 +150,7 @@ public class AudioListener {
 
         synchronized (listenerThread) {
             try {
-                listenerThread.wait(1000);   //We wait 1 second before we start listening to skip user mouse clicks, etc..
+                listenerThread.wait(500);   //We wait 500ms before we start listening to skip user mouse clicks, etc..
             } catch (InterruptedException e) {
                 e.printStackTrace();    //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
             }
@@ -164,8 +171,10 @@ public class AudioListener {
 
     /**
      * This method is using windowed-buffers to go through the buffer-byte-array with x (see {@link #stepSize}) overlapping values.
-     * Based on the values in the windowed-buffer we calculate the RMS-Value and smooth them out.
+     * Based on the values in each windowed-buffer an RMS-Value is calculated and smoothed out.
      * Then for each smoothed RMS-Value a new {@link Noise}-Object is created.
+     * <p>
+     * Part of: [ID: F-TEC-10.1.1] (Other in {@link Decoder})
      *
      * @param byteArray buffer with the recorded input from the microphone.
      * @return An ArrayList with the new {@link Noise}-Objects (Samples).
@@ -268,7 +277,6 @@ public class AudioListener {
      * @see #analyzeBuffer(byte[])
      */
     public List<Noise> getNewSamples() {
-        //TODO test if this method can be updated to an array (Performance)
         synchronized (synchronizedBuffer) {
             List<Noise> back = new ArrayList<>(synchronizedBuffer);
             synchronizedBuffer.clear();

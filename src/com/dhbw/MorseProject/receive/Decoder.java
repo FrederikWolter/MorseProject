@@ -12,6 +12,8 @@ import java.util.List;
 /**
  * In this class, the samples ({@link Noise}-Objects) are evaluated in order to generate the Morse-Code.
  * Singleton-Pattern is used to allow easy access and will not be rebuilt in the first version of this program for reasons of time.
+ * <p>
+ * [ID: F-LOG-20.3.2, (F-LOG-20.3.3)]
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  * @see AudioListener
@@ -19,7 +21,7 @@ import java.util.List;
 public class Decoder {
 
     /**
-     * The {@link AudioListener} from which we get the new samples.
+     * The {@link AudioListener} from which new samples are read.
      */
     private AudioListener audioListener;
 
@@ -54,7 +56,7 @@ public class Decoder {
     private final StringBuilder lastSignal = new StringBuilder();
 
     /**
-     * Defines if the last signal was silence. If so we don't add another silence to the output after it. (Example: We don't want: ". / / -.". What we want is: ". / -.")
+     * Defines if the last signal was silence. If so don't add another silence to the output after it. (Example: We don't want: ". / / -.". What we want is: ". / -.")
      */
     private boolean lastWasSilence = true;
 
@@ -65,15 +67,15 @@ public class Decoder {
     public static void main(String[] args) throws IOException {
         Decoder.getInstance().startRecording();
         // Enter data using BufferReader
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(System.in));
-
-        // Reading data using readLine
-        String input = reader.readLine();
-        if (input.equalsIgnoreCase("stop"))
-            Decoder.getInstance().stopRecording();
-        else if (input.equalsIgnoreCase("out"))
-            System.out.println(Translator.morseToText(tempOutput.toString()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        while (true){
+            // Reading data using readLine
+            String input = reader.readLine();
+            if (input.equalsIgnoreCase("stop"))
+                Decoder.getInstance().stopRecording();
+            else if (input.equalsIgnoreCase("out"))
+                System.out.println(Translator.morseToText(tempOutput.toString()));
+        }
     }
 
     /**
@@ -84,6 +86,8 @@ public class Decoder {
 
     /**
      * Method to start capturing the microphone input through the {@link AudioListener} and start the Decoding-Thread ({@link #decoderThread}) if no error happened.
+     * <p>
+     * [ID: F-GUI-30.1.1]
      *
      * @return True if the listener started successfully and the Decoding-Thread is started.
      * @see AudioListener#startListening()
@@ -96,6 +100,9 @@ public class Decoder {
         audioListener = new AudioListener(); //creating new audioListener
         isRecording = audioListener.startListening(); //start listening on audioListener
 
+        //Reset StringBuilder
+        lastSignal.setLength(0);
+
         if (isRecording)
             decoderThread.start();
 
@@ -105,14 +112,15 @@ public class Decoder {
     /**
      * This method stops the {@link #decoderThread} and so the {@link AudioListener}-Thread.
      * It waits until the last run of the {@link #decoderThread}-Thread finished.
+     * <p>
+     * [ID: F-GUI-30.1.4]
      *
      * @return True, if the Thread stopped without errors.
      */
     public boolean stopRecording() {
         try {
-            isRecording = false;    //Setting boolean to false for graceful finish of decoderThread
-            decoderThread.join();   //Joining thread to wait until finish
-            analyzeFilteredSamples();    //Analyze the samples which may include a last Morse-Signal.
+            isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
+            decoderThread.join();   //Joining thread to wait for it to finish the last run.
             return true;    //return true if success
         } catch (InterruptedException ie) {
             return false;   //return false if failed
@@ -123,6 +131,8 @@ public class Decoder {
      * The Runnable for the {@link #decoderThread}-Thread.
      * In this Thread/Runnable the received {@link Noise}-Objets (from the {@link AudioListener}) are analyzed, filtered and the output Morse-Code is generated.
      * Everytime a new Morse-Signal was found the GUI is notified so that it can fetch the latest Morse-Signals.
+     * <p>
+     * Part of: [ID: F-TEC-10.1.1] (Other in {@link AudioListener})
      *
      * @see #analyzeInputSamples(List)
      * @see #analyzeFilteredSamples()
@@ -141,8 +151,7 @@ public class Decoder {
 
             if (samples != null) {
                 analyzeInputSamples(samples);
-                if (this.filteredSamplesList.size() > 2)
-                    analyzeFilteredSamples();
+                analyzeFilteredSamples();
                 if (lastSignal.length() > 0) {
                     tempOutput.append(getLastSignal().replace("cs", " "));
                     System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
@@ -184,6 +193,7 @@ public class Decoder {
      * <br>(A calculation of the values are here not possible because we only have a small amount of Samples.
      * We would need to cache them or would have to start a synchronization with the transmitter beforehand.
      * Due to time constraints, however, this could not be implemented for the first version of this program.)
+     *
      * @see #analyzeInputSamples(List)
      */
     private void analyzeFilteredSamples() {
@@ -198,19 +208,19 @@ public class Decoder {
             if (filteredSamplesList.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
-                    if (280 * Encoder.TIME_UNIT / 100 <= between && between < 500 * Encoder.TIME_UNIT / 100) {         //Its a ' '
-                        lastSignal.append(" ");
+                    if ((290 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
+                        lastSignal.append("cs");
                         lastWasSilence = true;
-                    } else if (780 * Encoder.TIME_UNIT / 100 <= between && between < 1200 * Encoder.TIME_UNIT / 100) { //Its a '/'
-                        lastSignal.append("/");
+                    } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
+                        lastSignal.append(" / ");
                         lastWasSilence = true;
                     }
                 }
             } else {
-                if (25 * Encoder.TIME_UNIT / 100 <= between && between < 100 * Encoder.TIME_UNIT / 100) {         //Its a '.'
+                if ((25 * Encoder.TIME_UNIT / 100) <= between && between < (100 * Encoder.TIME_UNIT / 100)) {         //Its a '.'
                     lastSignal.append(".");
                     lastWasSilence = false;
-                } else if (180 * Encoder.TIME_UNIT / 100 <= between && between < 300 * Encoder.TIME_UNIT / 100) { //Its a '-'
+                } else if ((180 * Encoder.TIME_UNIT / 100) <= between && between < (300 * Encoder.TIME_UNIT / 100)) { //Its a '-'
                     lastSignal.append("-");
                     lastWasSilence = false;
                 }
@@ -223,8 +233,9 @@ public class Decoder {
     }
 
     /**
-     * Getter if we are decoding/recording or not.
-     * @return True, if we are decoding/recording (The microphone input)
+     * Getter if the {@link Decoder} is currently decoding/recording or not.
+     *
+     * @return True, if decoding/recording
      * @see #isRecording
      */
     public boolean isRecording() {
@@ -233,6 +244,7 @@ public class Decoder {
 
     /**
      * Getter for the GUI to get the last detected Morse-Signals.
+     *
      * @return String with the last Morse-Signals.
      */
     public String getLastSignal() {
@@ -241,6 +253,7 @@ public class Decoder {
 
     /**
      * Implementation of singleton to access the existing object or create one.
+     *
      * @return The only instance of the {@link Decoder}.
      */
     public static Decoder getInstance() {
