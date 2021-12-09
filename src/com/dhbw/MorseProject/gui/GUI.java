@@ -156,7 +156,7 @@ public class GUI {
                         startRecordingButton.setText("Start Recording");
                         showingStartRecording = !showingStartRecording;
                     } else {
-                        //TODO show error when decoder not stopping
+                        showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } else{
@@ -185,11 +185,9 @@ public class GUI {
                         startRecordingButton.setText("Stop Recording");
                         showingStartRecording = !showingStartRecording;
                     } else {
-                        //TODO: show error if recording could not be started
+                        showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
-
             }
         });
 
