@@ -53,6 +53,7 @@
                 <properties>
                   <alignmentX value="0.5"/>
                   <alignmentY value="0.5"/>
+                  <font name="JetBrains Mono" size="16"/>
                   <maximumSize width="10000" height="10000"/>
                   <opaque value="false"/>
                 </properties>
@@ -270,7 +271,9 @@
                 <constraints>
                   <tabbedpane title="Empfangen"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <grid id="cbdc7" layout-manager="CardLayout" hgap="0" vgap="0">
@@ -455,7 +458,9 @@
                 <constraints>
                   <tabbedpane title="Informationen"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <grid id="53823" layout-manager="BorderLayout" hgap="0" vgap="0">
