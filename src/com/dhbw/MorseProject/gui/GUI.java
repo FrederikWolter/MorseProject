@@ -167,12 +167,14 @@ public class GUI {
                             do {
                                 try {
                                     wait();
+
+                                    receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                                    String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
+                                    receive_text_textArea.setText(currentMorseTranslation);
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
-                                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
-                                String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
-                                receive_text_textArea.setText(currentMorseTranslation);
+
                             } while (!showingStartRecording);
                         }
                     });
