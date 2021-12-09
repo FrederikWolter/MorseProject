@@ -1,9 +1,7 @@
 package com.dhbw.MorseProject;
 
 import com.dhbw.MorseProject.gui.GUI;
-import com.dhbw.MorseProject.send.Encoder;
 import com.dhbw.MorseProject.send.Melody;
-import com.dhbw.MorseProject.translate.Translator;
 
 import javax.swing.*;
 
@@ -24,13 +22,8 @@ public class MorseProject {
         //todo initialize central data here
         initMelodies();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new GUI();
-            }
-        });
-
+        // Start GUI
+        SwingUtilities.invokeLater(GUI::new);
     }
 
     /**
