@@ -17,6 +17,7 @@ import java.util.Arrays;
  *
  * @author Lucas Schaffer & Frederik Wolter
  */
+@SuppressWarnings("unused")
 public class Encoder {
     // region public static final
     // active division to make these public static due to possible use by other classes as part of encoder 'interface'

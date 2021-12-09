@@ -8,3 +8,4 @@ Morse code between two or more devices via sound.
 
 - Mark M.
 - Hassan El-Khalil
+- Frederik Wolter
