@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * This class is used as a POJO for the representation of a melody object. [ID: F-TEC-10.4]
  * @author Frederik Wolter
  */
+@SuppressWarnings("unused")
 public class Melody {
     /**
      * Kind of static singleton ArrayList of all melodies created in runtime.
