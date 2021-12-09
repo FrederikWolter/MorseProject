@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dhbw.MorseProject.gui.GUI">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dhbw.morse_project.gui.GUI">
   <grid id="a187f" binding="JPanel_border" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="4504" height="2000"/>

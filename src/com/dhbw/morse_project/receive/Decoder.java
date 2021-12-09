@@ -1,7 +1,7 @@
-package com.dhbw.MorseProject.receive;
+package com.dhbw.morse_project.receive;
 
-import com.dhbw.MorseProject.gui.GUI;
-import com.dhbw.MorseProject.send.Encoder;
+import com.dhbw.morse_project.gui.GUI;
+import com.dhbw.morse_project.send.Encoder;
 
 import java.util.ArrayList;
 import java.util.List;

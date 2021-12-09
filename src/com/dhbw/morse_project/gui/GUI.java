@@ -1,9 +1,9 @@
-package com.dhbw.MorseProject.gui;
+package com.dhbw.morse_project.gui;
 
-import com.dhbw.MorseProject.receive.Decoder;
-import com.dhbw.MorseProject.send.Encoder;
-import com.dhbw.MorseProject.send.Melody;
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.receive.Decoder;
+import com.dhbw.morse_project.send.Encoder;
+import com.dhbw.morse_project.send.Melody;
+import com.dhbw.morse_project.translate.Translator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -218,7 +218,7 @@ public class GUI {
         });
 
         try {
-            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
+            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/morse_project/gui/Morse_Symbolbild.png")));
             // Quelle: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
         } catch (IOException e) {
             e.printStackTrace();
