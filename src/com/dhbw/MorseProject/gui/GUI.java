@@ -77,7 +77,6 @@ public class GUI {
          */
         JFrame frame = setupJFrame();
 
-
         prepareInfoPanel();
 
         prepareMelodySelectionComboBox();
@@ -86,6 +85,9 @@ public class GUI {
 
     }
 
+    /**
+     * Configuring and adding all Action and Event listeners
+     */
     private void configureListeners() {
         /**
          * Action-Listener to start the recording of audio when startRecordingButton is pressed
@@ -141,9 +143,30 @@ public class GUI {
             }
         });
 
-        /**
-         * todo MARK HIER INPUT
-         */
+        prepareTranslationButton();
+    }
+
+    /**
+     * Recording the last focused text area in the send tab to translate from
+     */
+    private void prepareTranslationButton() {
+        prepareListenForTextAreaFocusChange();
+
+        send_translate_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                translateSendTextAreas(textAreaFocusMap);
+            }
+        });
+    }
+
+    /**
+     * Listening for focus change in the
+     * {@link TextArea} {@link #send_text_textArea} and {@link #send_morse_textArea}
+     * to record which of the text areas last had focus.
+     *
+     */
+    private void prepareListenForTextAreaFocusChange() {
         send_morse_textArea.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -164,19 +187,13 @@ public class GUI {
                 textAreaFocusLost(textAreaFocusMap, textArea.TEXT, textArea.MORSE);
             }
         });
-
-        send_translate_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                translateSendTextAreas(textAreaFocusMap);
-            }
-        });
     }
 
+    /**
+     * Settings for the ComboBox to select given melodies or frequencies.
+     */
     private void prepareMelodySelectionComboBox() {
-        /**
-         * Settings for the ComboBox to select given melodies or frequencies.
-         */
+
         for (int i = 0; i < Melody.getMelodyList().size(); i++){
             comboBox1.addItem(Melody.getMelodyList().get(i).getName());
         }
