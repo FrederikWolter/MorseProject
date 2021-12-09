@@ -24,6 +24,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Class responsible for user interactions.
+ * [ID: F-GUI-*, NF-GUI-* ]
  * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
 public class GUI {
