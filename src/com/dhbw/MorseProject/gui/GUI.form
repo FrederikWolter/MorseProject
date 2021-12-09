@@ -83,7 +83,6 @@
                             <properties>
                               <dividerLocation value="200"/>
                               <enabled value="false"/>
-                              <font name="JetBrains Mono" size="16"/>
                               <resizeWeight value="0.5"/>
                             </properties>
                             <border type="none"/>
@@ -211,9 +210,7 @@
                                 <constraints>
                                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
-                                <properties>
-                                  <font name="JetBrains Mono" size="16"/>
-                                </properties>
+                                <properties/>
                               </component>
                               <component id="4c73f" class="javax.swing.JLabel">
                                 <constraints>

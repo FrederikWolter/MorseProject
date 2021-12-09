@@ -240,6 +240,8 @@ public class GUI {
             e.printStackTrace();
         }
 
+        //mainpanel.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
         int taskBarSize = scnMax.bottom;
@@ -260,6 +262,10 @@ public class GUI {
         Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double) effectiveMaxHeight)/modifier));
         frame.setMinimumSize(windowSize);
         mainpanel.setMinimumSize(windowSize);
+        mainpanel.setMaximumSize(new Dimension(500, 500));
+        mainpanel.setSize(500, 500);
+
+        tabbedPane1.setFont(new Font("Arial", Font.BOLD, 16));
 
         double multiplier = 1 + 1.0/modifier;
         frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
@@ -363,7 +369,7 @@ public class GUI {
     }
 
     private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
-        if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only loose focus if it has gained focus before
+        if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only lose focus if it has gained focus before
             if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
                     || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)){
                 textAreaFocusMap.put(non_caller, textArea_focusState.FOCUS_LOST);
