@@ -155,8 +155,9 @@ public class GUI {
                     if(success){
                         startRecordingButton.setText("Start Recording");
                         showingStartRecording = !showingStartRecording;
+                    } else {
+                        //TODO show error when decoder not stopping
                     }
-
 
                 } else{
 
