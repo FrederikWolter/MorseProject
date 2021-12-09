@@ -157,7 +157,6 @@ public class GUI {
                         showingStartRecording = !showingStartRecording;
                     } else {
                         showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal"+e, "Error", JOptionPane.ERROR_MESSAGE);
-
                     }
 
                 } else{
