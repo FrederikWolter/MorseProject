@@ -168,6 +168,8 @@ public class GUI {
 
                 } else{
 
+                    clear_textAreas(receive_text_textArea, receive_morse_textArea); //Clearing text areas beforehand
+
                     Runnable ui_update_runnable = () -> {
                         do {
                             try {
