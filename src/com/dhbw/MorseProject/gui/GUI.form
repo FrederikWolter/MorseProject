@@ -53,6 +53,7 @@
                 <properties>
                   <alignmentX value="0.5"/>
                   <alignmentY value="0.5"/>
+                  <font name="JetBrains Mono" size="16"/>
                   <maximumSize width="10000" height="10000"/>
                   <opaque value="false"/>
                 </properties>
@@ -184,10 +185,11 @@
                                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
-                                  <font name="JetBrains Mono" size="16"/>
-                                  <majorTickSpacing value="5000"/>
-                                  <maximum value="20000"/>
-                                  <minorTickSpacing value="1000"/>
+                                  <font name="JetBrains Mono"/>
+                                  <majorTickSpacing value="2000"/>
+                                  <maximum value="10000"/>
+                                  <minimum value="0"/>
+                                  <minorTickSpacing value="200"/>
                                   <paintLabels value="true"/>
                                   <paintTicks value="true"/>
                                   <snapToTicks value="false"/>
@@ -269,7 +271,9 @@
                 <constraints>
                   <tabbedpane title="Empfangen"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <grid id="cbdc7" layout-manager="CardLayout" hgap="0" vgap="0">
@@ -454,7 +458,9 @@
                 <constraints>
                   <tabbedpane title="Informationen"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <grid id="53823" layout-manager="BorderLayout" hgap="0" vgap="0">
