@@ -93,8 +93,6 @@ public class GUI {
             e.printStackTrace();
         }
 
-        //JPanel_border.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
-
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
         int taskBarSize = scnMax.bottom;
