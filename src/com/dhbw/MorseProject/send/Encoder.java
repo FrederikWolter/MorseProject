@@ -24,7 +24,7 @@ public class Encoder {
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
-    public static final int TIME_UNIT = 100;
+    public static final int TIME_UNIT = 150;
     /**
      * Defined sampleRate used to generate the signal in samples/s
      */

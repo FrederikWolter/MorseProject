@@ -334,7 +334,7 @@ public class GUI {
 
         ui_update_thread = new Thread(ui_update_runnable);
 
-        boolean success = Decoder.getInstance().startRecording(ui_update_thread);
+        boolean success = Decoder.getInstance().startRecording(this);
         if (success){
             ui_update_thread.start();
             startRecordingButton.setText("Stop Recording");
@@ -465,7 +465,11 @@ public class GUI {
         return data;
     }
 
+    public Thread getUi_update_thread(){
+        return ui_update_thread;
+    }
+
     public int getNoiseThreshold(){
-        return receive_sensitivity_slider.getValue();
+        return 100-receive_sensitivity_slider.getValue();
     }
 }

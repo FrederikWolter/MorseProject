@@ -1,5 +1,7 @@
 package com.dhbw.MorseProject.receive;
 
+import com.dhbw.MorseProject.gui.GUI;
+
 import javax.sound.sampled.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +74,11 @@ public class AudioListener {
      */
     private Thread listenerThread;
 
+    /**
+     * The GUI {@link GUI} instance
+     */
+    private GUI gui;
+
 
     /**
      * Method to start capturing the microphone input.
@@ -79,7 +86,8 @@ public class AudioListener {
      *
      * @return True if the listener started successfully.
      */
-    public boolean startListening() {
+    public boolean startListening(GUI gui) {
+        this.gui = gui;
 
         AudioFormat format = new AudioFormat(44000f, 16, 1, true, true); //Default Line
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);   // [ID: F-TEC-10.2.1]
@@ -293,8 +301,7 @@ public class AudioListener {
      * @return The threshold
      */
     private double getNoiseThreshold() {
-        //TODO: get noise threshold from GUI
-        return 40;
+        return this.gui.getNoiseThreshold();
     }
 
     /**
