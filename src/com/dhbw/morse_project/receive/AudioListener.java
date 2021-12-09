@@ -1,6 +1,6 @@
-package com.dhbw.MorseProject.receive;
+package com.dhbw.morse_project.receive;
 
-import com.dhbw.MorseProject.gui.GUI;
+import com.dhbw.morse_project.gui.GUI;
 
 import javax.sound.sampled.*;
 import java.util.ArrayList;

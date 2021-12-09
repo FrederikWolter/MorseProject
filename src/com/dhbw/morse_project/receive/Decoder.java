@@ -1,7 +1,7 @@
-package com.dhbw.MorseProject.receive;
+package com.dhbw.morse_project.receive;
 
-import com.dhbw.MorseProject.gui.GUI;
-import com.dhbw.MorseProject.send.Encoder;
+import com.dhbw.morse_project.gui.GUI;
+import com.dhbw.morse_project.send.Encoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,8 +101,10 @@ public class Decoder {
      */
     public boolean stopRecording() {
         try {
-            isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
-            decoderThread.join();   //Joining thread to wait for it to finish the last run.
+            if(decoderThread != null){
+                isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
+                decoderThread.join();   //Joining thread to wait for it to finish the last run.
+            }
             return true;    //return true if success
         } catch (InterruptedException ie) {
             return false;   //return false if failed

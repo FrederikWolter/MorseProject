@@ -1,7 +1,7 @@
-package com.dhbw.MorseProject;
+package com.dhbw.morse_project;
 
-import com.dhbw.MorseProject.gui.GUI;
-import com.dhbw.MorseProject.send.Melody;
+import com.dhbw.morse_project.gui.GUI;
+import com.dhbw.morse_project.send.Melody;
 
 import javax.swing.*;
 

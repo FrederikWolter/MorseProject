@@ -1,10 +1,10 @@
-package com.dhbw.MorseProject.send;
+package com.dhbw.morse_project.send;
 
-import com.dhbw.MorseProject.send.events.EncoderErrorEvent;
-import com.dhbw.MorseProject.send.events.EncoderFinishedEvent;
-import com.dhbw.MorseProject.send.events.IEncoderErrorListener;
-import com.dhbw.MorseProject.send.events.IEncoderFinishedListener;
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.send.events.EncoderErrorEvent;
+import com.dhbw.morse_project.send.events.EncoderFinishedEvent;
+import com.dhbw.morse_project.send.events.IEncoderErrorListener;
+import com.dhbw.morse_project.send.events.IEncoderFinishedListener;
+import com.dhbw.morse_project.translate.Translator;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;

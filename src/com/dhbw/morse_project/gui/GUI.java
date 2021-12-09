@@ -1,10 +1,9 @@
-package com.dhbw.MorseProject.gui;
+package com.dhbw.morse_project.gui;
 
-import com.dhbw.MorseProject.receive.Decoder;
-import com.dhbw.MorseProject.send.Encoder;
-import com.dhbw.MorseProject.send.events.IEncoderFinishedListener;
-import com.dhbw.MorseProject.send.Melody;
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.receive.Decoder;
+import com.dhbw.morse_project.send.Encoder;
+import com.dhbw.morse_project.send.Melody;
+import com.dhbw.morse_project.translate.Translator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,13 +23,13 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * [ID: F-GUI-*, NF-GUI-* ]
  * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
+@SuppressWarnings("DanglingJavadoc")
 public class GUI {
     private JTabbedPane tabbedPane1;
     private JPanel toSend;
     private JPanel toReceive;
     private JPanel toInfo;
     private javax.swing.JPanel mainpanel;
-    private JTextField halloTestTextField;
     private JTextArea receive_text_textArea;
     private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
@@ -66,7 +65,7 @@ public class GUI {
         TEXT
     }
 
-    private Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<textArea, textArea_focusState>();
+    private final Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<>();
 
     /**
      * Constructor for class {@link GUI}
@@ -103,15 +102,12 @@ public class GUI {
         /**
          * Action-Listener to start the recording of audio when startRecordingButton is pressed
          */
-        startRecordingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!showingStartRecording){
-                    stopRecording(e);
+        startRecordingButton.addActionListener(e -> {
+            if (!showingStartRecording){
+                stopRecording(e);
 
-                } else{
-                    startRecording(e);
-                }
+            } else{
+                startRecording(e);
             }
         });
 
@@ -120,39 +116,21 @@ public class GUI {
          * @see #startPlaying()
          * @see #stopPlaying()
          */
-        beginSendingButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!showingBeginSend){
-                    stopPlaying();
-                } else{
-                    startPlaying();
-                }
+        beginSendingButton.addActionListener(e -> {
+            if (!showingBeginSend){
+                stopPlaying();
+            } else{
+                startPlaying();
             }
         });
 
-        Encoder.getInstance().addFinishedEventListener(new IEncoderFinishedListener() {
-            @Override
-            public void run() {
-                stopPlayingChangeVariables();
-            }
-        });
+        Encoder.getInstance().addFinishedEventListener(this::stopPlayingChangeVariables);
 
         /**
          * Action-Listeners to clear textAreas after clicking the button
          */
-        send_clear_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clear_textAreas(send_text_textArea, send_morse_textArea);
-            }
-        });
-        receive_clear_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clear_textAreas(receive_text_textArea, receive_morse_textArea);
-            }
-        });
+        send_clear_button.addActionListener(e -> clear_textAreas(send_text_textArea, send_morse_textArea));
+        receive_clear_button.addActionListener(e -> clear_textAreas(receive_text_textArea, receive_morse_textArea));
 
         prepareTranslationButton();
     }
@@ -171,12 +149,7 @@ public class GUI {
     private void prepareTranslationButton() {
         prepareListenForTextAreaFocusChange();
 
-        send_translate_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                translateSendTextAreas(textAreaFocusMap);
-            }
-        });
+        send_translate_button.addActionListener(e -> translateSendTextAreas(textAreaFocusMap));
     }
 
     /**
@@ -225,12 +198,7 @@ public class GUI {
         for (int i = 0; i < Melody.getMelodyList().size(); i++){
             comboBox1.addItem(Melody.getMelodyList().get(i).getName());
         }
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest"));
-            }
-        });
+        comboBox1.addActionListener(e -> frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest")));
     }
 
     /**
@@ -264,7 +232,7 @@ public class GUI {
      *
      */
     private JFrame setupJFrame() {
-        JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikatioinstechnik München");
+        JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikationstechnik München");
         frame.add(mainpanel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
@@ -286,7 +254,7 @@ public class GUI {
         });
 
         try {
-            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/MorseProject/gui/Morse_Symbolbild.png")));
+            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/morse_project/gui/Morse_Symbolbild.png")));
             // Quelle: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
         } catch (IOException e) {
             e.printStackTrace();
@@ -486,7 +454,7 @@ public class GUI {
      *
      * @see #prepareListenForTextAreaFocusChange()
      */
-    private void textAreaFocusLost(Map textAreaFocusMap, textArea caller, textArea non_caller) {
+    private void textAreaFocusLost(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap, textArea caller, textArea non_caller) {
         if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only lose focus if it has gained focus before
             if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
                     || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)){
@@ -512,7 +480,7 @@ public class GUI {
      * @see #textAreaFocusLost(Map, textArea, textArea)
      * @see #textAreaFocusMap
      */
-    private void translateSendTextAreas(Map textAreaFocusMap) {
+    private void translateSendTextAreas(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap) {
         if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
                 || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
             translateTextAreaTextToMorse();
@@ -603,12 +571,12 @@ public class GUI {
      * @see Translator
      */
     private String[][] getTableData(){
-        ArrayList allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
+        ArrayList<Character> allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
         String[][] data = new String[42][2];
         int counter = 0;
-        for(int i=0; i<allCharacters.size(); i++) {
-            data[counter][0] = ""+allCharacters.get(i);
-            data[counter][1] = Translator.toMorse((char)allCharacters.get(i));
+        for (Character allCharacter : allCharacters) {
+            data[counter][0] = "" + allCharacter;
+            data[counter][1] = Translator.toMorse(allCharacter);
             counter++;
         }
         return data;
