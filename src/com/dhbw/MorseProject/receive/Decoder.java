@@ -1,11 +1,7 @@
 package com.dhbw.MorseProject.receive;
 
 import com.dhbw.MorseProject.send.Encoder;
-import com.dhbw.MorseProject.translate.Translator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,24 +56,6 @@ public class Decoder {
      */
     private boolean lastWasSilence = true;
 
-    //TODO only for debug usage
-    private static final StringBuilder tempOutput = new StringBuilder();
-
-    //TODO delete test main
-    public static void main(String[] args) throws IOException {
-        Decoder.getInstance().startRecording();
-        // Enter data using BufferReader
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true){
-            // Reading data using readLine
-            String input = reader.readLine();
-            if (input.equalsIgnoreCase("stop"))
-                Decoder.getInstance().stopRecording();
-            else if (input.equalsIgnoreCase("out"))
-                System.out.println(Translator.morseToText(tempOutput.toString()));
-        }
-    }
-
     /**
      * Private constructor for the Singleton-Pattern
      */
@@ -92,8 +70,8 @@ public class Decoder {
      * @return True if the listener started successfully and the Decoding-Thread is started.
      * @see AudioListener#startListening()
      */
-    public boolean startRecording(/* TODO Thread ui_update_thread */) {
-        //TODO this.ui_update_thread = ui_update_thread;
+    public boolean startRecording(Thread ui_update_thread) {
+        this.ui_update_thread = ui_update_thread;
 
         decoderThread = new Thread(decoderRunnable); //Creating new Thread because you can only call .start on Thread once
 
@@ -153,10 +131,7 @@ public class Decoder {
                 analyzeInputSamples(samples);
                 analyzeFilteredSamples();
                 if (lastSignal.length() > 0) {
-                    tempOutput.append(getLastSignal().replace("cs", " "));
-                    System.out.println(getLastSignal()); //TODO DELETE debug if no longer needed
-                    //TODO ui_update_thread.notify(); //notify ui_update_thread about new signal
-                    lastSignal.setLength(0); //Reset the StringBuilder
+                    ui_update_thread.notify(); //notify ui_update_thread about new signals
                 }
             }
         }
@@ -202,14 +177,11 @@ public class Decoder {
             //The amount of samples between
             int between = filteredSamplesList.get(i + 1).getIndex() - filteredSamplesList.get(i).getIndex();
 
-            //TODO delete debug output
-            //System.out.println(between + " " + filteredSamplesList.size() + " " + i + " " + filteredSamplesList.get(i).isQuiet());
-
             if (filteredSamplesList.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
                     if ((290 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
-                        lastSignal.append("cs");
+                        lastSignal.append(" ");
                         lastWasSilence = true;
                     } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
                         lastSignal.append(" / ");
@@ -244,11 +216,14 @@ public class Decoder {
 
     /**
      * Getter for the GUI to get the last detected Morse-Signals.
+     * After it the StringBuilder {@link #lastSignal} is reset.
      *
      * @return String with the last Morse-Signals.
      */
     public String getLastSignal() {
-        return lastSignal.toString();
+        String back = lastSignal.toString();
+        lastSignal.setLength(0); //Reset the StringBuilder
+        return back;
     }
 
     /**
