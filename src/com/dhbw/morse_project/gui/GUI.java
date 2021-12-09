@@ -3,6 +3,7 @@ package com.dhbw.morse_project.gui;
 import com.dhbw.morse_project.receive.Decoder;
 import com.dhbw.morse_project.send.Encoder;
 import com.dhbw.morse_project.send.Melody;
+import com.dhbw.morse_project.send.events.IEncoderFinishedListener;
 import com.dhbw.morse_project.translate.Translator;
 
 import javax.imageio.ImageIO;
