@@ -131,18 +131,15 @@ public class AudioListener {
      * This method stops the capturing of the microphone input.
      * It waits until the last run of the {@link #listenerThread}-Thread finished.
      *
-     * @return True, if the Thread stopped without error.
      */
-    public boolean stopListening() {
+    public void stopListening() {
         isListening = false;        //Set boolean to false so that the loop finishes cleanly
         try {
             listenerThread.join();  //Join to wait for the listenerThread to finish.
             line.stop();
             line.close();
-            return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -158,9 +155,9 @@ public class AudioListener {
     private final Runnable listenerRunnable = () -> {
         byte[] memoryBuffer = new byte[bufferSize];
 
-        synchronized (listenerThread) {
+        synchronized (synchronizedBuffer) {
             try {
-                listenerThread.wait(500);   //We wait 500ms before we start listening to skip user mouse clicks, etc..
+                synchronizedBuffer.wait(500);   //We wait 500ms before we start listening to skip user mouse clicks, etc..
             } catch (InterruptedException e) {
                 e.printStackTrace();    //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
             }
