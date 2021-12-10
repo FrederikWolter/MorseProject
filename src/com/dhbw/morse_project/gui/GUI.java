@@ -53,6 +53,14 @@ public class GUI {
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
 
+    /**
+     * Object to synchronize the GUI with the {@link Decoder}, to pull the latest detected Morse-Signals.
+     * @see Decoder#getLastSignal()
+     */
+    private final Object GUI_DECODER_SYNCHRONIZE_Object;
+
+    private final Decoder DECODER;
+
     private Thread ui_update_thread;
 
     private enum textArea_focusState {
@@ -81,6 +89,9 @@ public class GUI {
     public GUI(){
 
         JFrame frame = setupJFrame();
+
+        GUI_DECODER_SYNCHRONIZE_Object = new Object();
+        DECODER = new Decoder(this);
 
         prepareInfoPanel();
 
@@ -324,7 +335,7 @@ public class GUI {
      * @param e
      */
     private void stopRecording(ActionEvent e) {
-        boolean success = Decoder.getInstance().stopRecording();
+        boolean success = DECODER.stopRecording();
 
         if(success){
             startRecordingButton.setText("Start Recording");
@@ -345,7 +356,7 @@ public class GUI {
 
         ui_update_thread = new Thread(ui_update_runnable);
 
-        boolean success = Decoder.getInstance().startRecording(this);
+        boolean success = DECODER.startRecording();
         if (success){
             ui_update_thread.start();
             startRecordingButton.setText("Stop Recording");
@@ -364,13 +375,13 @@ public class GUI {
         return () -> {
             do {
                 try {
-                    synchronized (ui_update_thread){
-                        ui_update_thread.wait();
+                    synchronized (GUI_DECODER_SYNCHRONIZE_Object){
+                        GUI_DECODER_SYNCHRONIZE_Object.wait();
                     }
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                receive_morse_textArea.append(Decoder.getInstance().getLastSignal());
+                receive_morse_textArea.append(DECODER.getLastSignal());
                 String currentMorseTranslation = Translator.morseToText(receive_morse_textArea.getText());
                 receive_text_textArea.setText(currentMorseTranslation);
             } while (!showingStartRecording);
@@ -585,15 +596,11 @@ public class GUI {
     }
 
     /**
-     *
-     * @return the {@link #ui_update_thread} for the {@link Encoder}
-     * @see #ui_update_thread
-     * @see #getUiUpdateRunnable()
-     * @see #startRecording(ActionEvent)
-     * @see Encoder
+     * Getter to get the {@link #GUI_DECODER_SYNCHRONIZE_Object}-Object which the {@link Decoder} and the {@link #ui_update_thread} are using to synchronize.
+     * @return The {@link #GUI_DECODER_SYNCHRONIZE_Object}-Object.
      */
-    public Thread getUi_update_thread(){
-        return ui_update_thread;
+    public Object getGuiDecoderSynchronizeObject() {
+        return GUI_DECODER_SYNCHRONIZE_Object;
     }
 
     /**
