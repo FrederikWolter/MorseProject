@@ -24,8 +24,6 @@ public class Translator {
      */
     public static final String C = " ";
 
-    private static final char SPACE = ' ';
-
     private static final HashMap<Character, String> CharToMorse = new HashMap<>();
     private static final HashMap<String, Character> MorseToChar = new HashMap<>();
 
