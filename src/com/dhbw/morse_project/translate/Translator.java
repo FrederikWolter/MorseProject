@@ -24,6 +24,8 @@ public class Translator {
      */
     public static final String C = " ";
 
+    private static final char SPACE = ' ';
+
     private static final HashMap<Character, String> CharToMorse = new HashMap<>();
     private static final HashMap<String, Character> MorseToChar = new HashMap<>();
 
@@ -65,11 +67,11 @@ public class Translator {
         CharToMorse.put('7', L + L + S + S + S);
         CharToMorse.put('8', L + L + L + S + S);
         CharToMorse.put('9', L + L + L + L + S);
-        CharToMorse.put('.', W + S + L + S + L + S + L);
-        CharToMorse.put(',', W + L + L + S + S + L + L);
-        CharToMorse.put('\'', W + S + L + L + L + L + S);
-        CharToMorse.put(':', W + L + L + L + S + S + S);
-        CharToMorse.put('-', W + L + S + S + S + S + L);
+        CharToMorse.put('.', S + L + S + L + S + L);
+        CharToMorse.put(',', L + L + S + S + L + L);
+        CharToMorse.put('\'', S + L + L + L + L + S);
+        CharToMorse.put(':', L + L + L + S + S + S);
+        CharToMorse.put('-', L + S + S + S + S + L);
         CharToMorse.put(' ', W);
         // endregion
 
@@ -147,10 +149,13 @@ public class Translator {
     public static String textToMorse(String Text) {
         char[] ch = Text.toCharArray();         // Creating array of string length
         StringBuilder x = new StringBuilder();
+        char last;
         for (char c : ch) {
             String s = toMorse(c);
             if (s == null)                       // char not found
                 return null;
+            if((c == '.' || c == ',' || c == '\'' || c == ':' || c == '-') && x.length()>1 && x.toString().charAt(x.length()-1) != ' ')
+                x.append(W+' ');                 // Add a long pause with space ('/ ')
             x.append(s);
             x.append(C);
         }
