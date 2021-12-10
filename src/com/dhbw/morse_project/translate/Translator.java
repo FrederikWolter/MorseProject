@@ -1,4 +1,4 @@
-package com.dhbw.MorseProject.translate;
+package com.dhbw.morse_project.translate;
 
 import java.util.HashMap;
 

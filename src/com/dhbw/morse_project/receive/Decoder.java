@@ -1,19 +1,19 @@
-package com.dhbw.MorseProject.receive;
+package com.dhbw.morse_project.receive;
 
-import com.dhbw.MorseProject.send.Encoder;
+import com.dhbw.morse_project.send.Encoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * In this class, the samples ({@link Noise}-Objects) are evaluated in order to generate the Morse-Code.
- * Singleton-Pattern is used to allow easy access and will not be rebuilt in the first version of this program for reasons of time.
  * <p>
  * [ID: F-LOG-20.3.2, (F-LOG-20.3.3)]
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  * @see AudioListener
  */
+@SuppressWarnings("unused")
 public class Decoder {
 
     /**
@@ -32,24 +32,14 @@ public class Decoder {
     private Thread decoderThread;
 
     /**
-     * Singleton-Pattern instance of this {@link Decoder}.
-     */
-    private static Decoder instance = null;
-
-    /**
      * List with the {@link Noise}-Objets which are different to the previous entry. So that on a quiet sample a loud one follows.
      */
-    private final List<Noise> filteredSamplesList = new ArrayList<>();
-
-    /**
-     * Thread of the Ui which this class notifies, if a new Morse-Signal got detected in the samples ({@link Noise}-Objects).
-     */
-    private Thread ui_update_thread;
+    private final List<Noise> FILTERED_SAMPLES_LIST = new ArrayList<>();
 
     /**
      * StringBuilder in which the last found Morse-Signals are appended.
      */
-    private final StringBuilder lastSignal = new StringBuilder();
+    private final StringBuilder LAST_SIGNAL = new StringBuilder();
 
     /**
      * Defines if the last signal was silence. If so don't add another silence to the output after it. (Example: We don't want: ". / / -.". What we want is: ". / -.")
@@ -57,9 +47,11 @@ public class Decoder {
     private boolean lastWasSilence = true;
 
     /**
-     * Private constructor for the Singleton-Pattern
+     * Constructor
      */
-    private Decoder() {
+    public Decoder(/* TODO GUI gui */) {
+        //TODO this.gui = gui;
+        audioListener = new AudioListener(/* TODO gui*/); //creating new audioListener
     }
 
     /**
@@ -68,18 +60,17 @@ public class Decoder {
      * [ID: F-GUI-30.1.1]
      *
      * @return True if the listener started successfully and the Decoding-Thread is started.
-     * @see AudioListener#startListening()
+     * @see AudioListener#startListening() ()
      */
-    public boolean startRecording(Thread ui_update_thread) {
-        this.ui_update_thread = ui_update_thread;
-
+    public boolean startRecording() {
         decoderThread = new Thread(decoderRunnable); //Creating new Thread because you can only call .start on Thread once
 
-        audioListener = new AudioListener(); //creating new audioListener
         isRecording = audioListener.startListening(); //start listening on audioListener
 
-        //Reset StringBuilder
-        lastSignal.setLength(0);
+        //Reset
+        LAST_SIGNAL.setLength(0);
+        FILTERED_SAMPLES_LIST.clear();
+        lastWasSilence = true;
 
         if (isRecording)
             decoderThread.start();
@@ -97,8 +88,10 @@ public class Decoder {
      */
     public boolean stopRecording() {
         try {
-            isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
-            decoderThread.join();   //Joining thread to wait for it to finish the last run.
+            if(decoderThread != null){
+                isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
+                decoderThread.join();   //Joining thread to wait for it to finish the last run.
+            }
             return true;    //return true if success
         } catch (InterruptedException ie) {
             return false;   //return false if failed
@@ -130,8 +123,11 @@ public class Decoder {
             if (samples != null) {
                 analyzeInputSamples(samples);
                 analyzeFilteredSamples();
-                if (lastSignal.length() > 0) {
-                    ui_update_thread.notify(); //notify ui_update_thread about new signals
+                if (LAST_SIGNAL.length() > 0) {
+                    /* TODO notify GUI
+                    synchronized (gui.getGuiDecoderSynchronizeObject()){
+                        gui.getGuiDecoderSynchronizeObject().notify(); //notify ui_update_thread about new signals
+                    } */
                 }
             }
         }
@@ -145,15 +141,15 @@ public class Decoder {
      */
     private void analyzeInputSamples(List<Noise> samples) {
         //We add the first sample to the filtered list and if the next value does not have the same identifier (quiet, loud) as the last entry in the last iteration.
-        if (this.filteredSamplesList.size() == 0 || this.filteredSamplesList.get(this.filteredSamplesList.size() - 1).isQuiet() != samples.get(0).isQuiet())
-            this.filteredSamplesList.add(samples.get(0));
+        if (this.FILTERED_SAMPLES_LIST.size() == 0 || this.FILTERED_SAMPLES_LIST.get(this.FILTERED_SAMPLES_LIST.size() - 1).isQuiet() != samples.get(0).isQuiet())
+            this.FILTERED_SAMPLES_LIST.add(samples.get(0));
 
         for (int i = 0; i < samples.size(); i++) {
             boolean isCurrentQuiet = samples.get(i).isQuiet();
 
             for (int j = i + 1; j < samples.size(); j++) { //Check next Noise Object
                 if (samples.get(j).isQuiet() != isCurrentQuiet) { //Next is loud and prev. were quiet ; or ; Next is quiet and prev. were loud
-                    this.filteredSamplesList.add(samples.get(j));
+                    this.FILTERED_SAMPLES_LIST.add(samples.get(j));
                     i = j;  //We don't want to check every sample more than once.
                     break;
                 }
@@ -172,36 +168,36 @@ public class Decoder {
      * @see #analyzeInputSamples(List)
      */
     private void analyzeFilteredSamples() {
-        for (int i = 0; i < filteredSamplesList.size() - 1; i++) {
+        for (int i = 0; i < FILTERED_SAMPLES_LIST.size() - 1; i++) {
 
             //The amount of samples between
-            int between = filteredSamplesList.get(i + 1).getIndex() - filteredSamplesList.get(i).getIndex();
+            int between = FILTERED_SAMPLES_LIST.get(i + 1).getIndex() - FILTERED_SAMPLES_LIST.get(i).getIndex();
 
-            if (filteredSamplesList.get(i).isQuiet()) {
+            if (FILTERED_SAMPLES_LIST.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
-                    if ((290 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
-                        lastSignal.append(" ");
+                    if ((280 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
+                        LAST_SIGNAL.append(" ");
                         lastWasSilence = true;
                     } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
-                        lastSignal.append(" / ");
+                        LAST_SIGNAL.append(" / ");
                         lastWasSilence = true;
                     }
                 }
             } else {
                 if ((25 * Encoder.TIME_UNIT / 100) <= between && between < (100 * Encoder.TIME_UNIT / 100)) {         //Its a '.'
-                    lastSignal.append(".");
+                    LAST_SIGNAL.append(".");
                     lastWasSilence = false;
                 } else if ((180 * Encoder.TIME_UNIT / 100) <= between && between < (300 * Encoder.TIME_UNIT / 100)) { //Its a '-'
-                    lastSignal.append("-");
+                    LAST_SIGNAL.append("-");
                     lastWasSilence = false;
                 }
             }
         }
         //Delete everything in the list expect the last entry.
-        Noise last = filteredSamplesList.get(filteredSamplesList.size() - 1);
-        filteredSamplesList.clear();
-        filteredSamplesList.add(last);
+        Noise last = FILTERED_SAMPLES_LIST.get(FILTERED_SAMPLES_LIST.size() - 1);
+        FILTERED_SAMPLES_LIST.clear();
+        FILTERED_SAMPLES_LIST.add(last);
     }
 
     /**
@@ -216,26 +212,13 @@ public class Decoder {
 
     /**
      * Getter for the GUI to get the last detected Morse-Signals.
-     * After it the StringBuilder {@link #lastSignal} is reset.
+     * After it the StringBuilder {@link #LAST_SIGNAL} is reset.
      *
      * @return String with the last Morse-Signals.
      */
     public String getLastSignal() {
-        String back = lastSignal.toString();
-        lastSignal.setLength(0); //Reset the StringBuilder
+        String back = LAST_SIGNAL.toString();
+        LAST_SIGNAL.setLength(0); //Reset the StringBuilder
         return back;
     }
-
-    /**
-     * Implementation of singleton to access the existing object or create one.
-     *
-     * @return The only instance of the {@link Decoder}.
-     */
-    public static Decoder getInstance() {
-        if (instance == null) {
-            instance = new Decoder();
-        }
-        return instance;
-    }
-
 }

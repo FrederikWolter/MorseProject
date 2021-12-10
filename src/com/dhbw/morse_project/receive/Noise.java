@@ -1,4 +1,4 @@
-package com.dhbw.MorseProject.receive;
+package com.dhbw.morse_project.receive;
 
 /**
  * This class is used as a POJO for the representation of one Sample.

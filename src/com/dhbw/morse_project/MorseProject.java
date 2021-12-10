@@ -1,8 +1,8 @@
-package com.dhbw.MorseProject;
+package com.dhbw.morse_project;
 
-import com.dhbw.MorseProject.send.Encoder;
-import com.dhbw.MorseProject.send.Melody;
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.send.Encoder;
+import com.dhbw.morse_project.send.Melody;
+import com.dhbw.morse_project.translate.Translator;
 
 // todo comment ids from Pflichtenheft ;) where these are implemented
 // todo setup jar export

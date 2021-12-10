@@ -1,6 +1,6 @@
-package com.dhbw.MorseProject.send;
+package com.dhbw.morse_project.send;
 
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.translate.Translator;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -18,7 +18,7 @@ public class Encoder {
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
-    public static final int TIME_UNIT = 100;
+    public static final int TIME_UNIT = 150;
     /**
      * Defined sampleRate used to generate the signal in samples/s
      */
