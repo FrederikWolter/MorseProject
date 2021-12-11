@@ -5,7 +5,6 @@ import com.dhbw.morse_project.send.Melody;
 
 import javax.swing.*;
 
-// todo comment ids from Pflichtenheft ;) where these are implemented
 // todo setup jar export
 
 /**
@@ -21,7 +20,6 @@ public class MorseProject {
      * @param args currently not used.
      */
     public static void main(String[] args) {
-        //todo initialize central data here
         initMelodies();
 
         // Start GUI
