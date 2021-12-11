@@ -254,7 +254,8 @@ public class GUI {
                     stopPlaying();
                     stopRecording(null);
                 } catch (Exception exception){
-                    exception.printStackTrace();    //TODO: show error message when stopping failed
+                    exception.printStackTrace();
+                    showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: could not stop recording", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 frame.dispose();
                 System.exit(0);
@@ -401,9 +402,13 @@ public class GUI {
         Melody sendMelody = getMelody();
         if (sendMelody != null){
             try {
-                Encoder.getInstance().send(morse, sendMelody);
-                beginSendingButton.setText("Senden beenden");
-                showingBeginSend = !showingBeginSend;
+                if (Objects.equals(morse, "")) {
+                    showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    Encoder.getInstance().send(morse, sendMelody);
+                    beginSendingButton.setText("Senden beenden");
+                    showingBeginSend = !showingBeginSend;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while starting play signal:\n"+ Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
@@ -505,7 +510,7 @@ public class GUI {
                 translateMorseTextAreaToText();
             } else {
                 System.out.println("No way to decide what to translate to which");
-                //TODO display error message "please select one text area"
+                showMessageDialog(null, "Bitte wählen Sie ein Texteingabefeld", "Texteingabe nicht erkannt", JOptionPane.WARNING_MESSAGE);
             }
         }
     }

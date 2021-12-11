@@ -5,8 +5,6 @@ import com.dhbw.morse_project.send.Melody;
 
 import javax.swing.*;
 
-// todo setup jar export
-
 /**
  * Main entry point to application - providing the main method.
  *

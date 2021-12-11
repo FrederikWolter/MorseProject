@@ -131,7 +131,7 @@ public class Translator {
         for (String s : morseChar) {
             char c = toChar(s);
             if (c == 0)                               // char not found
-                return null;
+                x.append('?');
             x.append(c);
         }
         return x.toString();

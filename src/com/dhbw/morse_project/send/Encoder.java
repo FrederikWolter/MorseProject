@@ -160,9 +160,10 @@ public class Encoder {
         line.start();
         line.write(buffer, 0, buffer.length);
         line.drain();
-        //line.close();
+        //line.close();                             // closing the line is the "clean" way, but causes cracking sound
+                                                    // depending on the system it is running on.
 
-        wait(TIME_UNIT);                         // 1 time unit pause after each signal
+        wait(TIME_UNIT);                            // 1 time unit pause after each signal
     }
 
     /**
@@ -181,6 +182,33 @@ public class Encoder {
         for (int i = 0; i < samples; i++) {
             double angle = 2.0 * Math.PI * i / interval;
             result[i] = (byte) (Math.sin(angle) * VOLUME);
+        }
+        return fadeOutSineWave(result);
+    }
+
+    /**
+     * private alternative helper method generating a square wave with given frequency and duration.
+     * only used for testing beacause is sounds horrible.
+     * public static volume ist used for the amplitude.
+     *
+     * @param frequency of square wave
+     * @param duration  of square wave
+     * @return byte array of square wave
+     */
+    private byte[] squareWave(int frequency, int duration) {
+        int samples = (duration * SAMPLE_RATE) / 1000;               // convert samples/s to samples/(duration in ms)
+        byte[] result = new byte[samples];
+        double interval = (double) SAMPLE_RATE / frequency;
+
+        for (int i = 0; i < samples; i++) {
+            double angle = 2.0 * Math.PI * i / interval;
+            if ((Math.sin(angle) * VOLUME) > 0){
+                result[i] = VOLUME;
+            }else if ((Math.sin(angle) * VOLUME) < 0){
+                result[i] = -VOLUME;
+            }else{
+                result[i] = 0;
+            }
         }
         return fadeOutSineWave(result);
     }
