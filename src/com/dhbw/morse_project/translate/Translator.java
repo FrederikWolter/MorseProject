@@ -147,13 +147,10 @@ public class Translator {
     public static String textToMorse(String Text) {
         char[] ch = Text.toCharArray();         // Creating array of string length
         StringBuilder x = new StringBuilder();
-        char last;
         for (char c : ch) {
             String s = toMorse(c);
             if (s == null)                       // char not found
                 return null;
-            if((c == '.' || c == ',' || c == '\'' || c == ':' || c == '-') && x.length()>1 && x.toString().charAt(x.length()-1) != ' ')
-                x.append(W+' ');                 // Add a long pause with space ('/ ')
             x.append(s);
             x.append(C);
         }
