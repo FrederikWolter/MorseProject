@@ -36,7 +36,7 @@ public class Encoder {
     /**
      * Damp factor for sine wave. Value between 0 and 1 representing percentage of samples modified.
      */
-    public static final double DAMP_FACTOR = 0.98;
+    public static final double DAMP_FACTOR = 0.97;
     // endregion
 
     /**
@@ -160,7 +160,7 @@ public class Encoder {
         line.start();
         line.write(buffer, 0, buffer.length);
         line.drain();
-        line.close();
+        //line.close();
 
         wait(TIME_UNIT);                         // 1 time unit pause after each signal
     }
