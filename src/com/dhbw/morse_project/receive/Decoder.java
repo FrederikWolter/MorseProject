@@ -53,6 +53,12 @@ public class Decoder {
     private boolean lastWasSilence = true;
 
     /**
+     * The threshold for the rang calculation.
+     * @see #analyzeFilteredSamples()
+     */
+    private final float TIME_UNIT_THRESHOLD = ((float)Encoder.TIME_UNIT / 100);
+
+    /**
      * Constructor
      * @param gui The {@link GUI} instance.
      */
@@ -182,19 +188,19 @@ public class Decoder {
             if (FILTERED_SAMPLES_LIST.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
-                    if ((280 * Encoder.TIME_UNIT / 100) <= between && between < (500 * Encoder.TIME_UNIT / 100)) {         //Its a ' '
+                    if ((180 * TIME_UNIT_THRESHOLD) <= between && between < (500 * TIME_UNIT_THRESHOLD)) {         //Its a ' '
                         LAST_SIGNAL.append(" ");
                         lastWasSilence = true;
-                    } else if ((780 * Encoder.TIME_UNIT / 100) <= between && between < (1200 * Encoder.TIME_UNIT / 100)) { //Its a '/'
+                    } else if ((780 * TIME_UNIT_THRESHOLD) <= between) { //Its a '/' - We don't limit this threshold, because we want to read an '/' after any break
                         LAST_SIGNAL.append(" / ");
                         lastWasSilence = true;
                     }
                 }
             } else {
-                if ((25 * Encoder.TIME_UNIT / 100) <= between && between < (100 * Encoder.TIME_UNIT / 100)) {         //Its a '.'
+                if ((35 * TIME_UNIT_THRESHOLD) <= between && between < (150 * TIME_UNIT_THRESHOLD)) {         //Its a '.'
                     LAST_SIGNAL.append(".");
                     lastWasSilence = false;
-                } else if ((180 * Encoder.TIME_UNIT / 100) <= between && between < (300 * Encoder.TIME_UNIT / 100)) { //Its a '-'
+                } else if ((180 * TIME_UNIT_THRESHOLD) <= between && between < (450 * TIME_UNIT_THRESHOLD)) { //Its a '-' - limit this very high to not collect to long signals
                     LAST_SIGNAL.append("-");
                     lastWasSilence = false;
                 }
