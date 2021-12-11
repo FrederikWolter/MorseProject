@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -145,7 +144,7 @@ public class GUI {
     }
 
     /**
-     * Translating the contents of the last selected {@link TextArea} to the other {@link TextArea} in the send tab
+     * Translating the contents of the last selected {@link TextArea} to the other {@link TextArea} in send tab
      * when {@link #send_translate_button} is pressed
      *
      * @see #send_translate_button
@@ -311,6 +310,7 @@ public class GUI {
      *
      * @return {@link String} with info text
      */
+    @SuppressWarnings("SameReturnValue")
     private String getInfoText() {
         return """
                 Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
@@ -330,6 +330,7 @@ public class GUI {
      * Trying to stop the recording of the {@link Decoder} or displaying an error message if failed
      * @param e
      */
+    @SuppressWarnings("unused")
     private void stopRecording(ActionEvent e) {
         boolean success = DECODER.stopRecording();
 
@@ -343,8 +344,9 @@ public class GUI {
 
     /**
      * Trying to start the recording of the {@link Decoder} or dispaying an error message if failed
-     * @param e
+     * @param e event which is triggered
      */
+    @SuppressWarnings("unused")
     private void startRecording(ActionEvent e) {
         clear_textAreas(receive_text_textArea, receive_morse_textArea); //Clearing text areas beforehand
 
@@ -580,7 +582,7 @@ public class GUI {
      * @see Translator
      */
     private String[][] getTableData(){
-        ArrayList<Character> allCharacters = new ArrayList<Character>(Translator.getCharToMorse().keySet());
+        ArrayList<Character> allCharacters = new ArrayList<>(Translator.getCharToMorse().keySet());
         String[][] data = new String[42][2];
         int counter = 0;
         for (Character allCharacter : allCharacters) {
