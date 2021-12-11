@@ -34,10 +34,10 @@ software. Following are some ways that can lead to the successful launch of the 
 
 - If the OS is trying to open the JAR file with the wrong Java Version errors like this can occur:
 
-  TBD
+  ![grafik](https://user-images.githubusercontent.com/35914049/145673566-65f11bf2-6d52-4e5f-b6af-0a9e1f2e1ef6.png)
 
   **Possible Solution:** modify PATH variable to point to the correct
-  version. ([see](https://www.java.com/en/download/help/path.html))
+  version ([see](https://www.java.com/en/download/help/path.html)) or use a other way to start the application.
 
 ## Contributors
 
