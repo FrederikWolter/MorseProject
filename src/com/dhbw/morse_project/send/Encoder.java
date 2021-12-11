@@ -160,9 +160,10 @@ public class Encoder {
         line.start();
         line.write(buffer, 0, buffer.length);
         line.drain();
-        //line.close();
+        //line.close();                             // closing the line is the "clean" way, but causes cracking sound
+                                                    // depending on the system it is running on.
 
-        wait(TIME_UNIT);                         // 1 time unit pause after each signal
+        wait(TIME_UNIT);                            // 1 time unit pause after each signal
     }
 
     /**
