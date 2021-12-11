@@ -14,10 +14,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -87,7 +85,6 @@ public class GUI {
      * @see #configureListeners()
      */
     public GUI(){
-
         JFrame frame = setupJFrame();
 
         GUI_DECODER_SYNCHRONIZE_Object = new Object();
@@ -98,7 +95,6 @@ public class GUI {
         prepareMelodySelectionComboBox();
 
         configureListeners();
-
     }
 
     /**
@@ -267,8 +263,8 @@ public class GUI {
         });
 
         try {
-            frame.setIconImage(ImageIO.read(new File("src/com/dhbw/morse_project/gui/Morse_Symbolbild.png")));
-            // Quelle: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
+            frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("Morse_Symbolbild.png")))); // see https://stackoverflow.com/a/45580/13777031
+            // source: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
         } catch (IOException e) {
             e.printStackTrace();
         }
