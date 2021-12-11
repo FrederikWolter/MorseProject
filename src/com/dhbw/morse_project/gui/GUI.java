@@ -20,6 +20,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 /**
  * Class responsible for user interactions.
  * [ID: F-GUI-*, NF-GUI-* ]
+ *
  * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
  */
 @SuppressWarnings("DanglingJavadoc")
@@ -37,6 +38,7 @@ public class GUI {
     private JTextArea send_text_textArea;
     private JTextArea send_morse_textArea;
     private JSlider frequenz_slider;
+    @SuppressWarnings("rawtypes")
     private JComboBox comboBox1;
     private JButton send_translate_button;
     private JButton send_clear_button;
@@ -83,7 +85,7 @@ public class GUI {
      * @see #prepareMelodySelectionComboBox()
      * @see #configureListeners()
      */
-    public GUI(){
+    public GUI() {
         JFrame frame = setupJFrame();
 
         GUI_DECODER_SYNCHRONIZE_Object = new Object();
@@ -98,6 +100,7 @@ public class GUI {
 
     /**
      * Configuring and adding all Action and Event listeners:
+     *
      * @see #startRecordingButton
      * @see #beginSendingButton
      * @see IEncoderFinishedListener
@@ -111,10 +114,10 @@ public class GUI {
          * Action-Listener to start the recording of audio when startRecordingButton is pressed
          */
         startRecordingButton.addActionListener(e -> {
-            if (!showingStartRecording){
+            if (!showingStartRecording) {
                 stopRecording(e);
 
-            } else{
+            } else {
                 startRecording(e);
             }
         });
@@ -125,9 +128,9 @@ public class GUI {
          * @see #stopPlaying()
          */
         beginSendingButton.addActionListener(e -> {
-            if (!showingBeginSend){
+            if (!showingBeginSend) {
                 stopPlaying();
-            } else{
+            } else {
                 startPlaying();
             }
         });
@@ -178,6 +181,7 @@ public class GUI {
             public void focusGained(FocusEvent e) {
                 textAreaFocusMap.put(textArea.MORSE, textArea_focusState.FOCUS_GAINED);
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 textAreaFocusLost(textAreaFocusMap, textArea.MORSE, textArea.TEXT);
@@ -188,6 +192,7 @@ public class GUI {
             public void focusGained(FocusEvent e) {
                 textAreaFocusMap.put(textArea.TEXT, textArea_focusState.FOCUS_GAINED);
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 textAreaFocusLost(textAreaFocusMap, textArea.TEXT, textArea.MORSE);
@@ -197,13 +202,14 @@ public class GUI {
 
     /**
      * Settings for the {@link #comboBox1} to select given melodies or frequencies.
+     *
      * @see #startPlaying()
      * @see Melody
      * @see Encoder
      */
     private void prepareMelodySelectionComboBox() {
 
-        for (int i = 0; i < Melody.getMelodyList().size(); i++){
+        for (int i = 0; i < Melody.getMelodyList().size(); i++) {
             comboBox1.addItem(Melody.getMelodyList().get(i).getName());
         }
         comboBox1.addActionListener(e -> frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest")));
@@ -211,6 +217,7 @@ public class GUI {
 
     /**
      * Filling text and table in Information-Tab with content and setting appearance
+     *
      * @see #getTableData()
      * @see #table_alphabet
      * @see #textArea_info
@@ -236,8 +243,8 @@ public class GUI {
 
     /**
      * Settings for frame and application appearance
-     * @see JFrame
      *
+     * @see JFrame
      */
     private JFrame setupJFrame() {
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikationstechnik München");
@@ -250,10 +257,10 @@ public class GUI {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {  //overwriting the standard behaviour when closing the window
-                try{
+                try {
                     stopPlaying();
                     stopRecording(null);
-                } catch (Exception exception){
+                } catch (Exception exception) {
                     exception.printStackTrace();
                     showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: could not stop recording", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -274,7 +281,7 @@ public class GUI {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
         int taskBarSize = scnMax.bottom;
-        int effectiveMaxHeight = (screenSize.height-taskBarSize);
+        int effectiveMaxHeight = (screenSize.height - taskBarSize);
 
         setWindowDimensions(frame, screenSize, effectiveMaxHeight);
 
@@ -294,8 +301,8 @@ public class GUI {
      */
     private void setWindowDimensions(JFrame frame, Dimension screenSize, int effectiveMaxHeight) {
         double scale = 0.5;
-        double modifier = (int) (1.0/scale);
-        Dimension windowSize = new Dimension((int)(((double) screenSize.width)/modifier), (int)(((double) effectiveMaxHeight)/modifier));
+        double modifier = (int) (1.0 / scale);
+        Dimension windowSize = new Dimension((int) (((double) screenSize.width) / modifier), (int) (((double) effectiveMaxHeight) / modifier));
         frame.setMinimumSize(windowSize);
         mainpanel.setMinimumSize(windowSize);
         mainpanel.setMaximumSize(new Dimension(500, 500));
@@ -303,12 +310,11 @@ public class GUI {
 
         tabbedPane1.setFont(new Font("Arial", Font.BOLD, 16));
 
-        double multiplier = 1 + 1.0/modifier;
-        frame.setLocation(screenSize.width - (int) (frame.getWidth()*multiplier), effectiveMaxHeight - (int) (frame.getHeight()*multiplier) );
+        double multiplier = 1 + 1.0 / modifier;
+        frame.setLocation(screenSize.width - (int) (frame.getWidth() * multiplier), effectiveMaxHeight - (int) (frame.getHeight() * multiplier));
     }
 
     /**
-     *
      * @return {@link String} with info text
      */
     @SuppressWarnings("SameReturnValue")
@@ -329,13 +335,14 @@ public class GUI {
 
     /**
      * Trying to stop the recording of the {@link Decoder} or displaying an error message if failed
+     *
      * @param e
      */
     @SuppressWarnings("unused")
     private void stopRecording(ActionEvent e) {
         boolean success = DECODER.stopRecording();
 
-        if(success){
+        if (success) {
             startRecordingButton.setText("Start Recording");
             showingStartRecording = !showingStartRecording;
         } else {
@@ -345,6 +352,7 @@ public class GUI {
 
     /**
      * Trying to start the recording of the {@link Decoder} or dispaying an error message if failed
+     *
      * @param e event which is triggered
      */
     @SuppressWarnings("unused")
@@ -356,7 +364,7 @@ public class GUI {
         ui_update_thread = new Thread(ui_update_runnable);
 
         boolean success = DECODER.startRecording();
-        if (success){
+        if (success) {
             ui_update_thread.start();
             startRecordingButton.setText("Stop Recording");
             showingStartRecording = !showingStartRecording;
@@ -366,7 +374,6 @@ public class GUI {
     }
 
     /**
-     *
      * @return a {@link Runnable} to automatically update the {@link #receive_morse_textArea} and translate the contents
      * to the {@link #receive_text_textArea} via the {@link Translator} when the {@link Decoder} generated a new Signal
      */
@@ -374,7 +381,7 @@ public class GUI {
         return () -> {
             do {
                 try {
-                    synchronized (GUI_DECODER_SYNCHRONIZE_Object){
+                    synchronized (GUI_DECODER_SYNCHRONIZE_Object) {
                         GUI_DECODER_SYNCHRONIZE_Object.wait();
                     }
                 } catch (InterruptedException ex) {
@@ -400,7 +407,7 @@ public class GUI {
         translateSendTextAreas(textAreaFocusMap);
         String morse = send_morse_textArea.getText();
         Melody sendMelody = getMelody();
-        if (sendMelody != null){
+        if (sendMelody != null) {
             try {
                 if (Objects.equals(morse, "")) {
                     showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
@@ -411,13 +418,12 @@ public class GUI {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while starting play signal:\n"+ Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
+                showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while starting play signal:\n" + Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
     /**
-     *
      * @return the selected {@link Melody}. If a melody is selected, then that {@link Melody} is returned,
      * otherwise, when "Fest" is selected, a new {@link Melody} with a constant frequency from the
      * {@link #frequenz_slider} is generated and returned.
@@ -425,14 +431,14 @@ public class GUI {
     private Melody getMelody() {
         Melody sendMelody = null;
 
-        if (comboBox1.getSelectedItem() != "Fest"){
-            for (Melody melody : Melody.getMelodyList()){
-                if (melody.getName().equals(comboBox1.getSelectedItem().toString())){
+        if (comboBox1.getSelectedItem() != "Fest") {
+            for (Melody melody : Melody.getMelodyList()) {
+                if (melody.getName().equals(comboBox1.getSelectedItem().toString())) {
                     sendMelody = melody;
                 }
             }
-        }else{
-            sendMelody = new Melody("Fest", new int[] {frequenz_slider.getValue()});
+        } else {
+            sendMelody = new Melody("Fest", new int[]{frequenz_slider.getValue()});
         }
         return sendMelody;
     }
@@ -447,7 +453,7 @@ public class GUI {
             stopPlayingChangeVariables();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while stop playing:\n"+ Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
+            showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: while stop playing:\n" + Arrays.toString(e.getStackTrace()), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
@@ -467,18 +473,17 @@ public class GUI {
      * @param textAreaFocusMap
      * @param caller
      * @param non_caller
-     *
      * @see #prepareListenForTextAreaFocusChange()
      */
     private void textAreaFocusLost(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap, textArea caller, textArea non_caller) {
-        if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){ //can only lose focus if it has gained focus before
+        if (!textAreaFocusMap.getOrDefault(caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)) { //can only lose focus if it has gained focus before
             if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
-                    || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)){
+                    || textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST)) {
                 textAreaFocusMap.put(non_caller, textArea_focusState.FOCUS_LOST);
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
-            } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)){
+            } else if (textAreaFocusMap.getOrDefault(non_caller, textArea_focusState.NONE).equals(textArea_focusState.NONE)) {
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
-            } else{
+            } else {
                 textAreaFocusMap.put(caller, textArea_focusState.FOCUS_LOST_NEWEST);
             }
         }
@@ -498,15 +503,15 @@ public class GUI {
      */
     private void translateSendTextAreas(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap) {
         if (textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
-                || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
+                || textAreaFocusMap.getOrDefault(textArea.TEXT, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)) {
             translateTextAreaTextToMorse();
         } else if (textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_LOST_NEWEST)
-                || textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)){
+                || textAreaFocusMap.getOrDefault(textArea.MORSE, textArea_focusState.NONE).equals(textArea_focusState.FOCUS_GAINED)) {
             translateMorseTextAreaToText();
-        } else{
-            if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")){
+        } else {
+            if (send_morse_textArea.getText().equals("") && !send_text_textArea.getText().equals("")) {
                 translateTextAreaTextToMorse();
-            } else if (!send_morse_textArea.getText().equals("") && send_text_textArea.getText().equals("")){
+            } else if (!send_morse_textArea.getText().equals("") && send_text_textArea.getText().equals("")) {
                 translateMorseTextAreaToText();
             } else {
                 System.out.println("No way to decide what to translate to which");
@@ -523,11 +528,11 @@ public class GUI {
      */
     private void translateMorseTextAreaToText() {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
-        if (textTranslation == null){
+        if (textTranslation == null) {
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_text_textArea.setText("");
             System.out.println("morseToText_translationError");
-        } else{
+        } else {
             send_text_textArea.setText(textTranslation);
         }
     }
@@ -540,24 +545,24 @@ public class GUI {
      */
     private void translateTextAreaTextToMorse() {
         String morseTranslation = Translator.textToMorse(send_text_textArea.getText());
-        if (morseTranslation == null){
+        if (morseTranslation == null) {
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_morse_textArea.setText("");
             System.out.println("textToMorse_translationError");
-        } else{
+        } else {
             send_morse_textArea.setText(morseTranslation);
         }
     }
 
     /**
      * Clearing the body of all provided {@link TextArea}s
-     * @param textAreas
      *
+     * @param textAreas
      * @see TextArea
      */
     private void clear_textAreas(JTextArea... textAreas) {
-        for (JTextArea textArea:
-             textAreas) {
+        for (JTextArea textArea :
+                textAreas) {
             textArea.setText("");
         }
     }
@@ -576,17 +581,15 @@ public class GUI {
         morse_textArea.setMinimumSize(textAreas_preferredDimension);
         text_textArea.setPreferredSize(textAreas_preferredDimension);
         text_textArea.setMinimumSize(textAreas_preferredDimension);
-        splitPane.setDividerLocation(splitPane.getWidth()/2);
+        splitPane.setDividerLocation(splitPane.getWidth() / 2);
         splitPane.setResizeWeight(0.5);
     }
 
     /**
-     *
      * @return 2-Dimensional {@link String} Array with Morse Code and Translations to fill the {@link #table_alphabet}
-     *
      * @see Translator
      */
-    private String[][] getTableData(){
+    private String[][] getTableData() {
         ArrayList<Character> allCharacters = new ArrayList<>(Translator.getCharToMorse().keySet());
         String[][] data = new String[42][2];
         int counter = 0;
@@ -600,6 +603,7 @@ public class GUI {
 
     /**
      * Getter to get the {@link #GUI_DECODER_SYNCHRONIZE_Object}-Object which the {@link Decoder} and the {@link #ui_update_thread} are using to synchronize.
+     *
      * @return The {@link #GUI_DECODER_SYNCHRONIZE_Object}-Object.
      */
     public Object getGuiDecoderSynchronizeObject() {
@@ -607,12 +611,11 @@ public class GUI {
     }
 
     /**
-     *
      * @return the noise threshold, currently selected in {@link #receive_sensitivity_slider}
      * @see Encoder
      * @see #startRecording(ActionEvent)
      */
-    public int getNoiseThreshold(){
-        return 100-receive_sensitivity_slider.getValue();
+    public int getNoiseThreshold() {
+        return 100 - receive_sensitivity_slider.getValue();
     }
 }

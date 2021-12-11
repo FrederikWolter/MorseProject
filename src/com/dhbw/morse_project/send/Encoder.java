@@ -43,11 +43,6 @@ public class Encoder {
      * Singleton like for the MAIN-thread version of {@link Encoder}
      */
     private static Encoder INSTANCE;
-
-    /**
-     * Thread used for actual timing relevant sending work.
-     */
-    private Thread encoderThread;
     /**
      * errorEvent object used to pass error to GUI.
      */
@@ -57,13 +52,18 @@ public class Encoder {
      */
     private final EncoderFinishedEvent finishedEvent = new EncoderFinishedEvent();
     /**
+     * Thread used for actual timing relevant sending work.
+     */
+    private Thread encoderThread;
+    /**
      * Variable accessed by sending-thread and main-thread (volatile) signaling if the next tone should be played.
      * Could be used to stop playback through stopPlaying.
      */
     private volatile boolean isPlaying;
 
     // empty private constructor hence the main-thread variant of Encoder does nothing
-    private Encoder() { }
+    private Encoder() {
+    }
 
     /**
      * Implementation of singleton to access the existing object or create one.
@@ -161,7 +161,7 @@ public class Encoder {
         line.write(buffer, 0, buffer.length);
         line.drain();
         //line.close();                             // closing the line is the "clean" way, but causes cracking sound
-                                                    // depending on the system it is running on.
+        // depending on the system it is running on.
 
         wait(TIME_UNIT);                            // 1 time unit pause after each signal
     }
@@ -188,7 +188,7 @@ public class Encoder {
 
     /**
      * private alternative helper method generating a square wave with given frequency and duration.
-     * only used for testing beacause is sounds horrible.
+     * only used for testing because is sounds horrible.
      * public static volume ist used for the amplitude.
      *
      * @param frequency of square wave
@@ -202,11 +202,11 @@ public class Encoder {
 
         for (int i = 0; i < samples; i++) {
             double angle = 2.0 * Math.PI * i / interval;
-            if ((Math.sin(angle) * VOLUME) > 0){
+            if ((Math.sin(angle) * VOLUME) > 0) {
                 result[i] = VOLUME;
-            }else if ((Math.sin(angle) * VOLUME) < 0){
+            } else if ((Math.sin(angle) * VOLUME) < 0) {
                 result[i] = -VOLUME;
-            }else{
+            } else {
                 result[i] = 0;
             }
         }

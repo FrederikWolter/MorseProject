@@ -56,10 +56,12 @@ public class Decoder {
      * The threshold for the rang calculation.
      * @see #analyzeFilteredSamples()
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private final float TIME_UNIT_THRESHOLD = ((float)Encoder.TIME_UNIT / 100);
 
     /**
      * Constructor
+     *
      * @param gui The {@link GUI} instance.
      */
     public Decoder(GUI gui) {
@@ -101,7 +103,7 @@ public class Decoder {
      */
     public boolean stopRecording() {
         try {
-            if(decoderThread != null){
+            if (decoderThread != null) {
                 isRecording = false;    //Setting boolean to false for graceful finish the decoderThread
                 decoderThread.join();   //Joining thread to wait for it to finish the last run.
             }

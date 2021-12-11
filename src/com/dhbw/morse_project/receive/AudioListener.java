@@ -72,6 +72,7 @@ public class AudioListener {
 
     /**
      * Thread for the audio input from {@link #line} in which everything is handled.
+     *
      * @see #listenerRunnable
      */
     private Thread listenerThread;
@@ -83,9 +84,10 @@ public class AudioListener {
 
     /**
      * Constructor
+     *
      * @param gui The {@link GUI} instance.
      */
-    public AudioListener(GUI gui){
+    public AudioListener(GUI gui) {
         this.gui = gui;
     }
 
@@ -137,7 +139,6 @@ public class AudioListener {
     /**
      * This method stops the capturing of the microphone input.
      * It waits until the last run of the {@link #listenerThread}-Thread finished.
-     *
      */
     public void stopListening() {
         isListening = false;        //Set boolean to false so that the loop finishes cleanly

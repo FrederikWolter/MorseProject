@@ -1,7 +1,7 @@
 # MorseProject
 
-This project is created as part of the _'Software Engineering'_ lecture in winter semester 2021 in the Applied
-Computer Science course at DHBW Mannheim. The aim is to transmit Morse code between two or more devices via sound.
+This project is created as part of the _'Software Engineering'_ lecture in winter semester 2021 in the Applied Computer
+Science course at DHBW Mannheim. The aim is to transmit Morse code between two or more devices via sound.
 
 ## Requirements
 
@@ -17,18 +17,17 @@ From discussions with the client, it appears that the finished application will 
 by the contractor. As a gesture of goodwill, the contractor is willing to help in case of problems with the start of the
 software. Following are some ways that can lead to the successful launch of the software:
 
-- **If the `PATH` variable  was filled correctly during the installation of Java, the application can be started with a 
+- **If the `PATH` variable was filled correctly during the installation of Java, the application can be started with a
   double click on the file.**
 - Run JAR via `Rigth CLick > Open with > Select correct JRE`
 - If none of the above methods work, which unfortunately can happen especially if several Java versions are installed on
   the system, it is recommended to start the application via the console (unter Windows):
-  1. [oben console](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/) e.g.
-     `Win + R > enter "cmd" > OK`
-  2. enter the following command:
-     ```
-     C:\PATH\TO\JRE\bin\java.exe -jar C:\PATH\TO\JAR\MorseProject.jar
-     ```
-     
+    1. [oben console](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/) e.g.
+       `Win + R > enter "cmd" > OK`
+    2. enter the following command:
+       ```
+       C:\PATH\TO\JRE\bin\java.exe -jar C:\PATH\TO\JAR\MorseProject.jar
+       ```
 
 ## Possible Errors
 
