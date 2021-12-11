@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MorseProject:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MorseProject_jar</output-path>
+    <root id="archive" name="MorseProject.jar">
+      <element id="module-output" name="MorseProject" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/com/dhbw/morse_project/gui/GUI.form" />
+    </root>
+  </artifact>
+</component>
