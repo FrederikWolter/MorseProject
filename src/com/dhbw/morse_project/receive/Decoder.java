@@ -199,10 +199,10 @@ public class Decoder {
                     }
                 }
             } else {
-                if ((40 * TIME_UNIT_THRESHOLD) <= between && between < (150 * TIME_UNIT_THRESHOLD)) {         //Its a '.'
+                if ((30 * TIME_UNIT_THRESHOLD) <= between && between < (140 * TIME_UNIT_THRESHOLD)) {         //Its a '.'
                     LAST_SIGNAL.append(".");
                     lastWasSilence = false;
-                } else if ((180 * TIME_UNIT_THRESHOLD) <= between && between < (450 * TIME_UNIT_THRESHOLD)) { //Its a '-' - limit this very high to not collect to long signals
+                } else if ((160 * TIME_UNIT_THRESHOLD) <= between && between < (600 * TIME_UNIT_THRESHOLD)) { //Its a '-' - limit this very high to collect long signals (Music)
                     LAST_SIGNAL.append("-");
                     lastWasSilence = false;
                 }
