@@ -294,8 +294,8 @@ public class GUI {
     /**
      * Setting the dimensions and position of the given {@link JFrame}
      *
-     * @param frame mainframe
-     * @param screenSize size of screen
+     * @param frame              mainframe
+     * @param screenSize         size of screen
      * @param effectiveMaxHeight factor for scaling
      */
     private void setWindowDimensions(JFrame frame, Dimension screenSize, int effectiveMaxHeight) {
@@ -470,8 +470,8 @@ public class GUI {
      * {@param textAreaFocusMap} to indicate, which {@link TextArea} last lost focus.
      *
      * @param textAreaFocusMap indicating who last had focus
-     * @param caller to be updated
-     * @param non_caller to be updated
+     * @param caller           to be updated
+     * @param non_caller       to be updated
      * @see #prepareListenForTextAreaFocusChange()
      */
     private void textAreaFocusLost(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap, textArea caller, textArea non_caller) {
@@ -570,8 +570,8 @@ public class GUI {
      * Adjusting the sizes of the provided {@link TextArea}s to each take up 50% of the given {@param splitPane}
      * and setting the resize weight of the given {@param splitPane} to 50% so that the divider stays in the middle.
      *
-     * @param splitPane between two textAreas
-     * @param text_textArea textArea for text
+     * @param splitPane      between two textAreas
+     * @param text_textArea  textArea for text
      * @param morse_textArea textArea for morse
      */
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {

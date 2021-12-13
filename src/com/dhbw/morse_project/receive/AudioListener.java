@@ -66,6 +66,7 @@ public class AudioListener {
     /**
      * In this List the created {@link Noise}-Objects are added.
      * This List is also used to synchronize the {@link Decoder}- and {@link #listenerThread}-Thread.
+     *
      * @see #analyzeBuffer(byte[])
      */
     private final List<Noise> SYNCHRONIZED_BUFFER = new ArrayList<>();
@@ -210,7 +211,6 @@ public class AudioListener {
             double rms = calculateRMSValue(windowedBuffer);
 
             rmsBuffer.add(rms);
-
         }
 
         List<Double> smoothed = smoothRMSValues(rmsBuffer, RMS_SMOOTH_AMOUNT); //Smooth the RMS-Values
@@ -265,7 +265,6 @@ public class AudioListener {
 
             smoothed.add(getListAverage(Arrays.asList(weighted, prev, next, next)));
         }
-
         return smoothed;
     }
 

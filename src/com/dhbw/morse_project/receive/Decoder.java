@@ -16,42 +16,34 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class Decoder {
-
     /**
      * The {@link AudioListener} from which new samples are read.
      */
     private AudioListener audioListener;
-
     /**
      * The {@link GUI} instance;
      */
     private GUI gui;
-
     /**
      * Defines if the {@link Decoder} and so the {@link AudioListener} is currently recording or not.
      */
     private volatile boolean isRecording = false;
-
     /**
      * Thread in which the samples are evaluated and the Morse-Code is build. (Decoding-Thread)
      */
     private Thread decoderThread;
-
     /**
      * List with the {@link Noise}-Objets which are different to the previous entry. So that on a quiet sample a loud one follows.
      */
     private final List<Noise> FILTERED_SAMPLES_LIST = new ArrayList<>();
-
     /**
      * StringBuilder in which the last found Morse-Signals are appended.
      */
     private final StringBuilder LAST_SIGNAL = new StringBuilder();
-
     /**
      * Defines if the last signal was silence. If so don't add another silence to the output after it. (Example: We don't want: ". / / -.". What we want is: ". / -.")
      */
     private boolean lastWasSilence = true;
-
     /**
      * The threshold for the rang calculation.
      * @see #analyzeFilteredSamples()
