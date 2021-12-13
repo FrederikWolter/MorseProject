@@ -22,7 +22,7 @@ software. Following are some ways that can lead to the successful launch of the 
 - Run JAR via `Rigth CLick > Open with > Select correct JRE`
 - If none of the above methods work, which unfortunately can happen especially if several Java versions are installed on
   the system, it is recommended to start the application via the console (unter Windows):
-    1. [oben console](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/) e.g.
+    1. [open console](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/) e.g.
        `Win + R > enter "cmd" > OK`
     2. enter the following command:
        ```
