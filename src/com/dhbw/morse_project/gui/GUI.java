@@ -23,7 +23,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * Class responsible for user interactions.
  * [ID: F-GUI-*, NF-GUI-* ]
  *
- * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
+ * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer, (Daniel Czeschner - Decoder intigration)
  */
 @SuppressWarnings("DanglingJavadoc")
 public class GUI {
