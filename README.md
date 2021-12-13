@@ -1,7 +1,7 @@
 # MorseProject
 
 This project is created as part of the _'Software Engineering'_ lecture in winter semester 2021 in the Applied Computer
-Science course at DHBW Mannheim. The aim is to transmit Morse code between two or more devices via sound.
+Science course at DHBW Mannheim. The aim is to transmit Morse codes between two or more devices via sound.
 
 ## Requirements
 
@@ -36,7 +36,7 @@ software. Following are some ways that can lead to the successful launch of the 
   ![grafik](https://user-images.githubusercontent.com/35914049/145673566-65f11bf2-6d52-4e5f-b6af-0a9e1f2e1ef6.png)
 
   **Possible Solution:** modify PATH variable to point to the correct
-  version ([see](https://www.java.com/en/download/help/path.html)) or use a other way to start the application.
+  version ([see](https://www.java.com/en/download/help/path.html)) or use an other way to start the application.
 
 ## Contributors
 
