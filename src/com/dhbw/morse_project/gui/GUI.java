@@ -17,6 +17,8 @@ import java.util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+//todo process GUI warnings
+
 /**
  * Class responsible for user interactions.
  * [ID: F-GUI-*, NF-GUI-* ]
