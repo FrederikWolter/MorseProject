@@ -6,6 +6,7 @@ import java.util.HashMap;
  * @author Hassan El-Khalil, supported by Frederik Wolter
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
  */
+@SuppressWarnings("unused")
 public class Translator {
     /**
      * Long Morse Signal
