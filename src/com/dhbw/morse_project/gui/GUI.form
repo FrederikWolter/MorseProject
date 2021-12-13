@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dhbw.morse_project.gui.GUI">
+  <grid id="a187f" binding="JPanel_border" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="4504" height="2000"/>
+    </constraints>
+    <properties>
+      <background color="-11447983"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="27dc6" binding="mainpanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <background color="-12828863"/>
+          <enabled value="true"/>
+          <font name="JetBrains Mono" size="16"/>
+          <maximumSize width="500" height="500"/>
+        </properties>
+        <border type="none">
+          <font/>
+          <title-color color="-4473925"/>
+        </border>
+        <children>
+          <tabbedpane id="8c7ec" binding="tabbedPane1">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <alignmentX value="0.5"/>
+              <alignmentY value="0.5"/>
+              <autoscrolls value="false"/>
+              <background color="-4473925"/>
+              <focusCycleRoot value="false"/>
+              <focusable value="true"/>
+              <font name="JetBrains Mono" size="16"/>
+              <foreground color="-16777216"/>
+              <inheritsPopupMenu value="false"/>
+              <opaque value="false"/>
+              <tabLayoutPolicy value="1"/>
+              <tabPlacement value="1"/>
+            </properties>
+            <clientProperties>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
+            <border type="empty">
+              <font/>
+              <title-color color="-16777216"/>
+            </border>
+            <children>
+              <grid id="18c09" binding="toSend" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <tabbedpane title="Senden"/>
+                </constraints>
+                <properties>
+                  <alignmentX value="0.5"/>
+                  <alignmentY value="0.5"/>
+                  <font name="JetBrains Mono" size="16"/>
+                  <maximumSize width="10000" height="10000"/>
+                  <opaque value="false"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="bd16d" layout-manager="CardLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <card name="Card1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="b7f91" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <card name="Card1"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <splitpane id="80738" binding="sendSplitPane">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <preferred-size width="200" height="200"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <dividerLocation value="200"/>
+                              <enabled value="false"/>
+                              <resizeWeight value="0.5"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <grid id="ba808" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <splitpane position="left"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="815ea" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <font name="JetBrains Mono" size="16"/>
+                                      <text value="TEXT"/>
+                                    </properties>
+                                  </component>
+                                  <scrollpane id="b4a7e">
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="b0d46" class="javax.swing.JTextArea" binding="send_text_textArea">
+                                        <constraints/>
+                                        <properties>
+                                          <editable value="true"/>
+                                          <font name="JetBrains Mono" size="20"/>
+                                          <lineWrap value="true"/>
+                                          <wrapStyleWord value="true"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                              <grid id="4f838" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <splitpane position="right"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="b17e3" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <font name="JetBrains Mono" size="16"/>
+                                      <text value="MORSE"/>
+                                    </properties>
+                                  </component>
+                                  <scrollpane id="457a7">
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="fc093" class="javax.swing.JTextArea" binding="send_morse_textArea">
+                                        <constraints/>
+                                        <properties>
+                                          <editable value="true"/>
+                                          <font name="JetBrains Mono" size="20"/>
+                                          <lineWrap value="true"/>
+                                          <toolTipText value=""/>
+                                          <wrapStyleWord value="true"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                            </children>
+                          </splitpane>
+                          <component id="879e7" class="javax.swing.JButton" binding="beginSendingButton">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font name="JetBrains Mono" size="16"/>
+                              <text value="Senden beginnen"/>
+                            </properties>
+                          </component>
+                          <grid id="d6d12" layout-manager="GridLayoutManager" row-count="1" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="6f80d" class="javax.swing.JSlider" binding="frequenz_slider">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono"/>
+                                  <majorTickSpacing value="2000"/>
+                                  <maximum value="10000"/>
+                                  <minimum value="0"/>
+                                  <minorTickSpacing value="200"/>
+                                  <paintLabels value="true"/>
+                                  <paintTicks value="true"/>
+                                  <snapToTicks value="false"/>
+                                  <value value="550"/>
+                                </properties>
+                              </component>
+                              <component id="244d5" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Frequenz in Hz"/>
+                                </properties>
+                              </component>
+                              <component id="ddcdf" class="javax.swing.JToolBar$Separator">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="4c73f" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Melodien"/>
+                                </properties>
+                              </component>
+                              <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                                <constraints>
+                                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                </properties>
+                              </component>
+                              <component id="d955" class="javax.swing.JToolBar$Separator">
+                                <constraints>
+                                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="ec804" class="javax.swing.JButton" binding="send_translate_button">
+                                <constraints>
+                                  <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Übersetzen"/>
+                                </properties>
+                              </component>
+                              <component id="788f0" class="javax.swing.JButton" binding="send_clear_button">
+                                <constraints>
+                                  <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Text zurücksetzen"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <vspacer id="34660">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="c2d7" binding="toReceive" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <tabbedpane title="Empfangen"/>
+                </constraints>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="cbdc7" layout-manager="CardLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <card name="Card1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="2c013" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <card name="Card1"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <splitpane id="d7f7c" binding="receiveSplitPane">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <preferred-size width="200" height="200"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <dividerLocation value="200"/>
+                              <enabled value="false"/>
+                              <resizeWeight value="0.5"/>
+                            </properties>
+                            <border type="none"/>
+                            <children>
+                              <grid id="aad43" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <splitpane position="left"/>
+                                </constraints>
+                                <properties>
+                                  <minimumSize width="43" height="49"/>
+                                </properties>
+                                <border type="none"/>
+                                <children>
+                                  <component id="32d43" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <font name="JetBrains Mono" size="16"/>
+                                      <text value="TEXT"/>
+                                    </properties>
+                                  </component>
+                                  <scrollpane id="4a019">
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="7311d" class="javax.swing.JTextArea" binding="receive_text_textArea">
+                                        <constraints/>
+                                        <properties>
+                                          <editable value="false"/>
+                                          <font name="JetBrains Mono" size="20"/>
+                                          <lineWrap value="true"/>
+                                          <minimumSize width="200" height="20"/>
+                                          <preferredSize width="200" height="20"/>
+                                          <wrapStyleWord value="true"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                              <grid id="7a375" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                <margin top="0" left="0" bottom="0" right="0"/>
+                                <constraints>
+                                  <splitpane position="right"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <component id="44866" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties>
+                                      <font name="JetBrains Mono" size="16"/>
+                                      <text value="MORSE"/>
+                                    </properties>
+                                  </component>
+                                  <scrollpane id="fabad">
+                                    <constraints>
+                                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="a5e53" class="javax.swing.JTextArea" binding="receive_morse_textArea">
+                                        <constraints/>
+                                        <properties>
+                                          <editable value="false"/>
+                                          <font name="JetBrains Mono" size="20"/>
+                                          <lineWrap value="true"/>
+                                          <minimumSize width="200" height="20"/>
+                                          <preferredSize width="200" height="20"/>
+                                          <toolTipText value=""/>
+                                          <wrapStyleWord value="true"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                            </children>
+                          </splitpane>
+                          <component id="498ea" class="javax.swing.JButton" binding="startRecordingButton" default-binding="true">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <font name="JetBrains Mono" size="16"/>
+                              <text value="Start Recording"/>
+                            </properties>
+                          </component>
+                          <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="445d7" class="javax.swing.JSlider" binding="receive_sensitivity_slider">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <majorTickSpacing value="10"/>
+                                  <minorTickSpacing value="5"/>
+                                  <paintLabels value="true"/>
+                                  <paintTicks value="true"/>
+                                  <value value="60"/>
+                                </properties>
+                              </component>
+                              <component id="5e6a5" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Mikrofon-Empfindlichkeit"/>
+                                </properties>
+                              </component>
+                              <component id="2038f" class="javax.swing.JToolBar$Separator">
+                                <constraints>
+                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                              </component>
+                              <component id="316a4" class="javax.swing.JButton" binding="receive_clear_button">
+                                <constraints>
+                                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <text value="Text zurücksetzen"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                          <vspacer id="d77db">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                          </vspacer>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="301b8" binding="toInfo" layout-manager="CardLayout" hgap="0" vgap="0">
+                <constraints>
+                  <tabbedpane title="Informationen"/>
+                </constraints>
+                <properties>
+                  <font name="JetBrains Mono" size="16"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="53823" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <card name="Card1"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="eef19" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints border-constraint="East"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="c74c4" class="javax.swing.JLabel">
+                            <constraints border-constraint="North"/>
+                            <properties>
+                              <font name="JetBrains Mono" size="16"/>
+                              <text value="Alphabet"/>
+                            </properties>
+                          </component>
+                          <scrollpane id="d86bf">
+                            <constraints border-constraint="Center"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="68dfe" class="javax.swing.JTable" binding="table_alphabet">
+                                <constraints/>
+                                <properties>
+                                  <enabled value="false"/>
+                                  <focusable value="true"/>
+                                  <font name="JetBrains Mono" size="18" style="3"/>
+                                  <rowSelectionAllowed value="false"/>
+                                  <updateSelectionOnSort value="false"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </scrollpane>
+                        </children>
+                      </grid>
+                      <grid id="1fcc0" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints border-constraint="Center"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="8ebc2" class="javax.swing.JLabel">
+                            <constraints border-constraint="North"/>
+                            <properties>
+                              <font name="JetBrains Mono" size="16"/>
+                              <text value="Generelles"/>
+                            </properties>
+                          </component>
+                          <scrollpane id="2edf9">
+                            <constraints border-constraint="Center"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="92dd3" class="javax.swing.JTextArea" binding="textArea_info">
+                                <constraints/>
+                                <properties>
+                                  <editable value="false"/>
+                                  <font name="JetBrains Mono" size="16"/>
+                                  <lineWrap value="true"/>
+                                  <margin top="10" left="10" bottom="10" right="10"/>
+                                  <wrapStyleWord value="true"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </scrollpane>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+            </children>
+          </tabbedpane>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

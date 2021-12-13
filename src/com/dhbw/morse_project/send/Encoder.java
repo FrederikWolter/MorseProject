@@ -1,24 +1,30 @@
-package com.dhbw.MorseProject.send;
+package com.dhbw.morse_project.send;
 
-import com.dhbw.MorseProject.translate.Translator;
+import com.dhbw.morse_project.send.events.EncoderErrorEvent;
+import com.dhbw.morse_project.send.events.EncoderFinishedEvent;
+import com.dhbw.morse_project.send.events.IEncoderErrorListener;
+import com.dhbw.morse_project.send.events.IEncoderFinishedListener;
+import com.dhbw.morse_project.translate.Translator;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import java.util.Arrays;
 
 /**
  * Class responsible for encoding morse-signals to audio and therefore generating and sending the audio signal. [ID: F-LOG-20.3.1]
  *
  * @author Lucas Schaffer & Frederik Wolter
  */
+@SuppressWarnings("unused")
 public class Encoder {
     // region public static final
     // active division to make these public static due to possible use by other classes as part of encoder 'interface'
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
-    public static final int TIME_UNIT = 100;
+    public static final int TIME_UNIT = 150;
     /**
      * Defined sampleRate used to generate the signal in samples/s
      */
@@ -30,14 +36,21 @@ public class Encoder {
     /**
      * Damp factor for sine wave. Value between 0 and 1 representing percentage of samples modified.
      */
-    public static final double DAMP_FACTOR = 0.98;
+    public static final double DAMP_FACTOR = 0.97;
     // endregion
 
     /**
      * Singleton like for the MAIN-thread version of {@link Encoder}
      */
     private static Encoder INSTANCE;
-
+    /**
+     * errorEvent object used to pass error to GUI.
+     */
+    private final EncoderErrorEvent errorEvent = new EncoderErrorEvent();
+    /**
+     * finishedEvent object used to inform GUI when finished playing.
+     */
+    private final EncoderFinishedEvent finishedEvent = new EncoderFinishedEvent();
     /**
      * Thread used for actual timing relevant sending work.
      */
@@ -49,7 +62,8 @@ public class Encoder {
     private volatile boolean isPlaying;
 
     // empty private constructor hence the main-thread variant of Encoder does nothing
-    private Encoder() { }
+    private Encoder() {
+    }
 
     /**
      * Implementation of singleton to access the existing object or create one.
@@ -69,13 +83,18 @@ public class Encoder {
      * @param morse  to be sent.
      * @param melody in which to send.
      */
-    public void send(String morse, Melody melody) throws InterruptedException, LineUnavailableException {
-        stopPlaying();                                              // prevent encoder from playing multiple signals at once
-        isPlaying = true;
-        //encoderThread = new Thread(() -> sending(morse, melody));  // create a new sending thread executing the sending method
+    public void send(String morse, Melody melody) throws InterruptedException {
+        stopPlaying();                                      // prevent encoder from playing multiple signals at once
 
-        // todo start own thread?
-        sending(morse, melody);
+        isPlaying = true;
+        encoderThread = new Thread(() -> {
+            try {
+                sending(morse, melody);
+            } catch (InterruptedException | LineUnavailableException e) {
+                errorEvent.alert(Arrays.toString(e.getStackTrace()));
+            }
+        });  // create a new sending thread executing the sending method
+        encoderThread.start();
     }
 
     /**
@@ -103,15 +122,16 @@ public class Encoder {
                 }
             }
         }
+        finishedEvent.alert();
     }
 
     /**
      * public method to stop playing the current morse-signal. [ID: F-GUI-20.1.3]
      */
-    public synchronized void stopPlaying() throws InterruptedException {
+    public synchronized void stopPlaying() throws InterruptedException, NullPointerException {
         isPlaying = false;
-        // todo necessary?
-        //encoderThread.join();
+        if (encoderThread != null)
+            encoderThread.join();
     }
 
     /**
@@ -140,9 +160,10 @@ public class Encoder {
         line.start();
         line.write(buffer, 0, buffer.length);
         line.drain();
-        line.close();
+        //line.close();                             // closing the line is the "clean" way, but causes cracking sound
+        // depending on the system it is running on.
 
-        wait(TIME_UNIT);                         // 1 time unit pause after each signal
+        wait(TIME_UNIT);                            // 1 time unit pause after each signal
     }
 
     /**
@@ -166,6 +187,33 @@ public class Encoder {
     }
 
     /**
+     * private alternative helper method generating a square wave with given frequency and duration.
+     * only used for testing because is sounds horrible.
+     * public static volume ist used for the amplitude.
+     *
+     * @param frequency of square wave
+     * @param duration  of square wave
+     * @return byte array of square wave
+     */
+    private byte[] squareWave(int frequency, int duration) {
+        int samples = (duration * SAMPLE_RATE) / 1000;               // convert samples/s to samples/(duration in ms)
+        byte[] result = new byte[samples];
+        double interval = (double) SAMPLE_RATE / frequency;
+
+        for (int i = 0; i < samples; i++) {
+            double angle = 2.0 * Math.PI * i / interval;
+            if ((Math.sin(angle) * VOLUME) > 0) {
+                result[i] = VOLUME;
+            } else if ((Math.sin(angle) * VOLUME) < 0) {
+                result[i] = -VOLUME;
+            } else {
+                result[i] = 0;
+            }
+        }
+        return fadeOutSineWave(result);
+    }
+
+    /**
      * Damp created sine wave in array.
      * Solution to 'pop' sound especially at the end of tone.
      *
@@ -184,5 +232,13 @@ public class Encoder {
             buffer[i] = (byte) (buffer[i] * Math.exp(-(i - (len * DAMP_FACTOR)) * 1 / (len * (1 - DAMP_FACTOR) / 4)));
         }
         return buffer;
+    }
+
+    public void addErrorEventListener(IEncoderErrorListener listener) {
+        errorEvent.addListener(listener);
+    }
+
+    public void addFinishedEventListener(IEncoderFinishedListener listener) {
+        finishedEvent.addListener(listener);
     }
 }
