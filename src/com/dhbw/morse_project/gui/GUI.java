@@ -38,8 +38,7 @@ public class GUI {
     private JTextArea send_text_textArea;
     private JTextArea send_morse_textArea;
     private JSlider frequenz_slider;
-    @SuppressWarnings("rawtypes")
-    private JComboBox comboBox1;
+    private JComboBox<String> comboBox1;
     private JButton send_translate_button;
     private JButton send_clear_button;
     private JButton receive_clear_button;
@@ -295,9 +294,9 @@ public class GUI {
     /**
      * Setting the dimensions and position of the given {@link JFrame}
      *
-     * @param frame
-     * @param screenSize
-     * @param effectiveMaxHeight
+     * @param frame mainframe
+     * @param screenSize size of screen
+     * @param effectiveMaxHeight factor for scaling
      */
     private void setWindowDimensions(JFrame frame, Dimension screenSize, int effectiveMaxHeight) {
         double scale = 0.5;
@@ -336,7 +335,7 @@ public class GUI {
     /**
      * Trying to stop the recording of the {@link Decoder} or displaying an error message if failed
      *
-     * @param e
+     * @param e ActionEvent
      */
     @SuppressWarnings("unused")
     private void stopRecording(ActionEvent e) {
@@ -470,9 +469,9 @@ public class GUI {
      * Updating the {@link textArea_focusState} of the {@param caller} and {@param non_caller} in the given
      * {@param textAreaFocusMap} to indicate, which {@link TextArea} last lost focus.
      *
-     * @param textAreaFocusMap
-     * @param caller
-     * @param non_caller
+     * @param textAreaFocusMap indicating who last had focus
+     * @param caller to be updated
+     * @param non_caller to be updated
      * @see #prepareListenForTextAreaFocusChange()
      */
     private void textAreaFocusLost(Map<GUI.textArea, GUI.textArea_focusState> textAreaFocusMap, textArea caller, textArea non_caller) {
@@ -496,7 +495,7 @@ public class GUI {
      * an empty body.
      * If none could be detected, display an error message
      *
-     * @param textAreaFocusMap
+     * @param textAreaFocusMap indicating who last had focus
      * @see #prepareListenForTextAreaFocusChange()
      * @see #textAreaFocusLost(Map, textArea, textArea)
      * @see #textAreaFocusMap
@@ -557,7 +556,7 @@ public class GUI {
     /**
      * Clearing the body of all provided {@link TextArea}s
      *
-     * @param textAreas
+     * @param textAreas to be cleared
      * @see TextArea
      */
     private void clear_textAreas(JTextArea... textAreas) {
@@ -571,9 +570,9 @@ public class GUI {
      * Adjusting the sizes of the provided {@link TextArea}s to each take up 50% of the given {@param splitPane}
      * and setting the resize weight of the given {@param splitPane} to 50% so that the divider stays in the middle.
      *
-     * @param splitPane
-     * @param text_textArea
-     * @param morse_textArea
+     * @param splitPane between two textAreas
+     * @param text_textArea textArea for text
+     * @param morse_textArea textArea for morse
      */
     private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
