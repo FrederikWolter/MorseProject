@@ -18,6 +18,7 @@ import java.util.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 //todo process GUI warnings
+// todo change "start recording" to german
 
 /**
  * Class responsible for user interactions.
