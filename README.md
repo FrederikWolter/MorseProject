@@ -1,4 +1,5 @@
-[//]: # (Author Frederik Wolter) 
+[//]: # (Author Frederik Wolter)
+
 # MorseProject
 
 This project is created as part of the _'Software Engineering'_ lecture in winter semester 2021 in the Applied Computer
