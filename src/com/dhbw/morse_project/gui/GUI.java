@@ -28,6 +28,15 @@ import static javax.swing.JOptionPane.showMessageDialog;
  */
 @SuppressWarnings("DanglingJavadoc")
 public class GUI {
+    /**
+     * Object to synchronize the GUI with the {@link Decoder}, to pull the latest detected Morse-Signals.
+     *
+     * @see Decoder#getLastSignal()
+     */
+    private final Object GUI_DECODER_SYNCHRONIZE_Object;
+    private final Decoder DECODER;
+    private final Map<textArea, textArea_focusState> textAreaFocusMap = new HashMap<>();
+
     private JTabbedPane tabbedPane1;
     private JPanel toSend;
     private JPanel toReceive;
@@ -53,15 +62,6 @@ public class GUI {
     private JTextField textField_info;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
-
-    /**
-     * Object to synchronize the GUI with the {@link Decoder}, to pull the latest detected Morse-Signals.
-     * @see Decoder#getLastSignal()
-     */
-    private final Object GUI_DECODER_SYNCHRONIZE_Object;
-
-    private final Decoder DECODER;
-
     private Thread ui_update_thread;
 
     private enum textArea_focusState {
@@ -75,8 +75,6 @@ public class GUI {
         MORSE,
         TEXT
     }
-
-    private final Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<>();
 
     /**
      * Constructor for class {@link GUI}
@@ -323,12 +321,12 @@ public class GUI {
     private String getInfoText() {
         return """
                 Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
-                
+                                
                 Der Code kann als Tonsignal, als Funksignal, als elektrischer Puls mit einer Morsetaste über eine Telefonleitung, mechanisch oder optisch (etwa mit blinkendem Licht) übertragen werden – oder auch mit jedem sonstigen Medium, mit dem zwei verschiedene Zustände (wie etwa Ton oder kein Ton) eindeutig und in der zeitlichen Länge variierbar dargestellt werden können. Dieses Übertragungsverfahren nennt man Morsetelegrafie.
-                
+                                
                 Das manchmal bei Notfällen beschriebene Morsen durch Klopfen an metallischen Verbindungen erfüllt diese Forderung daher nur bedingt, ist aber mit einiger Übung aufgrund des charakteristischen Rhythmus von Morsezeichen verständlich. Es ist abgeleitet von den „Klopfern“ aus der Anfangszeit der Telegrafentechnik, bestehend aus einem Elektromagneten mit Anker in einem akustischen Hohlspiegel. Beim Einschalten erzeugte er ein lautes und beim Abschalten ein etwas leiseres Klopfgeräusch. So konnte man den Klang der Morsezeichen schon vor der Erfindung des Lautsprechers selbst in größeren Betriebsräumen hörbar machen.
-                
-                
+                                
+                                
                 Auszug aus de.wikipedia.org/wiki/Morsecode
                 """;
 
@@ -399,7 +397,7 @@ public class GUI {
     /**
      * Trying to start playing the morse code from the {@link #send_morse_textArea} and displaying an error message
      * if failed.
-     *
+     * <p>
      * If a melody is selected, the morse code is played with that melody, otherwise, when "Fest" is selected, the
      * Morse Code is played with a constant frequency from the {@link #frequenz_slider}
      *
