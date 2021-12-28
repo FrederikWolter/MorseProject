@@ -3,11 +3,12 @@ package com.dhbw.morse_project.translate;
 import java.util.HashMap;
 
 /**
- * @author Hassan El-Khalil, supported by Frederik Wolter
  * This Class is responsible for translating Strings into Morse-Codes and v.v.
+ *
+ * @author Hassan El-Khalil, supported by Frederik Wolter
  */
 @SuppressWarnings("unused")
-public class Translator {
+public abstract class Translator {
     /**
      * Long Morse Signal
      */
@@ -78,10 +79,17 @@ public class Translator {
     }
 
     // region getter & setter
+    /**
+     * Getter for CharToMorse
+     * @return CharToMorse Map
+     */
     public static HashMap<Character, String> getCharToMorse() {
         return CharToMorse;
     }
-
+    /**
+     * Getter for MorseToChar
+     * @return MorseToChar Map
+     */
     public static HashMap<String, Character> getMorseToChar() {
         return MorseToChar;
     }
@@ -91,21 +99,20 @@ public class Translator {
      * This Method reverses the CharToMorse Hashmap and saves it in MorseToChar.
      */
     private static void reverse() {
-        for (HashMap.Entry<Character, String> entry : CharToMorse.entrySet()) {
+        for (HashMap.Entry<Character, String> entry : CharToMorse.entrySet())
             MorseToChar.put(entry.getValue(), entry.getKey());
-        }
     }
 
     /**
-     * For a single Char-Input this method returns the associated Morse-String as defined in the {@link #CharToMorse Hashmap}.
+     * For a single Char-Input this method returns the associated Morse-String as defined in {@link #CharToMorse}.
      * For an unrecognized char it will return null.
      *
-     * @param l Char-input
+     * @param input Char-input
      * @return Morse-String or null
      */
-    public static String toMorse(char l) {
-        l = Character.toUpperCase(l);
-        return CharToMorse.getOrDefault(l, null);
+    public static String toMorse(char input) {
+        input = Character.toUpperCase(input);
+        return CharToMorse.getOrDefault(input, null);       // return looked up morse code or NULL
     }
 
     /**
@@ -116,7 +123,7 @@ public class Translator {
      * @return translated Char or 0 char
      */
     public static char toChar(String morseCode) {
-        return MorseToChar.getOrDefault(morseCode, (char) 0);
+        return MorseToChar.getOrDefault(morseCode, (char) 0);           // return looked up char or the 0 char
     }
 
     /**
@@ -127,7 +134,7 @@ public class Translator {
      * @return translated String
      */
     public static String morseToText(String morse) {
-        String[] morseChar = morse.split(" ");  // Split each Morse code by separating them at whitespace char (char end)
+        String[] morseChar = morse.split(" ");  // split each Morse code by separating at blank (char end)
         StringBuilder x = new StringBuilder();
         for (String s : morseChar) {
             char c = toChar(s);
@@ -142,20 +149,18 @@ public class Translator {
      * For an input String it returns the translated Morse-Code.
      * [ID: F-LOG-20.1, F-LOG-20.1.1]
      *
-     * @param Text Enter a String with containing the Recognized Chars in {@link #CharToMorse}
+     * @param text Enter a String with containing the Recognized Chars in {@link #CharToMorse}
      * @return translated Morse-code
      */
-    public static String textToMorse(String Text) {
-        char[] ch = Text.toCharArray();         // Creating array of string length
+    public static String textToMorse(String text) {
+        char[] ch = text.toCharArray();         // Creating array of string length
         StringBuilder x = new StringBuilder();
         for (char c : ch) {
             String s = toMorse(c);
-            if (s == null)                       // char not found
+            if (s == null)                      // char not found
                 return null;
-            x.append(s);
-            x.append(C);
+            x.append(s).append(C);
         }
         return x.toString();
     }
-
 }
