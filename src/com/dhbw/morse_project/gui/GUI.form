@@ -392,7 +392,7 @@
                             </constraints>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Start Recording"/>
+                              <text value="Empfangen starten"/>
                             </properties>
                           </component>
                           <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
