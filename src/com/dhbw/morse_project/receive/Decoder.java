@@ -14,8 +14,22 @@ import java.util.List;
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  * @see AudioListener
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class Decoder {
+    /**
+     * List with the {@link Noise}-Objets which are different to the previous entry. So that on a quiet sample a loud one follows.
+     */
+    private final List<Noise> FILTERED_SAMPLES_LIST = new ArrayList<>();
+    /**
+     * StringBuilder in which the last found Morse-Signals are appended.
+     */
+    private final StringBuilder LAST_SIGNAL = new StringBuilder();
+    /**
+     * The threshold for the rang calculation.
+     *
+     * @see #analyzeFilteredSamples()
+     */
+    private final float TIME_UNIT_THRESHOLD = ((float) Encoder.TIME_UNIT / 100);
     /**
      * The {@link AudioListener} from which new samples are read.
      */
@@ -33,23 +47,44 @@ public class Decoder {
      */
     private Thread decoderThread;
     /**
-     * List with the {@link Noise}-Objets which are different to the previous entry. So that on a quiet sample a loud one follows.
-     */
-    private final List<Noise> FILTERED_SAMPLES_LIST = new ArrayList<>();
-    /**
-     * StringBuilder in which the last found Morse-Signals are appended.
-     */
-    private final StringBuilder LAST_SIGNAL = new StringBuilder();
-    /**
-     * Defines if the last signal was silence. If so don't add another silence to the output after it. (Example: We don't want: ". / / -.". What we want is: ". / -.")
+     * Defines if the last signal was silence. If so don't add another silence to the output after it. <p>
+     * (Example: We don't want: ". / / -.". What we want is: ". / -.")
      */
     private boolean lastWasSilence = true;
     /**
-     * The threshold for the rang calculation.
+     * The Runnable for the {@link #decoderThread}-Thread.
+     * In this Thread/Runnable the received {@link Noise}-Objets (from the {@link AudioListener}) are analyzed, filtered and the output Morse-Code is generated.
+     * Everytime a new Morse-Signal was found the GUI is notified so that it can fetch the latest Morse-Signals.
+     * <p>
+     * Part of: [ID: F-TEC-10.1.1] (Other in {@link AudioListener})
+     *
+     * @see #analyzeInputSamples(List)
      * @see #analyzeFilteredSamples()
      */
-    @SuppressWarnings("FieldCanBeLocal")
-    private final float TIME_UNIT_THRESHOLD = ((float)Encoder.TIME_UNIT / 100);
+    private final Runnable decoderRunnable = () -> {
+        while (isRecording) {
+            List<Noise> samples = null;
+            try {
+                synchronized (audioListener.getSynchronizedBuffer()) {
+                    audioListener.getSynchronizedBuffer().wait(); //Wait until decoder is notified from AudioListener that there are new Samples.
+                    samples = audioListener.getNewSamples();      //Getting new Samples from the AudioListener
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace(); //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
+            }
+
+            if (samples != null) {
+                analyzeInputSamples(samples);
+                analyzeFilteredSamples();
+                if (LAST_SIGNAL.length() > 0) {
+                    synchronized (gui.getGuiDecoderSynchronizeObject()) {
+                        gui.getGuiDecoderSynchronizeObject().notify(); //notify ui_update_thread about new signals
+                    }
+                }
+            }
+        }
+        audioListener.stopListening();  //Stop AudioListener when Decoder finished
+    };
 
     /**
      * Constructor
@@ -71,7 +106,6 @@ public class Decoder {
      */
     public boolean startRecording() {
         decoderThread = new Thread(decoderRunnable); //Creating new Thread because you can only call .start on Thread once
-
         isRecording = audioListener.startListening(); //start listening on audioListener
 
         //Reset
@@ -104,41 +138,6 @@ public class Decoder {
             return false;   //return false if failed
         }
     }
-
-    /**
-     * The Runnable for the {@link #decoderThread}-Thread.
-     * In this Thread/Runnable the received {@link Noise}-Objets (from the {@link AudioListener}) are analyzed, filtered and the output Morse-Code is generated.
-     * Everytime a new Morse-Signal was found the GUI is notified so that it can fetch the latest Morse-Signals.
-     * <p>
-     * Part of: [ID: F-TEC-10.1.1] (Other in {@link AudioListener})
-     *
-     * @see #analyzeInputSamples(List)
-     * @see #analyzeFilteredSamples()
-     */
-    private final Runnable decoderRunnable = () -> {
-        while (isRecording) {
-            List<Noise> samples = null;
-            try {
-                synchronized (audioListener.getSynchronizedBuffer()) {
-                    audioListener.getSynchronizedBuffer().wait(); //Wait until decoder is notified from AudioListener that there are new Samples.
-                    samples = audioListener.getNewSamples();      //Getting new Samples from the AudioListener
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace(); //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
-            }
-
-            if (samples != null) {
-                analyzeInputSamples(samples);
-                analyzeFilteredSamples();
-                if (LAST_SIGNAL.length() > 0) {
-                    synchronized (gui.getGuiDecoderSynchronizeObject()){
-                        gui.getGuiDecoderSynchronizeObject().notify(); //notify ui_update_thread about new signals
-                    }
-                }
-            }
-        }
-        audioListener.stopListening();  //Stop AudioListener when Decoder finished
-    };
 
     /**
      * In this Method the fetched {@link Noise}-Objects from the {@link AudioListener} are filtered (On a loud sample follows a silence and vice versa).
@@ -183,19 +182,19 @@ public class Decoder {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
                     if ((180 * TIME_UNIT_THRESHOLD) <= between && between < (500 * TIME_UNIT_THRESHOLD)) {         //Its a ' '
-                        LAST_SIGNAL.append(" ");
+                        LAST_SIGNAL.append(" "); //todo use static chars from Translator
                         lastWasSilence = true;
                     } else if ((780 * TIME_UNIT_THRESHOLD) <= between) { //Its a '/' - We don't limit this threshold, because we want to read an '/' after any break
-                        LAST_SIGNAL.append(" / ");
+                        LAST_SIGNAL.append(" / "); //todo use static chars from Translator
                         lastWasSilence = true;
                     }
                 }
             } else {
                 if ((30 * TIME_UNIT_THRESHOLD) <= between && between < (140 * TIME_UNIT_THRESHOLD)) {         //Its a '.'
-                    LAST_SIGNAL.append(".");
+                    LAST_SIGNAL.append("."); //todo use static chars from Translator
                     lastWasSilence = false;
                 } else if ((160 * TIME_UNIT_THRESHOLD) <= between && between < (600 * TIME_UNIT_THRESHOLD)) { //Its a '-' - limit this very high to collect long signals (Music)
-                    LAST_SIGNAL.append("-");
+                    LAST_SIGNAL.append("-"); //todo use static chars from Translator
                     lastWasSilence = false;
                 }
             }
@@ -224,7 +223,7 @@ public class Decoder {
      */
     public String getLastSignal() {
         String back = LAST_SIGNAL.toString();
-        LAST_SIGNAL.setLength(0); //Reset the StringBuilder
+        LAST_SIGNAL.setLength(0);                   //Reset the StringBuilder
         return back;
     }
 }

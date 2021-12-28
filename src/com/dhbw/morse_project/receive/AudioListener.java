@@ -14,55 +14,32 @@ import java.util.List;
  * That means the software recognizes Morse-Signals based on the RMS-Value (volume).
  * Evaluated are these Objets in the {@link Decoder} class.
  * <p>
- * ([ID: F-TEC-10.1.1, (F-LOG-20.3.2, F-LOG-20.3.3)])
+ * [ID: F-TEC-10.1.1, (F-LOG-20.3.2, F-LOG-20.3.3)]
  *
  * @author Daniel Czeschner, Supported by: Mark Mühlenberg
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class AudioListener {
-
-    /**
-     * Holds the current TargetDataLine from which this class reads the audio input.
-     *
-     * @see TargetDataLine
-     */
-    private TargetDataLine line = null;
-
-    /**
-     * Is the {@link AudioListener} currently recording or not.
-     */
-    private boolean isListening = false;
-
     /**
      * The size of the buffer-array in which the data line input is read.
      */
     private final int BUFFER_SIZE = 1000;
-
     /**
      * The size of one windowed-buffer.
      */
     private final int WINDOW_SIZE = BUFFER_SIZE / 5;
-
     /**
      * The size of the overlapped values between the windowed-buffer's.
      */
     private final int STEP_SIZE = WINDOW_SIZE / 2;
-
-    /**
-     * The index for the next {@link Noise} object.
-     */
-    private int buffersRead = 0;
-
     /**
      * The minimum amount of new {@link Noise}-Objects in the {@link #SYNCHRONIZED_BUFFER} before the {@link Decoder} is notified that there are new samples ({@link Noise}-Objets) to check.
      */
     private final int MIN_NEW_SAMPLES = 15;
-
     /**
      * Smooth factor for rms-values. This value defines the multiplier of how much the values of a list of rms values should be smooth depending on the average of this list.
      */
     private final float RMS_SMOOTH_AMOUNT = 0.85f;
-
     /**
      * In this List the created {@link Noise}-Objects are added.
      * This List is also used to synchronize the {@link Decoder}- and {@link #listenerThread}-Thread.
@@ -70,18 +47,62 @@ public class AudioListener {
      * @see #analyzeBuffer(byte[])
      */
     private final List<Noise> SYNCHRONIZED_BUFFER = new ArrayList<>();
+    /**
+     * The GUI {@link GUI} instance
+     */
+    private final GUI gui;
+    /**
+     * Holds the current TargetDataLine from which this class reads the audio input.
+     *
+     * @see TargetDataLine
+     */
+    private TargetDataLine line = null;
+    /**
+     * Is the {@link AudioListener} currently recording or not.
+     */
+    private boolean isListening = false;
+    /**
+     * The index for the next {@link Noise} object.
+     */
+    private int buffersRead = 0;
+    /**
+     * The Runnable for the {@link #listenerThread}-Thread.
+     * In this Thread/Runnable everything to generate new {@link Noise}-Objets and fill the {@link #SYNCHRONIZED_BUFFER} is done here.
+     * The notification of the {@link Decoder} is also handheld here.
+     *
+     * @see #SYNCHRONIZED_BUFFER
+     * @see #analyzeBuffer(byte[])
+     * @see Decoder
+     */
+    private final Runnable listenerRunnable = () -> {
+        byte[] memoryBuffer = new byte[BUFFER_SIZE];
 
+        synchronized (SYNCHRONIZED_BUFFER) {
+            try {
+                SYNCHRONIZED_BUFFER.wait(1000);   //We wait 1 sec before we start listening to skip user mouse clicks, etc..
+            } catch (InterruptedException e) {
+                e.printStackTrace();    //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
+            }
+        }
+
+        while (isListening) {
+            if (line.read(memoryBuffer, 0, memoryBuffer.length) > 0) {
+                synchronized (SYNCHRONIZED_BUFFER) {
+                    SYNCHRONIZED_BUFFER.addAll(analyzeBuffer(memoryBuffer));
+
+                    if (SYNCHRONIZED_BUFFER.size() >= MIN_NEW_SAMPLES) {
+                        SYNCHRONIZED_BUFFER.notify();
+                    }
+                }
+            }
+        }
+    };
     /**
      * Thread for the audio input from {@link #line} in which everything is handled.
      *
      * @see #listenerRunnable
      */
     private Thread listenerThread;
-
-    /**
-     * The GUI {@link GUI} instance
-     */
-    private final GUI gui;
 
     /**
      * Constructor
@@ -153,39 +174,6 @@ public class AudioListener {
     }
 
     /**
-     * The Runnable for the {@link #listenerThread}-Thread.
-     * In this Thread/Runnable everything to generate new {@link Noise}-Objets and fill the {@link #SYNCHRONIZED_BUFFER} is done here.
-     * The notification of the {@link Decoder} is also handheld here.
-     *
-     * @see #SYNCHRONIZED_BUFFER
-     * @see #analyzeBuffer(byte[])
-     * @see Decoder
-     */
-    private final Runnable listenerRunnable = () -> {
-        byte[] memoryBuffer = new byte[BUFFER_SIZE];
-
-        synchronized (SYNCHRONIZED_BUFFER) {
-            try {
-                SYNCHRONIZED_BUFFER.wait(1000);   //We wait 1 sec before we start listening to skip user mouse clicks, etc..
-            } catch (InterruptedException e) {
-                e.printStackTrace();    //This error is never going to happen, because we don't use interrupt() on this Thread. We need to catch it anyway.
-            }
-        }
-
-        while (isListening) {
-            if (line.read(memoryBuffer, 0, memoryBuffer.length) > 0) {
-                synchronized (SYNCHRONIZED_BUFFER) {
-                    SYNCHRONIZED_BUFFER.addAll(analyzeBuffer(memoryBuffer));
-
-                    if (SYNCHRONIZED_BUFFER.size() >= MIN_NEW_SAMPLES) {
-                        SYNCHRONIZED_BUFFER.notify();
-                    }
-                }
-            }
-        }
-    };
-
-    /**
      * This method is using windowed-buffers to go through the buffer-byte-array with x (see {@link #STEP_SIZE}) overlapping values.
      * Based on the values in each windowed-buffer an RMS-Value is calculated and smoothed out.
      * Then for each smoothed RMS-Value a new {@link Noise}-Object is created.
@@ -238,12 +226,10 @@ public class AudioListener {
 
         double rms = 0.0;
 
-        for (int i : byteArray) {
+        for (int i : byteArray)
             rms += i * i;
-        }
 
         rms /= byteArray.length;
-
         return Math.sqrt(rms);
     }
 
@@ -277,9 +263,8 @@ public class AudioListener {
     private double getListAverage(List<Double> list) {
         float sum = 0;
 
-        for (double value : list) {
+        for (double value : list)
             sum += value;
-        }
 
         return (sum / list.size());
     }
