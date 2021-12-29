@@ -182,22 +182,6 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="6f80d" class="javax.swing.JSlider" binding="frequenz_slider">
-                                <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font name="JetBrains Mono"/>
-                                  <majorTickSpacing value="2000"/>
-                                  <maximum value="10000"/>
-                                  <minimum value="0"/>
-                                  <minorTickSpacing value="200"/>
-                                  <paintLabels value="true"/>
-                                  <paintTicks value="true"/>
-                                  <snapToTicks value="false"/>
-                                  <value value="550"/>
-                                </properties>
-                              </component>
                               <component id="244d5" class="javax.swing.JLabel">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -219,10 +203,11 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Melodien"/>
+                                  <labelFor value="fbfd9"/>
+                                  <text value="Melodie"/>
                                 </properties>
                               </component>
-                              <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                              <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBoxMelody">
                                 <constraints>
                                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
@@ -252,6 +237,22 @@
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
                                   <text value="Text zurücksetzen"/>
+                                </properties>
+                              </component>
+                              <component id="6f80d" class="javax.swing.JSlider" binding="frequenz_slider">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono"/>
+                                  <majorTickSpacing value="2000"/>
+                                  <maximum value="8000"/>
+                                  <minimum value="0"/>
+                                  <minorTickSpacing value="200"/>
+                                  <paintLabels value="true"/>
+                                  <paintTicks value="true"/>
+                                  <snapToTicks value="false"/>
+                                  <value value="550"/>
                                 </properties>
                               </component>
                             </children>
