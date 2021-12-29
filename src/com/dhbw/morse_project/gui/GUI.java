@@ -49,7 +49,7 @@ public class GUI {
     private JTextArea send_text_textArea;
     private JTextArea send_morse_textArea;
     private JSlider frequenz_slider;
-    private JComboBox<String> comboBox1;
+    private JComboBox<String> comboBoxMelody;
     private JButton send_translate_button;
     private JButton send_clear_button;
     private JButton receive_clear_button;
@@ -200,7 +200,7 @@ public class GUI {
     }
 
     /**
-     * Settings for the {@link #comboBox1} to select given melodies or frequencies.
+     * Settings for the {@link #comboBoxMelody} to select given melodies or frequencies.
      *
      * @see #startPlaying()
      * @see Melody
@@ -209,9 +209,9 @@ public class GUI {
     private void prepareMelodySelectionComboBox() {
 
         for (int i = 0; i < Melody.getMelodyList().size(); i++) {
-            comboBox1.addItem(Melody.getMelodyList().get(i).getName());
+            comboBoxMelody.addItem(Melody.getMelodyList().get(i).getName());
         }
-        comboBox1.addActionListener(e -> frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest")));
+        comboBoxMelody.addActionListener(e -> frequenz_slider.setEnabled(comboBoxMelody.getSelectedItem().toString().equals("Fest")));
     }
 
     /**
@@ -269,8 +269,8 @@ public class GUI {
         });
 
         try {
-            frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("Morse_Symbolbild.png")))); // see https://stackoverflow.com/a/45580/13777031
-            // source: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
+            frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("morse-code.png")))); // see https://stackoverflow.com/a/45580/13777031
+            // source: https://cdn-icons-png.flaticon.com/512/260/260301.png
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -326,8 +326,7 @@ public class GUI {
                 Das manchmal bei Notfällen beschriebene Morsen durch Klopfen an metallischen Verbindungen erfüllt diese Forderung daher nur bedingt, ist aber mit einiger Übung aufgrund des charakteristischen Rhythmus von Morsezeichen verständlich. Es ist abgeleitet von den „Klopfern“ aus der Anfangszeit der Telegrafentechnik, bestehend aus einem Elektromagneten mit Anker in einem akustischen Hohlspiegel. Beim Einschalten erzeugte er ein lautes und beim Abschalten ein etwas leiseres Klopfgeräusch. So konnte man den Klang der Morsezeichen schon vor der Erfindung des Lautsprechers selbst in größeren Betriebsräumen hörbar machen.
                                 
                                 
-                Auszug aus de.wikipedia.org/wiki/Morsecode
-                """;
+                Auszug aus de.wikipedia.org/wiki/Morsecode""";
 
         //Quelle: https://de.wikipedia.org/wiki/Morsecode
     }
@@ -430,9 +429,9 @@ public class GUI {
     private Melody getMelody() {
         Melody sendMelody = null;
 
-        if (comboBox1.getSelectedItem() != "Fest") {
+        if (comboBoxMelody.getSelectedItem() != "Fest") {
             for (Melody melody : Melody.getMelodyList()) {
-                if (melody.getName().equals(comboBox1.getSelectedItem().toString())) {
+                if (melody.getName().equals(comboBoxMelody.getSelectedItem().toString())) {
                     sendMelody = melody;
                 }
             }
