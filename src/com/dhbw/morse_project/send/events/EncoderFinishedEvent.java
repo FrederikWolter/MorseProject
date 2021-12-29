@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Class for {@link EncoderFinishedEvent}-Object. Used for telling the GUI sending finished.
  *
- * @author @author Mark Mühlenbarg & Frederik Wolter
+ * @author Mark Mühlenbarg & Frederik Wolter
  */
 public class EncoderFinishedEvent {
     private final List<IEncoderFinishedListener> listeners = new ArrayList<>();
@@ -24,8 +24,7 @@ public class EncoderFinishedEvent {
      * Used to call the event and notify the listeners.
      */
     public void alert() {
-        for (IEncoderFinishedListener listener : listeners) {
+        for (IEncoderFinishedListener listener : listeners)
             listener.run();
-        }
     }
 }
