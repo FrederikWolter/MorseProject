@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * This class is used as a POJO for the representation of a melody object. [ID: F-TEC-10.4]
  *
+ * @see Encoder
  * @author Frederik Wolter
  */
 @SuppressWarnings("unused")
@@ -12,7 +13,7 @@ public class Melody {
     /**
      * Kind of static singleton ArrayList of all melodies created in runtime.
      */
-    private static ArrayList<Melody> melodyList;
+    private static ArrayList<Melody> melodyList;        // Alternative to Singleton: own Wrapper Class or making it public
 
     // region POJO attributes
     private String name;            // displayed name in gui
@@ -29,7 +30,7 @@ public class Melody {
         this.name = name;
         this.freqList = freqList;
 
-        if (melodyList == null)         // part of singleton implementation
+        if (melodyList == null)         // part of 'singleton' implementation
             melodyList = new ArrayList<>();
 
         melodyList.removeIf(melody -> melody.equals(this)); // remove old melody if same name
@@ -60,9 +61,9 @@ public class Melody {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Melody) {
+        if (obj instanceof Melody)
             return this.name.equals(((Melody) obj).name);
-        }
+
         return false;
     }
 }
