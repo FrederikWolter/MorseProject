@@ -33,11 +33,11 @@ public class Decoder {
     /**
      * The {@link AudioListener} from which new samples are read.
      */
-    private AudioListener audioListener;
+    private AudioListener audioListener;        // todo may be final?
     /**
      * The {@link GUI} instance;
      */
-    private GUI gui;
+    private GUI gui;                            // todo may be final?
     /**
      * Defines if the {@link Decoder} and so the {@link AudioListener} is currently recording or not.
      */

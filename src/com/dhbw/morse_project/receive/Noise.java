@@ -7,7 +7,7 @@ package com.dhbw.morse_project.receive;
  * @see AudioListener
  */
 public class Noise {
-
+    // TODO convert to java record recommend; similar to data class in kotlin https://jax.de/blog/datenklassen-in-java-einfuehrung-in-java-records/
     // region POJO attributes
     private final boolean quiet;
     private final int index;

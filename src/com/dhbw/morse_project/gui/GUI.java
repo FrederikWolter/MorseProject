@@ -18,6 +18,9 @@ import java.util.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 //todo process GUI warnings
+// todo Hardcoded string literal in a UI form
+// todo Missing mnemonic: Empfangen beginnen, Melodie, Senden beginnen, Text zurücksetzen, Text zurücksetzen, Übersetzen
+// todo No label for component
 
 /**
  * Class responsible for user interactions.
@@ -40,7 +43,7 @@ public class GUI {
     private JPanel toSend;
     private JPanel toReceive;
     private JPanel toInfo;
-    private javax.swing.JPanel mainpanel;
+    private javax.swing.JPanel main_panel;
     private JTextArea receive_text_textArea;
     private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
@@ -58,7 +61,7 @@ public class GUI {
     private JTable table_alphabet;
     private JTextArea textArea_info;
     private JPanel JPanel_border;
-    private JTextField textField_info;
+    private JTextField textField_info;              // todo never used variables
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
     private Thread ui_update_thread;
@@ -85,7 +88,7 @@ public class GUI {
      * @see #configureListeners()
      */
     public GUI() {
-        JFrame frame = setupJFrame();
+        JFrame frame = setupJFrame();  // todo frame never used
 
         GUI_DECODER_SYNCHRONIZE_Object = new Object();
         DECODER = new Decoder(this);
@@ -211,6 +214,7 @@ public class GUI {
         for (int i = 0; i < Melody.getMelodyList().size(); i++) {
             comboBoxMelody.addItem(Melody.getMelodyList().get(i).getName());
         }
+        // todo Method invocation 'toString' may produce 'NullPointerException'
         comboBoxMelody.addActionListener(e -> frequenz_slider.setEnabled(comboBoxMelody.getSelectedItem().toString().equals("Fest")));
     }
 
@@ -247,7 +251,7 @@ public class GUI {
      */
     private JFrame setupJFrame() {
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikationstechnik München");
-        frame.add(mainpanel);
+        frame.add(main_panel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -275,7 +279,7 @@ public class GUI {
             e.printStackTrace();
         }
 
-        //mainpanel.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
+        //main_panel.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
@@ -284,9 +288,9 @@ public class GUI {
 
         setWindowDimensions(frame, screenSize, effectiveMaxHeight);
 
-        adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
+        adjust_split_pane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
-        adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
+        adjust_split_pane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
 
         return frame;
     }
@@ -303,9 +307,9 @@ public class GUI {
         double modifier = (int) (1.0 / scale);
         Dimension windowSize = new Dimension((int) (((double) screenSize.width) / modifier), (int) (((double) effectiveMaxHeight) / modifier));
         frame.setMinimumSize(windowSize);
-        mainpanel.setMinimumSize(windowSize);
-        mainpanel.setMaximumSize(new Dimension(500, 500));
-        mainpanel.setSize(500, 500);
+        main_panel.setMinimumSize(windowSize);
+        main_panel.setMaximumSize(new Dimension(500, 500));
+        main_panel.setSize(500, 500);
 
         tabbedPane1.setFont(new Font("Arial", Font.BOLD, 16));
 
@@ -349,7 +353,7 @@ public class GUI {
     }
 
     /**
-     * Trying to start the recording of the {@link Decoder} or dispaying an error message if failed
+     * Trying to start the recording of the {@link Decoder} or displaying an error message if failed
      *
      * @param e event which is triggered
      */
@@ -431,6 +435,7 @@ public class GUI {
 
         if (comboBoxMelody.getSelectedItem() != "Fest") {
             for (Melody melody : Melody.getMelodyList()) {
+                // todo Method invocation 'toString' may produce 'NullPointerException'
                 if (melody.getName().equals(comboBoxMelody.getSelectedItem().toString())) {
                     sendMelody = melody;
                 }
@@ -526,6 +531,7 @@ public class GUI {
      */
     private void translateMorseTextAreaToText() {
         String textTranslation = Translator.morseToText(send_morse_textArea.getText());
+        // todo Condition 'textTranslation == null' is always 'false'
         if (textTranslation == null) {
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_text_textArea.setText("");
@@ -573,7 +579,7 @@ public class GUI {
      * @param text_textArea  textArea for text
      * @param morse_textArea textArea for morse
      */
-    private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
+    private void adjust_split_pane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
         morse_textArea.setPreferredSize(textAreas_preferredDimension);
         morse_textArea.setMinimumSize(textAreas_preferredDimension);
