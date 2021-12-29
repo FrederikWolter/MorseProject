@@ -171,6 +171,7 @@
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
                               <text value="Senden beginnen"/>
+                              <toolTipText value=""/>
                             </properties>
                           </component>
                           <grid id="d6d12" layout-manager="GridLayoutManager" row-count="1" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -392,7 +393,7 @@
                             </constraints>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Empfangen starten"/>
+                              <text value="Empfangen beginnen"/>
                             </properties>
                           </component>
                           <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
