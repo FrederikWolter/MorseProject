@@ -81,6 +81,7 @@ public abstract class Translator {
     // region getter & setter
     /**
      * Getter for CharToMorse
+     *
      * @return CharToMorse Map
      */
     public static HashMap<Character, String> getCharToMorse() {
@@ -88,6 +89,7 @@ public abstract class Translator {
     }
     /**
      * Getter for MorseToChar
+     *
      * @return MorseToChar Map
      */
     public static HashMap<String, Character> getMorseToChar() {

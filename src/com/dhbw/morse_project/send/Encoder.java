@@ -236,14 +236,17 @@ public class Encoder {
     // region listener
     /**
      * Registers ErrorListener for error events, which should be notified if an error event occurs.
+     *
      * @param listener to be added
      * @see com.dhbw.morse_project.gui.GUI
      */
     public void addErrorEventListener(IEncoderErrorListener listener) {
         errorEvent.addListener(listener);
     }
+
     /**
      * Registers FinishedListener for finished events, which should be notified if a finished event occurs.
+     *
      * @param listener to be added
      * @see com.dhbw.morse_project.gui.GUI
      */
