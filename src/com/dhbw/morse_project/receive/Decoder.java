@@ -34,12 +34,12 @@ public class Decoder {
     /**
      * The {@link AudioListener} from which new samples are read.
      */
-    @SuppressWarnings("CanBeFinal")             // can not be final or programm would not work anymore
+    @SuppressWarnings("CanBeFinal")             // can not be final or program would not work anymore
     private AudioListener audioListener;
     /**
      * The {@link GUI} instance;
      */
-    @SuppressWarnings("CanBeFinal")             // can not be final or programm would not work anymore
+    @SuppressWarnings("CanBeFinal")             // can not be final or program would not work anymore
     private GUI gui;
     /**
      * Defines if the {@link Decoder} and so the {@link AudioListener} is currently recording or not.
