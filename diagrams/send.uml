@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.dhbw.morse_project.send</OriginalElement>
+  <nodes>
+    <node x="527.0" y="162.0">com.dhbw.morse_project.send.events.EncoderErrorEvent</node>
+    <node x="221.375" y="0.0">com.dhbw.morse_project.send.events.IEncoderFinishedListener</node>
+    <node x="273.98214285714283" y="389.0">com.dhbw.morse_project.send.Encoder</node>
+    <node x="521.25" y="0.0">com.dhbw.morse_project.send.events.IEncoderErrorListener</node>
+    <node x="231.0" y="162.0">com.dhbw.morse_project.send.events.EncoderFinishedEvent</node>
+    <node x="0.0" y="106.0">com.dhbw.morse_project.send.Melody</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="331.98214285714283" y="368.0" />
+      <point x="221.03571428571425" y="368.0" />
+      <point x="220.49999999999997" y="85.0" />
+      <point x="323.95089285714283" y="85.0" />
+      <point x="323.95089285714283" y="75.0" />
+      <point x="275.125" y="75.0" />
+      <point x="-53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderFinishedEvent" relationship="TO_ONE">
+      <point x="0.0" y="-149.0" />
+      <point x="447.98214285714283" y="368.0" />
+      <point x="504.45089285714283" y="368.0" />
+      <point x="504.45089285714283" y="348.0" />
+      <point x="299.75" y="348.0" />
+      <point x="-68.75" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderErrorEvent" relationship="CREATE">
+      <point x="116.00000000000006" y="-149.0" />
+      <point x="563.9821428571429" y="368.0" />
+      <point x="514.4508928571428" y="368.0" />
+      <point x="514.4508928571428" y="338.0" />
+      <point x="719.0" y="338.0" />
+      <point x="64.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderErrorEvent" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="DEPENDENCY">
+      <point x="-64.0" y="-49.5" />
+      <point x="591.0" y="85.0" />
+      <point x="612.8258928571429" y="85.0" />
+      <point x="612.8258928571429" y="75.0" />
+      <point x="569.5" y="75.0" />
+      <point x="-48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderFinishedEvent" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="TO_MANY">
+      <point x="68.75" y="-49.5" />
+      <point x="437.25" y="85.0" />
+      <point x="382.625" y="85.0" />
+      <point x="53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.Melody" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="331.98214285714283" y="368.0" />
+      <point x="221.03571428571425" y="368.0" />
+      <point x="221.03571428571425" y="358.0" />
+      <point x="105.0" y="358.0" />
+      <point x="0.0" y="105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Melody" target="com.dhbw.morse_project.send.Encoder" relationship="DEPENDENCY">
+      <point x="0.0" y="105.5" />
+      <point x="105.0" y="358.0" />
+      <point x="221.03571428571425" y="358.0" />
+      <point x="221.03571428571425" y="368.0" />
+      <point x="331.98214285714283" y="368.0" />
+      <point x="-116.0" y="-149.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="331.98214285714283" y="368.0" />
+      <point x="221.03571428571425" y="368.0" />
+      <point x="221.03571428571425" y="358.0" />
+      <point x="516.5" y="358.0" />
+      <point x="516.5" y="85.0" />
+      <point x="612.8258928571429" y="85.0" />
+      <point x="612.8258928571429" y="75.0" />
+      <point x="569.5" y="75.0" />
+      <point x="-48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderErrorEvent" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="TO_MANY">
+      <point x="64.0" y="-49.5" />
+      <point x="719.0" y="85.0" />
+      <point x="666.0" y="85.0" />
+      <point x="48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderFinishedEvent" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="DEPENDENCY">
+      <point x="-68.75" y="-49.5" />
+      <point x="299.75" y="85.0" />
+      <point x="323.95089285714283" y="85.0" />
+      <point x="323.95089285714283" y="75.0" />
+      <point x="275.125" y="75.0" />
+      <point x="-53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderFinishedEvent" relationship="CREATE">
+      <point x="116.00000000000006" y="-149.0" />
+      <point x="563.9821428571429" y="368.0" />
+      <point x="514.4508928571428" y="368.0" />
+      <point x="514.4508928571428" y="338.0" />
+      <point x="437.25" y="338.0" />
+      <point x="68.75" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderErrorEvent" relationship="TO_ONE">
+      <point x="0.0" y="-149.0" />
+      <point x="447.98214285714283" y="368.0" />
+      <point x="504.45089285714283" y="368.0" />
+      <point x="504.45089285714283" y="348.0" />
+      <point x="591.0" y="348.0" />
+      <point x="-64.0" y="49.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="true" x="391.5" y="343.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

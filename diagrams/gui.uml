@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.dhbw.morse_project.gui</OriginalElement>
+  <nodes>
+    <node x="0.0" y="149.0">com.dhbw.morse_project.gui.GUI</node>
+    <node x="118.5" y="0.0">com.dhbw.morse_project.gui.GUI.textArea_focusState</node>
+    <node x="148.5" y="783.0">com.dhbw.morse_project.gui.GUI.textArea</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea" relationship="DEPENDENCY">
+      <point x="-158.0" y="292.0" />
+      <point x="79.0" y="758.0" />
+      <point x="178.0" y="758.0" />
+      <point x="-59.0" y="-49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea_focusState" relationship="TO_MANY">
+      <point x="158.0" y="-292.0" />
+      <point x="395.0" y="124.0" />
+      <point x="316.0" y="124.0" />
+      <point x="79.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI.textArea" target="com.dhbw.morse_project.gui.GUI" relationship="INNER_CLASS">
+      <point x="59.0" y="-49.5" />
+      <point x="296.0" y="758.0" />
+      <point x="395.0" y="758.0" />
+      <point x="158.0" y="292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI.textArea_focusState" target="com.dhbw.morse_project.gui.GUI" relationship="INNER_CLASS">
+      <point x="-79.0" y="49.5" />
+      <point x="158.0" y="124.0" />
+      <point x="79.0" y="124.0" />
+      <point x="-158.0" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea" relationship="TO_MANY">
+      <point x="0.0" y="292.0" />
+      <point x="0.0" y="-49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea_focusState" relationship="DEPENDENCY">
+      <point x="0.0" y="-292.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="true" x="237.0" y="441.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
