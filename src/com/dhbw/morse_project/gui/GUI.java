@@ -436,8 +436,8 @@ public class GUI {
 
         if (comboBoxMelody.getSelectedItem() != "Fest") {
             for (Melody melody : Melody.getMelodyList()) {
-                // todo Method invocation 'toString' may produce 'NullPointerException'
-                if (melody.getName().equals(comboBoxMelody.getSelectedItem().toString())) {
+
+                if (melody.getName().equals(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString())) {
                     sendMelody = melody;
                 }
             }
