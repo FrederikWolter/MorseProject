@@ -88,7 +88,8 @@ public class GUI {
      * @see #configureListeners()
      */
     public GUI() {
-        JFrame frame = setupJFrame();  // todo frame never used
+        @SuppressWarnings("unused")
+        JFrame frame = setupJFrame();
 
         GUI_DECODER_SYNCHRONIZE_Object = new Object();
         DECODER = new Decoder(this);
