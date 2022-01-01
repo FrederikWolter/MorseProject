@@ -2,6 +2,7 @@ package com.dhbw.morse_project.receive;
 
 import com.dhbw.morse_project.gui.GUI;
 import com.dhbw.morse_project.send.Encoder;
+import com.dhbw.morse_project.translate.Translator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,11 @@ public class Decoder {
     /**
      * The {@link AudioListener} from which new samples are read.
      */
-    private AudioListener audioListener;        // todo may be final?
+    private AudioListener audioListener;
     /**
      * The {@link GUI} instance;
      */
-    private GUI gui;                            // todo may be final?
+    private GUI gui;
     /**
      * Defines if the {@link Decoder} and so the {@link AudioListener} is currently recording or not.
      */
@@ -182,19 +183,19 @@ public class Decoder {
                 //We don't want that a silence can follow on a silence.
                 if (!lastWasSilence) {
                     if ((180 * TIME_UNIT_THRESHOLD) <= between && between < (500 * TIME_UNIT_THRESHOLD)) {         //Its a ' '
-                        LAST_SIGNAL.append(" "); //todo use static chars from Translator
+                        LAST_SIGNAL.append(Translator.C);
                         lastWasSilence = true;
                     } else if ((780 * TIME_UNIT_THRESHOLD) <= between) { //Its a '/' - We don't limit this threshold, because we want to read an '/' after any break
-                        LAST_SIGNAL.append(" / "); //todo use static chars from Translator
+                        LAST_SIGNAL.append(" " + Translator.W + " ");
                         lastWasSilence = true;
                     }
                 }
             } else {
                 if ((30 * TIME_UNIT_THRESHOLD) <= between && between < (140 * TIME_UNIT_THRESHOLD)) {         //Its a '.'
-                    LAST_SIGNAL.append("."); //todo use static chars from Translator
+                    LAST_SIGNAL.append(Translator.S);
                     lastWasSilence = false;
                 } else if ((160 * TIME_UNIT_THRESHOLD) <= between && between < (600 * TIME_UNIT_THRESHOLD)) { //Its a '-' - limit this very high to collect long signals (Music)
-                    LAST_SIGNAL.append("-"); //todo use static chars from Translator
+                    LAST_SIGNAL.append(Translator.L);
                     lastWasSilence = false;
                 }
             }
