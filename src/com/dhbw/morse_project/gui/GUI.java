@@ -214,8 +214,9 @@ public class GUI {
         for (int i = 0; i < Melody.getMelodyList().size(); i++) {
             comboBoxMelody.addItem(Melody.getMelodyList().get(i).getName());
         }
-        // todo Method invocation 'toString' may produce 'NullPointerException'
-        comboBoxMelody.addActionListener(e -> frequenz_slider.setEnabled(comboBoxMelody.getSelectedItem().toString().equals("Fest")));
+        comboBoxMelody.addActionListener(
+                e ->
+                        frequenz_slider.setEnabled(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString().equals("Fest")));
     }
 
     /**
