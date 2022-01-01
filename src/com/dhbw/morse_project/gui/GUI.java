@@ -531,14 +531,13 @@ public class GUI {
      * @see Translator
      */
     private void translateMorseTextAreaToText() {
-        String textTranslation = Translator.morseToText(send_morse_textArea.getText());
-        // todo Condition 'textTranslation == null' is always 'false'
-        if (textTranslation == null) {
+        try{
+            String textTranslation = Translator.morseToText(send_morse_textArea.getText());
+            send_text_textArea.setText(textTranslation);
+        } catch (Exception e){
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_text_textArea.setText("");
             System.out.println("morseToText_translationError");
-        } else {
-            send_text_textArea.setText(textTranslation);
         }
     }
 
