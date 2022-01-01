@@ -60,8 +60,10 @@ public class GUI {
     private JSplitPane sendSplitPane;
     private JTable table_alphabet;
     private JTextArea textArea_info;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel JPanel_border;
-    private JTextField textField_info;              // todo never used variables
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
+    private JTextField textField_info;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
     private Thread ui_update_thread;
