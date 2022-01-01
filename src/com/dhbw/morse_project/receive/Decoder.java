@@ -18,7 +18,7 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class Decoder {
     /**
-     * List with the {@link Noise}-Objets which are different to the previous entry. So that on a quiet sample a loud one follows.
+     * List with the {@link Noise}-Objets which are different to the previous entry. So that on a isQuiet sample a loud one follows.
      */
     private final List<Noise> FILTERED_SAMPLES_LIST = new ArrayList<>();
     /**
@@ -146,7 +146,7 @@ public class Decoder {
      * @param samples List with the unfiltered {@link Noise}-Objects.
      */
     private void analyzeInputSamples(List<Noise> samples) {
-        //We add the first sample to the filtered list and if the next value does not have the same identifier (quiet, loud) as the last entry in the last iteration.
+        //We add the first sample to the filtered list and if the next value does not have the same identifier (isQuiet, loud) as the last entry in the last iteration.
         if (this.FILTERED_SAMPLES_LIST.size() == 0 || this.FILTERED_SAMPLES_LIST.get(this.FILTERED_SAMPLES_LIST.size() - 1).isQuiet() != samples.get(0).isQuiet())
             this.FILTERED_SAMPLES_LIST.add(samples.get(0));
 
@@ -154,7 +154,7 @@ public class Decoder {
             boolean isCurrentQuiet = samples.get(i).isQuiet();
 
             for (int j = i + 1; j < samples.size(); j++) { //Check next Noise Object
-                if (samples.get(j).isQuiet() != isCurrentQuiet) { //Next is loud and prev. were quiet ; or ; Next is quiet and prev. were loud
+                if (samples.get(j).isQuiet() != isCurrentQuiet) { //Next is loud and prev. were isQuiet ; or ; Next is isQuiet and prev. were loud
                     this.FILTERED_SAMPLES_LIST.add(samples.get(j));
                     i = j;  //We don't want to check every sample more than once.
                     break;
@@ -165,7 +165,7 @@ public class Decoder {
 
     /**
      * Method to analyze the filtered Samples. This Method calculates the distance between two samples and based on this distance
-     * and the type (quiet, lout) it is recognized which Morse code is involved.
+     * and the type (isQuiet, lout) it is recognized which Morse code is involved.
      * The values used for the range for a Morse-Signal is based on the {@link Encoder#TIME_UNIT} divided by 100 and best practice values.
      * <br>(A calculation of the values are here not possible because we only have a small amount of Samples.
      * We would need to cache them or would have to start a synchronization with the transmitter beforehand.
@@ -177,7 +177,7 @@ public class Decoder {
         for (int i = 0; i < FILTERED_SAMPLES_LIST.size() - 1; i++) {
 
             //The amount of samples between
-            int between = FILTERED_SAMPLES_LIST.get(i + 1).getIndex() - FILTERED_SAMPLES_LIST.get(i).getIndex();
+            int between = FILTERED_SAMPLES_LIST.get(i + 1).index() - FILTERED_SAMPLES_LIST.get(i).index();
 
             if (FILTERED_SAMPLES_LIST.get(i).isQuiet()) {
                 //We don't want that a silence can follow on a silence.
