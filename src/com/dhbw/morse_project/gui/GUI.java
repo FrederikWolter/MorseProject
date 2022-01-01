@@ -345,7 +345,7 @@ public class GUI {
         boolean success = DECODER.stopRecording();
 
         if (success) {
-            startRecordingButton.setText("Start Recording");
+            startRecordingButton.setText("Empfangen beginnen");
             showingStartRecording = !showingStartRecording;
         } else {
             showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: fatal exception while 'stop recording'", "Error", JOptionPane.ERROR_MESSAGE);
@@ -368,7 +368,7 @@ public class GUI {
         boolean success = DECODER.startRecording();
         if (success) {
             ui_update_thread.start();
-            startRecordingButton.setText("Stop Recording");
+            startRecordingButton.setText("Empfangen beenden");
             showingStartRecording = !showingStartRecording;
         } else {
             showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nIst ein Mikrofon korrekt angeschlossen?\nERROR: fatal exception while starting recoding.", "Error", JOptionPane.ERROR_MESSAGE);
