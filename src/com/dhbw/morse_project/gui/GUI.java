@@ -37,8 +37,11 @@ public class GUI {
     private final Map<textArea, textArea_focusState> textAreaFocusMap = new HashMap<>();
 
     private JTabbedPane tabbedPane1;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toSend;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toReceive;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toInfo;
     private javax.swing.JPanel main_panel;
     private JTextArea receive_text_textArea;
