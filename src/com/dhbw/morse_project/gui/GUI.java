@@ -17,8 +17,6 @@ import java.util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-
-// todo Missing mnemonic: Empfangen beginnen, Melodie, Senden beginnen, Text zurücksetzen, Text zurücksetzen, Übersetzen
 // todo No label for component
 
 /**
