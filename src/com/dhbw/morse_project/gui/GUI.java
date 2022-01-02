@@ -50,7 +50,7 @@ public class GUI {
     private JButton beginSendingButton;
     private JTextArea send_text_textArea;
     private JTextArea send_morse_textArea;
-    private JSlider frequenz_slider;
+    private JSlider frequency_slider;
     private JComboBox<String> comboBoxMelody;
     private JButton send_translate_button;
     private JButton send_clear_button;
@@ -218,7 +218,7 @@ public class GUI {
         }
         comboBoxMelody.addActionListener(
                 e ->
-                        frequenz_slider.setEnabled(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString().equals("Fest")));
+                        frequency_slider.setEnabled(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString().equals("Fest")));
     }
 
     /**
@@ -404,7 +404,7 @@ public class GUI {
      * if failed.
      * <p>
      * If a melody is selected, the morse code is played with that melody, otherwise, when "Fest" is selected, the
-     * Morse Code is played with a constant frequency from the {@link #frequenz_slider}
+     * Morse Code is played with a constant frequency from the {@link #frequency_slider}
      *
      * @see Encoder
      */
@@ -431,7 +431,7 @@ public class GUI {
     /**
      * @return the selected {@link Melody}. If a melody is selected, then that {@link Melody} is returned,
      * otherwise, when "Fest" is selected, a new {@link Melody} with a constant frequency from the
-     * {@link #frequenz_slider} is generated and returned.
+     * {@link #frequency_slider} is generated and returned.
      */
     private Melody getMelody() {
         Melody sendMelody = null;
@@ -444,7 +444,7 @@ public class GUI {
                 }
             }
         } else {
-            sendMelody = new Melody("Fest", new int[]{frequenz_slider.getValue()});
+            sendMelody = new Melody("Fest", new int[]{frequency_slider.getValue()});
         }
         return sendMelody;
     }
@@ -533,10 +533,10 @@ public class GUI {
      * @see Translator
      */
     private void translateMorseTextAreaToText() {
-        try{
+        try {
             String textTranslation = Translator.morseToText(send_morse_textArea.getText());
             send_text_textArea.setText(textTranslation);
-        } catch (Exception e){
+        } catch (Exception e) {
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_text_textArea.setText("");
             System.out.println("morseToText_translationError");
