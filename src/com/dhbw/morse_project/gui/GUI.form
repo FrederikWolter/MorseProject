@@ -9,7 +9,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="27dc6" binding="mainpanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="27dc6" binding="main_panel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
           <background color="-12828863"/>
@@ -48,7 +48,7 @@
             <children>
               <grid id="18c09" binding="toSend" layout-manager="CardLayout" hgap="0" vgap="0">
                 <constraints>
-                  <tabbedpane title="Senden"/>
+                  <tabbedpane title-resource-bundle="com/dhbw/morse_project/gui/strings" title-key="tab.title.send"/>
                 </constraints>
                 <properties>
                   <alignmentX value="0.5"/>
@@ -101,7 +101,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="JetBrains Mono" size="16"/>
-                                      <text value="TEXT"/>
+                                      <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.text"/>
                                     </properties>
                                   </component>
                                   <scrollpane id="b4a7e">
@@ -138,7 +138,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="JetBrains Mono" size="16"/>
-                                      <text value="MORSE"/>
+                                      <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.morse"/>
                                     </properties>
                                   </component>
                                   <scrollpane id="457a7">
@@ -170,7 +170,8 @@
                             </constraints>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Senden beginnen"/>
+                              <text resource-bundle="com/dhbw/morse_project/gui/strings" key="button.sending_start"/>
+                              <toolTipText value=""/>
                             </properties>
                           </component>
                           <grid id="d6d12" layout-manager="GridLayoutManager" row-count="1" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -181,29 +182,13 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="6f80d" class="javax.swing.JSlider" binding="frequenz_slider">
-                                <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <font name="JetBrains Mono"/>
-                                  <majorTickSpacing value="2000"/>
-                                  <maximum value="10000"/>
-                                  <minimum value="0"/>
-                                  <minorTickSpacing value="200"/>
-                                  <paintLabels value="true"/>
-                                  <paintTicks value="true"/>
-                                  <snapToTicks value="false"/>
-                                  <value value="550"/>
-                                </properties>
-                              </component>
                               <component id="244d5" class="javax.swing.JLabel">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Frequenz in Hz"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.frequency"/>
                                 </properties>
                               </component>
                               <component id="ddcdf" class="javax.swing.JToolBar$Separator">
@@ -218,10 +203,11 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Melodien"/>
+                                  <labelFor value="fbfd9"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.melody"/>
                                 </properties>
                               </component>
-                              <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                              <component id="fbfd9" class="javax.swing.JComboBox" binding="comboBoxMelody">
                                 <constraints>
                                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                                 </constraints>
@@ -241,7 +227,7 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Übersetzen"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="button.translate"/>
                                 </properties>
                               </component>
                               <component id="788f0" class="javax.swing.JButton" binding="send_clear_button">
@@ -250,7 +236,23 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Text zurücksetzen"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="button.reset_text"/>
+                                </properties>
+                              </component>
+                              <component id="6f80d" class="javax.swing.JSlider" binding="frequency_slider">
+                                <constraints>
+                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <font name="JetBrains Mono"/>
+                                  <majorTickSpacing value="2000"/>
+                                  <maximum value="8000"/>
+                                  <minimum value="0"/>
+                                  <minorTickSpacing value="200"/>
+                                  <paintLabels value="true"/>
+                                  <paintTicks value="true"/>
+                                  <snapToTicks value="false"/>
+                                  <value value="550"/>
                                 </properties>
                               </component>
                             </children>
@@ -268,7 +270,7 @@
               </grid>
               <grid id="c2d7" binding="toReceive" layout-manager="CardLayout" hgap="0" vgap="0">
                 <constraints>
-                  <tabbedpane title="Empfangen"/>
+                  <tabbedpane title-resource-bundle="com/dhbw/morse_project/gui/strings" title-key="tab.title.receiving"/>
                 </constraints>
                 <properties>
                   <font name="JetBrains Mono" size="16"/>
@@ -319,7 +321,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="JetBrains Mono" size="16"/>
-                                      <text value="TEXT"/>
+                                      <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.text"/>
                                     </properties>
                                   </component>
                                   <scrollpane id="4a019">
@@ -358,7 +360,7 @@
                                     </constraints>
                                     <properties>
                                       <font name="JetBrains Mono" size="16"/>
-                                      <text value="MORSE"/>
+                                      <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.morse"/>
                                     </properties>
                                   </component>
                                   <scrollpane id="fabad">
@@ -392,7 +394,7 @@
                             </constraints>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Start Recording"/>
+                              <text resource-bundle="com/dhbw/morse_project/gui/strings" key="button.receiving_start"/>
                             </properties>
                           </component>
                           <grid id="5d739" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -422,7 +424,7 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Mikrofon-Empfindlichkeit"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.microphone_sensitivity"/>
                                 </properties>
                               </component>
                               <component id="2038f" class="javax.swing.JToolBar$Separator">
@@ -437,7 +439,7 @@
                                 </constraints>
                                 <properties>
                                   <font name="JetBrains Mono" size="16"/>
-                                  <text value="Text zurücksetzen"/>
+                                  <text resource-bundle="com/dhbw/morse_project/gui/strings" key="button.reset_text"/>
                                 </properties>
                               </component>
                             </children>
@@ -455,7 +457,7 @@
               </grid>
               <grid id="301b8" binding="toInfo" layout-manager="CardLayout" hgap="0" vgap="0">
                 <constraints>
-                  <tabbedpane title="Informationen"/>
+                  <tabbedpane title-resource-bundle="com/dhbw/morse_project/gui/strings" title-key="tab.title.information"/>
                 </constraints>
                 <properties>
                   <font name="JetBrains Mono" size="16"/>
@@ -478,7 +480,7 @@
                             <constraints border-constraint="North"/>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Alphabet"/>
+                              <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.alphabet"/>
                             </properties>
                           </component>
                           <scrollpane id="d86bf">
@@ -509,7 +511,7 @@
                             <constraints border-constraint="North"/>
                             <properties>
                               <font name="JetBrains Mono" size="16"/>
-                              <text value="Generelles"/>
+                              <text resource-bundle="com/dhbw/morse_project/gui/strings" key="label.general_information"/>
                             </properties>
                           </component>
                           <scrollpane id="2edf9">

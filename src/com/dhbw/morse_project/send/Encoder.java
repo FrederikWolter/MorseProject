@@ -20,7 +20,7 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class Encoder {
     // region public static final
-    // active division to make these public static due to possible use by other classes as part of encoder 'interface'
+    // active division to make these variables public static due to possible use by other classes as part of encoder 'interface'
     /**
      * Global time unit in ms used by all morse-code timing related code
      */
@@ -40,7 +40,7 @@ public class Encoder {
     // endregion
 
     /**
-     * Singleton like for the MAIN-thread version of {@link Encoder}
+     * Singleton like variable for the MAIN-thread version of {@link Encoder}
      */
     private static Encoder INSTANCE;
     /**
@@ -62,8 +62,7 @@ public class Encoder {
     private volatile boolean isPlaying;
 
     // empty private constructor hence the main-thread variant of Encoder does nothing
-    private Encoder() {
-    }
+    private Encoder() { }
 
     /**
      * Implementation of singleton to access the existing object or create one.
@@ -154,14 +153,14 @@ public class Encoder {
     private void signal(int duration, int frequency) throws LineUnavailableException, InterruptedException {
         byte[] buffer = sineWave(frequency, duration);
         AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
-        SourceDataLine line = AudioSystem.getSourceDataLine(format);                                                // [ID: F-TEC-10.2.1]
+        SourceDataLine line = AudioSystem.getSourceDataLine(format);                             // [ID: F-TEC-10.2.1]
 
         line.open(format);
         line.start();
         line.write(buffer, 0, buffer.length);
         line.drain();
-        //line.close();                             // closing the line is the "clean" way, but causes cracking sound
-        // depending on the system it is running on.
+        // line.close();
+        // closing the line is the "clean" way, but causes cracking sound depending on the system it is running on.
 
         wait(TIME_UNIT);                            // 1 time unit pause after each signal
     }
@@ -188,8 +187,8 @@ public class Encoder {
 
     /**
      * private alternative helper method generating a square wave with given frequency and duration.
-     * only used for testing because is sounds horrible.
      * public static volume ist used for the amplitude.
+     * <p>only used for testing because is sounds horrible.
      *
      * @param frequency of square wave
      * @param duration  of square wave
@@ -234,11 +233,25 @@ public class Encoder {
         return buffer;
     }
 
+    // region listener
+    /**
+     * Registers ErrorListener for error events, which should be notified if an error event occurs.
+     *
+     * @param listener to be added
+     * @see com.dhbw.morse_project.gui.GUI
+     */
     public void addErrorEventListener(IEncoderErrorListener listener) {
         errorEvent.addListener(listener);
     }
 
+    /**
+     * Registers FinishedListener for finished events, which should be notified if a finished event occurs.
+     *
+     * @param listener to be added
+     * @see com.dhbw.morse_project.gui.GUI
+     */
     public void addFinishedEventListener(IEncoderFinishedListener listener) {
         finishedEvent.addListener(listener);
     }
+    // endregion
 }

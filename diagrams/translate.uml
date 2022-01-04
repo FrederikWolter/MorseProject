@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.dhbw.morse_project.translate</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">com.dhbw.morse_project.translate.Translator</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="true" x="138.0" y="127.5" />
+  <SelectedNodes>
+    <node>com.dhbw.morse_project.translate.Translator</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

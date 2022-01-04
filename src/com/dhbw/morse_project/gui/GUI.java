@@ -17,21 +17,31 @@ import java.util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-//todo process GUI warnings
-
 /**
  * Class responsible for user interactions.
  * [ID: F-GUI-*, NF-GUI-* ]
  *
- * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer
+ * @author Mark Mühlenberg, Kai Grübener supported by Frederik Wolter, Lucas Schaffer, (Daniel Czeschner - Decoder integration)
  */
 @SuppressWarnings("DanglingJavadoc")
 public class GUI {
+    /**
+     * Object to synchronize the GUI with the {@link Decoder}, to pull the latest detected Morse-Signals.
+     *
+     * @see Decoder#getLastSignal()
+     */
+    private final Object GUI_DECODER_SYNCHRONIZE_Object;
+    private final Decoder DECODER;
+    private final Map<textArea, textArea_focusState> textAreaFocusMap = new HashMap<>();
+
     private JTabbedPane tabbedPane1;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toSend;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toReceive;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel toInfo;
-    private javax.swing.JPanel mainpanel;
+    private javax.swing.JPanel main_panel;
     private JTextArea receive_text_textArea;
     private JTextArea receive_morse_textArea;
     private JButton startRecordingButton;
@@ -39,8 +49,8 @@ public class GUI {
     private JButton beginSendingButton;
     private JTextArea send_text_textArea;
     private JTextArea send_morse_textArea;
-    private JSlider frequenz_slider;
-    private JComboBox<String> comboBox1;
+    private JSlider frequency_slider;
+    private JComboBox<String> comboBoxMelody;
     private JButton send_translate_button;
     private JButton send_clear_button;
     private JButton receive_clear_button;
@@ -48,19 +58,12 @@ public class GUI {
     private JSplitPane sendSplitPane;
     private JTable table_alphabet;
     private JTextArea textArea_info;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JPanel JPanel_border;
+    @SuppressWarnings("unused") //variable is used by background code, handling GUI Forms in IntelliJ
     private JTextField textField_info;
     private boolean showingStartRecording = true;
     private boolean showingBeginSend = true;
-
-    /**
-     * Object to synchronize the GUI with the {@link Decoder}, to pull the latest detected Morse-Signals.
-     * @see Decoder#getLastSignal()
-     */
-    private final Object GUI_DECODER_SYNCHRONIZE_Object;
-
-    private final Decoder DECODER;
-
     private Thread ui_update_thread;
 
     private enum textArea_focusState {
@@ -75,8 +78,6 @@ public class GUI {
         TEXT
     }
 
-    private final Map<textArea, textArea_focusState> textAreaFocusMap= new HashMap<>();
-
     /**
      * Constructor for class {@link GUI}
      *
@@ -87,6 +88,7 @@ public class GUI {
      * @see #configureListeners()
      */
     public GUI() {
+        @SuppressWarnings("unused")
         JFrame frame = setupJFrame();
 
         GUI_DECODER_SYNCHRONIZE_Object = new Object();
@@ -202,7 +204,7 @@ public class GUI {
     }
 
     /**
-     * Settings for the {@link #comboBox1} to select given melodies or frequencies.
+     * Settings for the {@link #comboBoxMelody} to select given melodies or frequencies.
      *
      * @see #startPlaying()
      * @see Melody
@@ -211,9 +213,11 @@ public class GUI {
     private void prepareMelodySelectionComboBox() {
 
         for (int i = 0; i < Melody.getMelodyList().size(); i++) {
-            comboBox1.addItem(Melody.getMelodyList().get(i).getName());
+            comboBoxMelody.addItem(Melody.getMelodyList().get(i).getName());
         }
-        comboBox1.addActionListener(e -> frequenz_slider.setEnabled(comboBox1.getSelectedItem().toString().equals("Fest")));
+        comboBoxMelody.addActionListener(
+                e ->
+                        frequency_slider.setEnabled(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString().equals("Fest")));
     }
 
     /**
@@ -249,7 +253,7 @@ public class GUI {
      */
     private JFrame setupJFrame() {
         JFrame frame = new JFrame("Kommunikation via Morsecode - Technikmuseum Kommunikationstechnik München");
-        frame.add(mainpanel);
+        frame.add(main_panel);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -271,13 +275,13 @@ public class GUI {
         });
 
         try {
-            frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("Morse_Symbolbild.png")))); // see https://stackoverflow.com/a/45580/13777031
-            // source: "https://w7.pngwing.com/pngs/27/465/png-transparent-morse-code-computer-icons-communication-others-text-code-morse-code.png"
+            frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("morse-code.png")))); // see https://stackoverflow.com/a/45580/13777031
+            // source: https://cdn-icons-png.flaticon.com/512/260/260301.png
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //mainpanel.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
+        //main_panel.setBorder(BorderFactory.createLineBorder(Color.blue, 50));
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
@@ -286,9 +290,9 @@ public class GUI {
 
         setWindowDimensions(frame, screenSize, effectiveMaxHeight);
 
-        adjust_splitpane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
+        adjust_split_pane_sizes(sendSplitPane, send_text_textArea, send_morse_textArea);
 
-        adjust_splitpane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
+        adjust_split_pane_sizes(receiveSplitPane, receive_text_textArea, receive_morse_textArea);
 
         return frame;
     }
@@ -305,9 +309,9 @@ public class GUI {
         double modifier = (int) (1.0 / scale);
         Dimension windowSize = new Dimension((int) (((double) screenSize.width) / modifier), (int) (((double) effectiveMaxHeight) / modifier));
         frame.setMinimumSize(windowSize);
-        mainpanel.setMinimumSize(windowSize);
-        mainpanel.setMaximumSize(new Dimension(500, 500));
-        mainpanel.setSize(500, 500);
+        main_panel.setMinimumSize(windowSize);
+        main_panel.setMaximumSize(new Dimension(500, 500));
+        main_panel.setSize(500, 500);
 
         tabbedPane1.setFont(new Font("Arial", Font.BOLD, 16));
 
@@ -322,14 +326,13 @@ public class GUI {
     private String getInfoText() {
         return """
                 Der Morsecode (auch Morsealphabet oder Morsezeichen genannt) ist ein gebräuchlicher Code zur telegrafischen Übermittlung von Buchstaben, Ziffern und weiterer Zeichen. Er bestimmt das Zeitschema, nach dem ein diskretes Signal ein- und ausgeschaltet wird.
-                
+                                
                 Der Code kann als Tonsignal, als Funksignal, als elektrischer Puls mit einer Morsetaste über eine Telefonleitung, mechanisch oder optisch (etwa mit blinkendem Licht) übertragen werden – oder auch mit jedem sonstigen Medium, mit dem zwei verschiedene Zustände (wie etwa Ton oder kein Ton) eindeutig und in der zeitlichen Länge variierbar dargestellt werden können. Dieses Übertragungsverfahren nennt man Morsetelegrafie.
-                
+                                
                 Das manchmal bei Notfällen beschriebene Morsen durch Klopfen an metallischen Verbindungen erfüllt diese Forderung daher nur bedingt, ist aber mit einiger Übung aufgrund des charakteristischen Rhythmus von Morsezeichen verständlich. Es ist abgeleitet von den „Klopfern“ aus der Anfangszeit der Telegrafentechnik, bestehend aus einem Elektromagneten mit Anker in einem akustischen Hohlspiegel. Beim Einschalten erzeugte er ein lautes und beim Abschalten ein etwas leiseres Klopfgeräusch. So konnte man den Klang der Morsezeichen schon vor der Erfindung des Lautsprechers selbst in größeren Betriebsräumen hörbar machen.
-                
-                
-                Auszug aus de.wikipedia.org/wiki/Morsecode
-                """;
+                                
+                                
+                Auszug aus de.wikipedia.org/wiki/Morsecode""";
 
         //Quelle: https://de.wikipedia.org/wiki/Morsecode
     }
@@ -344,7 +347,7 @@ public class GUI {
         boolean success = DECODER.stopRecording();
 
         if (success) {
-            startRecordingButton.setText("Start Recording");
+            startRecordingButton.setText("Empfangen beginnen");
             showingStartRecording = !showingStartRecording;
         } else {
             showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nERROR: fatal exception while 'stop recording'", "Error", JOptionPane.ERROR_MESSAGE);
@@ -352,7 +355,7 @@ public class GUI {
     }
 
     /**
-     * Trying to start the recording of the {@link Decoder} or dispaying an error message if failed
+     * Trying to start the recording of the {@link Decoder} or displaying an error message if failed
      *
      * @param e event which is triggered
      */
@@ -367,7 +370,7 @@ public class GUI {
         boolean success = DECODER.startRecording();
         if (success) {
             ui_update_thread.start();
-            startRecordingButton.setText("Stop Recording");
+            startRecordingButton.setText("Empfangen beenden");
             showingStartRecording = !showingStartRecording;
         } else {
             showMessageDialog(null, "Es ist ein Fehler aufgetreten, bitte melden Sie sich beim Personal.\nIst ein Mikrofon korrekt angeschlossen?\nERROR: fatal exception while starting recoding.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -398,9 +401,9 @@ public class GUI {
     /**
      * Trying to start playing the morse code from the {@link #send_morse_textArea} and displaying an error message
      * if failed.
-     *
+     * <p>
      * If a melody is selected, the morse code is played with that melody, otherwise, when "Fest" is selected, the
-     * Morse Code is played with a constant frequency from the {@link #frequenz_slider}
+     * Morse Code is played with a constant frequency from the {@link #frequency_slider}
      *
      * @see Encoder
      */
@@ -427,19 +430,20 @@ public class GUI {
     /**
      * @return the selected {@link Melody}. If a melody is selected, then that {@link Melody} is returned,
      * otherwise, when "Fest" is selected, a new {@link Melody} with a constant frequency from the
-     * {@link #frequenz_slider} is generated and returned.
+     * {@link #frequency_slider} is generated and returned.
      */
     private Melody getMelody() {
         Melody sendMelody = null;
 
-        if (comboBox1.getSelectedItem() != "Fest") {
+        if (comboBoxMelody.getSelectedItem() != "Fest") {
             for (Melody melody : Melody.getMelodyList()) {
-                if (melody.getName().equals(comboBox1.getSelectedItem().toString())) {
+
+                if (melody.getName().equals(Objects.requireNonNull(comboBoxMelody.getSelectedItem()).toString())) {
                     sendMelody = melody;
                 }
             }
         } else {
-            sendMelody = new Melody("Fest", new int[]{frequenz_slider.getValue()});
+            sendMelody = new Melody("Fest", new int[]{frequency_slider.getValue()});
         }
         return sendMelody;
     }
@@ -528,13 +532,13 @@ public class GUI {
      * @see Translator
      */
     private void translateMorseTextAreaToText() {
-        String textTranslation = Translator.morseToText(send_morse_textArea.getText());
-        if (textTranslation == null) {
+        try {
+            String textTranslation = Translator.morseToText(send_morse_textArea.getText());
+            send_text_textArea.setText(textTranslation);
+        } catch (Exception e) {
             showMessageDialog(null, "Bitte geben Sie nur Text ein, der übersetzt werden kann (Siehe Informationen)", "Falsche Eingabe", JOptionPane.WARNING_MESSAGE);
             send_text_textArea.setText("");
             System.out.println("morseToText_translationError");
-        } else {
-            send_text_textArea.setText(textTranslation);
         }
     }
 
@@ -576,7 +580,7 @@ public class GUI {
      * @param text_textArea  textArea for text
      * @param morse_textArea textArea for morse
      */
-    private void adjust_splitpane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
+    private void adjust_split_pane_sizes(JSplitPane splitPane, JTextArea text_textArea, JTextArea morse_textArea) {
         Dimension textAreas_preferredDimension = new Dimension(splitPane.getWidth() / 2, text_textArea.getPreferredSize().height);
         morse_textArea.setPreferredSize(textAreas_preferredDimension);
         morse_textArea.setMinimumSize(textAreas_preferredDimension);

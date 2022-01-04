@@ -1,41 +1,17 @@
 package com.dhbw.morse_project.receive;
 
 /**
- * This class is used as a POJO for the representation of one Sample.
+ * This (record)class is used as a POJO for the representation of one Sample.
  *
- * @author Mark Mühlenberg, mininaml changes by Daniel Czeschner
+ * @param isQuiet Ture if this sample is silence. (Smaller than the threshold (see {@link AudioListener}))
+ * @param index   The index of this Sample.
+ * @author Daniel Czeschner
  * @see AudioListener
+ * @see <a href="https://jax.de/blog/datenklassen-in-java-einfuehrung-in-java-records/">jax.de - Einfuehrung in Java records</a>
  */
-public class Noise {
-
-    // region POJO attributes
-    private final boolean quiet;
-    private final int index;
-    //endregion
-
-    /**
-     * Constructor of {@link Noise} Class.
-     *
-     * @param quiet Ture if this sample is silence. (Smaller than the threshold (see {@link AudioListener}))
-     * @param index The index of this Sample.
-     */
-    public Noise(boolean quiet, int index) {
-        this.quiet = quiet;
-        this.index = index;
-    }
-
-    // region getter
-    public int getIndex() {
-        return index;
-    }
-
-    public boolean isQuiet() {
-        return quiet;
-    }
-    //endregion
-
+public record Noise(boolean isQuiet, int index) {
     @Override
     public String toString() {
-        return "Quiet: " + this.isQuiet() + " | Index:" + index;
+        return "Quiet: " + isQuiet + " | Index:" + index;
     }
 }

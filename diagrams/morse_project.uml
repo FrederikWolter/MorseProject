@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.dhbw.morse_project</OriginalElement>
+  <nodes>
+    <node x="635.1978228228229" y="555.5">com.dhbw.morse_project.receive.Noise</node>
+    <node x="1058.180930930931" y="0.0">com.dhbw.morse_project.send.events.IEncoderFinishedListener</node>
+    <node x="1418.25" y="216.0">com.dhbw.morse_project.send.events.EncoderErrorEvent</node>
+    <node x="490.2961711711713" y="841.0">com.dhbw.morse_project.receive.Decoder</node>
+    <node x="1394.305930930931" y="0.0">com.dhbw.morse_project.send.events.IEncoderErrorListener</node>
+    <node x="188.891891891892" y="1126.0">com.dhbw.morse_project.gui.GUI</node>
+    <node x="1123.25" y="216.0">com.dhbw.morse_project.send.events.EncoderFinishedEvent</node>
+    <node x="0.0" y="897.0">com.dhbw.morse_project.gui.GUI.textArea_focusState</node>
+    <node x="756.891891891892" y="1762.0">com.dhbw.morse_project.MorseProject</node>
+    <node x="1237.9211711711712" y="841.0">com.dhbw.morse_project.send.Melody</node>
+    <node x="1100.125" y="479.0">com.dhbw.morse_project.send.Encoder</node>
+    <node x="473.2500000000001" y="116.0">com.dhbw.morse_project.receive.AudioListener</node>
+    <node x="258.0000000000001" y="897.0">com.dhbw.morse_project.gui.GUI.textArea</node>
+    <node x="826.2500000000001" y="138.0">com.dhbw.morse_project.translate.Translator</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="1158.125" y="457.0" />
+      <point x="1112.75" y="457.0" />
+      <point x="1112.75" y="95.0" />
+      <point x="1057.305930930931" y="95.0" />
+      <point x="1057.305930930931" y="75.0" />
+      <point x="1111.930930930931" y="75.0" />
+      <point x="-53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.send.Encoder" relationship="DEPENDENCY">
+      <point x="86.0" y="-105.5" />
+      <point x="705.2961711711713" y="819.0" />
+      <point x="781.680930930931" y="819.0" />
+      <point x="781.680930930931" y="809.0" />
+      <point x="1274.125" y="809.0" />
+      <point x="0.0" y="149.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.AudioListener" target="com.dhbw.morse_project.gui.GUI" relationship="DEPENDENCY">
+      <point x="111.0" y="149.5" />
+      <point x="750.7500000000001" y="447.0" />
+      <point x="767.9016516516517" y="447.0" />
+      <point x="767.9016516516517" y="457.0" />
+      <point x="838.055930930931" y="457.0" />
+      <point x="838.055930930931" y="1074.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="59.25" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.translate.Translator" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="1158.125" y="457.0" />
+      <point x="1112.75" y="457.0" />
+      <point x="1112.75" y="437.0" />
+      <point x="964.2500000000001" y="437.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI.textArea_focusState" target="com.dhbw.morse_project.gui.GUI" relationship="INNER_CLASS">
+      <point x="-79.0" y="49.5" />
+      <point x="39.5" y="1094.0" />
+      <point x="83.64189189189199" y="1094.0" />
+      <point x="83.64189189189199" y="1104.0" />
+      <point x="248.141891891892" y="1104.0" />
+      <point x="-177.75" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.AudioListener" target="com.dhbw.morse_project.gui.GUI" relationship="TO_ONE">
+      <point x="-111.0" y="149.5" />
+      <point x="528.7500000000001" y="447.0" />
+      <point x="539.5461711711713" y="447.0" />
+      <point x="539.5461711711713" y="457.0" />
+      <point x="247.5" y="457.0" />
+      <point x="247.5" y="1084.0" />
+      <point x="312.9478228228229" y="1084.0" />
+      <point x="312.9478228228229" y="1104.0" />
+      <point x="366.641891891892" y="1104.0" />
+      <point x="-59.25" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea" relationship="TO_MANY">
+      <point x="-59.25" y="-292.0" />
+      <point x="366.641891891892" y="1104.0" />
+      <point x="312.9478228228229" y="1104.0" />
+      <point x="312.9478228228229" y="1084.0" />
+      <point x="346.5000000000001" y="1084.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.gui.GUI" relationship="TO_ONE">
+      <point x="-86.0" y="105.5" />
+      <point x="533.2961711711713" y="1084.0" />
+      <point x="312.9478228228229" y="1084.0" />
+      <point x="312.9478228228229" y="1104.0" />
+      <point x="366.641891891892" y="1104.0" />
+      <point x="-59.25" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.receive.Decoder" relationship="TO_ONE">
+      <point x="-59.25" y="-292.0" />
+      <point x="366.641891891892" y="1104.0" />
+      <point x="312.9478228228229" y="1104.0" />
+      <point x="312.9478228228229" y="1084.0" />
+      <point x="533.2961711711713" y="1084.0" />
+      <point x="-86.0" y="105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderErrorEvent" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="TO_MANY">
+      <point x="64.0" y="-49.5" />
+      <point x="1610.25" y="95.0" />
+      <point x="1539.055930930931" y="95.0" />
+      <point x="48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.receive.AudioListener" relationship="CREATE">
+      <point x="0.0" y="-105.5" />
+      <point x="619.2961711711713" y="819.0" />
+      <point x="594.641891891892" y="819.0" />
+      <point x="594.641891891892" y="447.0" />
+      <point x="637.641891891892" y="447.0" />
+      <point x="637.641891891892" y="437.0" />
+      <point x="639.7500000000001" y="437.0" />
+      <point x="0.0" y="149.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderFinishedEvent" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="DEPENDENCY">
+      <point x="-68.75" y="-49.5" />
+      <point x="1192.0" y="95.0" />
+      <point x="1057.305930930931" y="95.0" />
+      <point x="1057.305930930931" y="75.0" />
+      <point x="1111.930930930931" y="75.0" />
+      <point x="-53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea_focusState" relationship="DEPENDENCY">
+      <point x="59.25" y="-292.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="197.5" y="1074.0" />
+      <point x="79.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea" relationship="DEPENDENCY">
+      <point x="59.25" y="-292.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="405.5000000000001" y="1074.0" />
+      <point x="59.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderFinishedEvent" relationship="TO_ONE">
+      <point x="0.0" y="-149.0" />
+      <point x="1274.125" y="457.0" />
+      <point x="1209.947822822823" y="457.0" />
+      <point x="1209.947822822823" y="447.0" />
+      <point x="1192.0" y="447.0" />
+      <point x="-68.75" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.AudioListener" target="com.dhbw.morse_project.receive.Noise" relationship="TO_MANY">
+      <point x="-111.0" y="149.5" />
+      <point x="528.7500000000001" y="447.0" />
+      <point x="539.5461711711713" y="447.0" />
+      <point x="539.5461711711713" y="457.0" />
+      <point x="660.3644894894896" y="457.0" />
+      <point x="-50.33333333333337" y="-72.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderErrorEvent" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="DEPENDENCY">
+      <point x="-64.0" y="-49.5" />
+      <point x="1482.25" y="85.0" />
+      <point x="1485.805930930931" y="85.0" />
+      <point x="1485.805930930931" y="75.0" />
+      <point x="1442.555930930931" y="75.0" />
+      <point x="-48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.gui.GUI.textArea_focusState" relationship="TO_MANY">
+      <point x="-59.25" y="-292.0" />
+      <point x="366.641891891892" y="1104.0" />
+      <point x="312.9478228228229" y="1104.0" />
+      <point x="312.9478228228229" y="1084.0" />
+      <point x="118.5" y="1084.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI.textArea" target="com.dhbw.morse_project.gui.GUI" relationship="INNER_CLASS">
+      <point x="-59.0" y="49.5" />
+      <point x="287.5000000000001" y="1094.0" />
+      <point x="83.64189189189199" y="1094.0" />
+      <point x="83.64189189189199" y="1104.0" />
+      <point x="248.141891891892" y="1104.0" />
+      <point x="-177.75" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.receive.Decoder" relationship="CREATE">
+      <point x="177.75" y="-292.0" />
+      <point x="603.641891891892" y="1104.0" />
+      <point x="1274.125" y="1104.0" />
+      <point x="1274.125" y="1084.0" />
+      <point x="705.2961711711713" y="1084.0" />
+      <point x="86.0" y="105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="DEPENDENCY">
+      <point x="59.25" y="-292.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="445.5000000000001" y="1074.0" />
+      <point x="445.5000000000001" y="95.0" />
+      <point x="1057.305930930931" y="95.0" />
+      <point x="1057.305930930931" y="75.0" />
+      <point x="1111.930930930931" y="75.0" />
+      <point x="-53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderErrorEvent" relationship="TO_ONE">
+      <point x="0.0" y="-149.0" />
+      <point x="1274.125" y="457.0" />
+      <point x="1209.947822822823" y="457.0" />
+      <point x="1209.947822822823" y="447.0" />
+      <point x="1482.25" y="447.0" />
+      <point x="-64.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.AudioListener" target="com.dhbw.morse_project.receive.Decoder" relationship="DEPENDENCY">
+      <point x="111.0" y="149.5" />
+      <point x="750.7500000000001" y="447.0" />
+      <point x="767.9016516516517" y="447.0" />
+      <point x="767.9016516516517" y="457.0" />
+      <point x="796.6978228228229" y="457.0" />
+      <point x="796.6978228228229" y="799.0" />
+      <point x="781.680930930931" y="799.0" />
+      <point x="781.680930930931" y="819.0" />
+      <point x="705.2961711711713" y="819.0" />
+      <point x="86.0" y="-105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.translate.Translator" relationship="DEPENDENCY">
+      <point x="59.25" y="-292.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="964.2500000000001" y="1074.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.gui.GUI" relationship="DEPENDENCY">
+      <point x="0.0" y="105.5" />
+      <point x="619.2961711711713" y="1074.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="59.25" y="-292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.MorseProject" target="com.dhbw.morse_project.send.Melody" relationship="CREATE">
+      <point x="37.25" y="-49.5" />
+      <point x="868.641891891892" y="1736.0" />
+      <point x="1342.9211711711712" y="1736.0" />
+      <point x="0.0" y="105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Noise" target="com.dhbw.morse_project.receive.AudioListener" relationship="DEPENDENCY">
+      <point x="50.33333333333337" y="-72.5" />
+      <point x="761.0311561561564" y="457.0" />
+      <point x="767.9016516516517" y="457.0" />
+      <point x="767.9016516516517" y="447.0" />
+      <point x="750.7500000000001" y="447.0" />
+      <point x="111.0" y="149.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.send.Encoder" relationship="DEPENDENCY">
+      <point x="59.25" y="-292.0" />
+      <point x="485.141891891892" y="1104.0" />
+      <point x="594.641891891892" y="1104.0" />
+      <point x="594.641891891892" y="1074.0" />
+      <point x="1227.4211711711714" y="1074.0" />
+      <point x="1227.4211711711714" y="819.0" />
+      <point x="1274.125" y="819.0" />
+      <point x="0.0" y="149.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderFinishedEvent" relationship="CREATE">
+      <point x="116.0" y="-149.0" />
+      <point x="1390.125" y="457.0" />
+      <point x="1509.2961711711712" y="457.0" />
+      <point x="1509.2961711711712" y="437.0" />
+      <point x="1329.5" y="437.0" />
+      <point x="68.75" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.receive.Noise" relationship="DEPENDENCY">
+      <point x="86.0" y="-105.5" />
+      <point x="705.2961711711713" y="819.0" />
+      <point x="781.680930930931" y="819.0" />
+      <point x="781.680930930931" y="799.0" />
+      <point x="748.4478228228229" y="799.0" />
+      <point x="37.75" y="72.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.gui.GUI" target="com.dhbw.morse_project.send.Melody" relationship="CREATE">
+      <point x="177.75" y="-292.0" />
+      <point x="603.641891891892" y="1104.0" />
+      <point x="1274.125" y="1104.0" />
+      <point x="1274.125" y="1094.0" />
+      <point x="1342.9211711711712" y="1094.0" />
+      <point x="0.0" y="105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.EncoderErrorEvent" relationship="CREATE">
+      <point x="116.0" y="-149.0" />
+      <point x="1390.125" y="457.0" />
+      <point x="1509.2961711711712" y="457.0" />
+      <point x="1509.2961711711712" y="437.0" />
+      <point x="1610.25" y="437.0" />
+      <point x="64.0" y="49.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.receive.AudioListener" relationship="TO_ONE">
+      <point x="-86.0" y="-105.5" />
+      <point x="533.2961711711713" y="819.0" />
+      <point x="536.7500000000001" y="819.0" />
+      <point x="536.5000000000001" y="457.0" />
+      <point x="539.5461711711713" y="457.0" />
+      <point x="539.5461711711713" y="447.0" />
+      <point x="528.7500000000001" y="447.0" />
+      <point x="-111.0" y="149.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.events.EncoderFinishedEvent" target="com.dhbw.morse_project.send.events.IEncoderFinishedListener" relationship="TO_MANY">
+      <point x="68.75" y="-49.5" />
+      <point x="1329.5" y="75.0" />
+      <point x="1219.430930930931" y="75.0" />
+      <point x="53.75" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.MorseProject" target="com.dhbw.morse_project.gui.GUI" relationship="DEPENDENCY">
+      <point x="-37.25" y="-49.5" />
+      <point x="794.141891891892" y="1736.0" />
+      <point x="425.891891891892" y="1736.0" />
+      <point x="0.0" y="292.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Melody" target="com.dhbw.morse_project.send.Encoder" relationship="DEPENDENCY">
+      <point x="0.0" y="-105.5" />
+      <point x="1342.9211711711712" y="819.0" />
+      <point x="1274.125" y="819.0" />
+      <point x="0.0" y="149.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.Melody" relationship="DEPENDENCY">
+      <point x="0.0" y="149.0" />
+      <point x="1274.125" y="819.0" />
+      <point x="1342.9211711711712" y="819.0" />
+      <point x="0.0" y="-105.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.receive.Noise" relationship="TO_MANY">
+      <point x="-86.0" y="-105.5" />
+      <point x="533.2961711711713" y="819.0" />
+      <point x="536.7500000000001" y="819.0" />
+      <point x="536.7500000000001" y="809.0" />
+      <point x="672.9478228228229" y="809.0" />
+      <point x="-37.75" y="72.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.send.Encoder" target="com.dhbw.morse_project.send.events.IEncoderErrorListener" relationship="DEPENDENCY">
+      <point x="-116.0" y="-149.0" />
+      <point x="1158.125" y="457.0" />
+      <point x="1112.75" y="457.0" />
+      <point x="1112.75" y="85.0" />
+      <point x="1485.805930930931" y="85.0" />
+      <point x="1485.805930930931" y="75.0" />
+      <point x="1442.555930930931" y="75.0" />
+      <point x="-48.25" y="27.0" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.Decoder" target="com.dhbw.morse_project.translate.Translator" relationship="DEPENDENCY">
+      <point x="86.0" y="-105.5" />
+      <point x="705.2961711711713" y="819.0" />
+      <point x="781.680930930931" y="819.0" />
+      <point x="781.680930930931" y="799.0" />
+      <point x="805.805930930931" y="799.0" />
+      <point x="805.805930930931" y="447.0" />
+      <point x="964.2500000000001" y="447.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="com.dhbw.morse_project.receive.AudioListener" target="com.dhbw.morse_project.receive.Noise" relationship="CREATE">
+      <point x="0.0" y="149.5" />
+      <point x="639.7500000000001" y="437.0" />
+      <point x="637.641891891892" y="437.0" />
+      <point x="637.641891891892" y="447.0" />
+      <point x="710.6978228228229" y="447.0" />
+      <point x="0.0" y="-72.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7704944178628388" showDependencies="true" x="748.5016474700639" y="1003.9624515198107" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
