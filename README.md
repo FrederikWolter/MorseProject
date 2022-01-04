@@ -54,7 +54,7 @@ software. Following are some ways that can lead to the successful launch of the 
 *German Version*
 # MorseProjekt
 
-Dieses Projekt wird im Rahmen der Vorlesung _'Software Engineering'_ im Wintersemester 2021 im Studiengang 'Angewandte Informatik' an der DHBW Mannheim erstellt. Ziel ist es, Morsecodes zwischen zwei oder mehreren Geräten per Ton zu übertragen.
+Dieses Projekt wird im Rahmen der Vorlesung _'Software-Engineering'_ im Wintersemester 2021 im Studiengang 'Angewandte Informatik' an der DHBW Mannheim erstellt. Ziel ist es, Morsecodes zwischen zwei oder mehreren Geräten per Ton zu übertragen.
 
 ## Anforderungen
 
