@@ -17,8 +17,6 @@ import java.util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-// todo No label for component
-
 /**
  * Class responsible for user interactions.
  * [ID: F-GUI-*, NF-GUI-* ]
